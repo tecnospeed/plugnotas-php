@@ -1,7 +1,7 @@
 # Plugnotas
 
 Este pacote foi construído com o objetivo de simplificar a integração com a API do [Plugnotas](https://plugnotas.com.br).
-Para obter informações sobre o funcionamento e contratações acesse nosso site ou a [documentação oficial](https://atendimento.tecnospeed.com.br/hc/pt-br/categories/360001354313-Plugnotas).
+Para obter informações sobre o funcionamento e contratações acesse [nosso site https://plugnotas.com.br/](https://plugnotas.com.br) ou a [documentação oficial](https://atendimento.tecnospeed.com.br/hc/pt-br/categories/360001354313-Plugnotas).
 
 ## Instalação
 
