@@ -1,0 +1,9 @@
+{
+    "name": "tecnospeed/plugnotas",
+    "description": "Pacote para utilização do Plugnotas em PHP",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+      "php": "^7.0"
+    }
+}
