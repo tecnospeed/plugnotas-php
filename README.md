@@ -34,7 +34,7 @@ require 'vendor/autoload.php;'
 Para maiores informações de como instalar, utilizar e melhores práticas para definir dependências em seu projeto acesse o site oficial [getcomposer.org](https://getcomposer.org).
 
 ## Documentações oficiais
-
+- [Site do Plugnotas](https://plugnotas.com.br/)
 - [Documentação oficial](https://atendimento.tecnospeed.com.br/hc/pt-br/categories/360001354313-Plugnotas)
 - [Documentação da API](https://docs.plugnotas.com.br/)
 
