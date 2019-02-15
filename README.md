@@ -1,11 +1,13 @@
 # Plugnotas
 
 Este pacote foi construído com o objetivo de simplificar a integração com a API do [Plugnotas](https://plugnotas.com.br).
-Para obter informações sobre o funcionamento e contratações acesse [nosso site https://plugnotas.com.br/](https://plugnotas.com.br) ou a [documentação oficial](https://atendimento.tecnospeed.com.br/hc/pt-br/categories/360001354313-Plugnotas).
+Para obter informações sobre o funcionamento e contratações acesse [nosso site](https://plugnotas.com.br) ou a [documentação oficial](https://atendimento.tecnospeed.com.br/hc/pt-br/categories/360001354313-Plugnotas).
 
 ## Instalação
 
 ### Adicionando o pacote
+
+Aconselhamos a instalação do pacote pelo [Composer](https://getcomposer.org). Composer é um gerenciador de dependências para PHP que lhe permite declarar e instalar as dependências em seu projeto de forma simplificada.
 
 O pacote pode ser adicionado utilizando o comando do próprio composer:
 
