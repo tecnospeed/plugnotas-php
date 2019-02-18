@@ -5,10 +5,27 @@ namespace TecnoSpeed\Plugnotas\Tests\Nfse;
 use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 
 class PrestadorTest extends TestCase
 {
+    public function testWithInvlidaCertificateId()
+    {
+        $this->expectException(ValidationError::class);
+        $this->expectExceptionMessage('ID de certificado Inválido.');
+        $prestador = new Prestador();
+        $prestador->setCertificado('123ASD');
+    }
+
+    public function testWithInvalidCpf()
+    {
+        $this->expectException(ValidationError::class);
+        $this->expectExceptionMessage('ID de certificado Inválido.');
+        $prestador = new Prestador();
+        $prestador->setCertificado('123ASD');
+    }
+
     public function testValidPrestadorCreation()
     {
         $endereco = new Endereco();

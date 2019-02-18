@@ -4,6 +4,7 @@ namespace TecnoSpeed\Plugnotas\Nfse;
 
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Error\ValidationError;
 
 class Prestador
 {
@@ -23,7 +24,14 @@ class Prestador
 
     public function setCertificado($certificado)
     {
-        $this->certificado = $certificado;
+        $certificadoId = preg_replace('/[^0-9a-f]/', '', strtolower((string)$certificado));
+        if (strlen($certificadoId) !== 24) {
+            throw new ValidationError(
+                'ID de certificado Inválido.'
+            );
+        }
+
+        $this->certificado = $certificadoId;
     }
 
     public function getCertificado()
