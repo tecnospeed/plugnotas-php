@@ -56,11 +56,6 @@ class Prestador
         $this->endereco = $endereco;
     }
 
-    public function setEndereco(Endereco $endereco)
-    {
-        $this->endereco = $endereco;
-    }
-
     public function getEndereco()
     {
         return $this->endereco;
@@ -148,12 +143,6 @@ class Prestador
 
     public function setTelefone(Telefone $telefone)
     {
-        $this->telefone = $telefone;
-    }
-
-    public function setTelefone($ddd, $numero)
-    {
-        $telefone = new Telefone($ddd, $numero);
         $this->telefone = $telefone;
     }
 
