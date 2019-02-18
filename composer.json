@@ -2,8 +2,30 @@
     "name": "tecnospeed/plugnotas",
     "description": "Pacote para utilização do Plugnotas em PHP",
     "type": "library",
+    "keywords": [
+        "tecnospeed",
+        "plugnotas",
+        "documentos fiscais",
+        "nfse"
+    ],
     "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "TecnoSpeed\\Plugnotas\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "TecnoSpeed\\Plugnotas\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --version"
+    },
     "require": {
-      "php": "^7.0"
+        "php": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.5.13"
     }
 }
