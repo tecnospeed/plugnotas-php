@@ -18,12 +18,60 @@ class PrestadorTest extends TestCase
         $prestador->setCertificado('123ASD');
     }
 
-    public function testWithInvalidCpf()
+    public function testWithInvalidLengthCpfCnpj()
     {
         $this->expectException(ValidationError::class);
-        $this->expectExceptionMessage('ID de certificado Inválido.');
+        $this->expectExceptionMessage('Campo cpfCnpj deve ter 11 ou 14 números.');
         $prestador = new Prestador();
-        $prestador->setCertificado('123ASD');
+        $prestador->setCpfCnpj('12345678901234567890');
+    }
+
+    public function testWithInvalidCpfFormation()
+    {
+        $this->expectException(ValidationError::class);
+        $this->expectExceptionMessage('CPF inválido.');
+        $prestador = new Prestador();
+        $prestador->setCpfCnpj('123.456.789-01');
+    }
+
+    public function testWithInvalidCnpjFormation()
+    {
+        $this->expectException(ValidationError::class);
+        $this->expectExceptionMessage('CNPJ inválido.');
+        $prestador = new Prestador();
+        $prestador->setCpfCnpj('12.345.678/0001-90');
+    }
+
+    public function testWithNullSimplesNacional()
+    {
+        $this->expectException(ValidationError::class);
+        $this->expectExceptionMessage('Optante do Simples nacional é requerida para NFSe.');
+        $prestador = new Prestador();
+        $prestador->setSimplesNacional(null);
+    }
+
+    public function testWithNullRazaoSocial()
+    {
+        $this->expectException(ValidationError::class);
+        $this->expectExceptionMessage('Razão social é requerida para NFSe.');
+        $prestador = new Prestador();
+        $prestador->setRazaoSocial(null);
+    }
+
+    public function testWithNullIncricaoMunicipal()
+    {
+        $this->expectException(ValidationError::class);
+        $this->expectExceptionMessage('Inscrição municipal é requerida para NFSe.');
+        $prestador = new Prestador();
+        $prestador->setInscricaoMunicipal(null);
+    }
+
+    public function testWithInvalidEmail()
+    {
+        $this->expectException(ValidationError::class);
+        $this->expectExceptionMessage('Endereço de email inválido.');
+        $prestador = new Prestador();
+        $prestador->setEmail('teste');
     }
 
     public function testValidPrestadorCreation()
@@ -58,7 +106,7 @@ class PrestadorTest extends TestCase
         $prestador->setTelefone($telefone);
 
         $this->assertSame($prestador->getCertificado(), '5b855b0926ddb251e0f0ef42');
-        $this->assertSame($prestador->getCpfCnpj(), '00.000.000/0001-91');
+        $this->assertSame($prestador->getCpfCnpj(), '00000000000191');
         $this->assertSame($prestador->getEmail(), 'teste@plugnotas.com.br');
         $this->assertSame($prestador->getEndereco()->getCep(), '87020025');
         $this->assertSame($prestador->getIncentivadorCultural(), false);

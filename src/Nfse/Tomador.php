@@ -7,38 +7,15 @@ use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Prestador
+class Tomador
 {
-    private $certificado;
     private $cpfCnpj;
     private $email;
     private $endereco;
-    private $incentivadorCultural;
-    private $incentivoFiscal;
-    private $inscricaoMunicipal;
+    private $inscricaoEstadual;
     private $nomeFantasia;
     private $razaoSocial;
-    private $regimeTributario;
-    private $regimeTributarioEspecial;
-    private $simplesNacional;
     private $telefone;
-
-    public function setCertificado($certificado)
-    {
-        $certificadoId = preg_replace('/[^0-9a-f]/', '', strtolower((string)$certificado));
-        if (strlen($certificadoId) !== 24) {
-            throw new ValidationError(
-                'ID de certificado Inválido.'
-            );
-        }
-
-        $this->certificado = $certificadoId;
-    }
-
-    public function getCertificado()
-    {
-        return $this->certificado;
-    }
 
     public function setCpfCnpj($cpfCnpj)
     {
@@ -98,39 +75,14 @@ class Prestador
         return $this->endereco;
     }
 
-    public function setIncentivadorCultural($incentivadorCultural)
+    public function setInscricaoEstadual($inscricaoEstadual)
     {
-        $this->incentivadorCultural = $incentivadorCultural;
+        $this->inscricaoEstadual = $inscricaoEstadual;
     }
 
-    public function getIncentivadorCultural()
+    public function getInscricaoEstadual()
     {
-        return $this->incentivadorCultural;
-    }
-
-    public function setIncentivoFiscal($incentivoFiscal)
-    {
-        $this->incentivoFiscal = $incentivoFiscal;
-    }
-
-    public function getIncentivoFiscal()
-    {
-        return $this->incentivoFiscal;
-    }
-
-    public function setInscricaoMunicipal($inscricaoMunicipal)
-    {
-        if (is_null($inscricaoMunicipal)) {
-            throw new ValidationError(
-                'Inscrição municipal é requerida para NFSe.'
-            );
-        }
-        $this->inscricaoMunicipal = $inscricaoMunicipal;
-    }
-
-    public function getInscricaoMunicipal()
-    {
-        return $this->inscricaoMunicipal;
+        return $this->inscricaoEstadual;
     }
 
     public function setNomeFantasia($nomeFantasia)
@@ -156,44 +108,6 @@ class Prestador
     public function getRazaoSocial()
     {
         return $this->razaoSocial;
-    }
-
-    public function setRegimeTributario($regimeTributario)
-    {
-        $this->regimeTributario = $regimeTributario;
-    }
-
-    public function getRegimeTributario()
-    {
-        return $this->regimeTributario;
-    }
-
-    public function setRegimeTributarioEspecial($regimeTributarioEspecial)
-    {
-        $this->regimeTributarioEspecial = $regimeTributarioEspecial;
-    }
-
-    public function getRegimeTributarioEspecial()
-    {
-        return $this->regimeTributarioEspecial;
-    }
-
-    public function setSimplesNacional($simplesNacional)
-    {
-        if (
-            is_null($simplesNacional) ||
-            !v::boolVal()->validate($simplesNacional)
-        ) {
-            throw new ValidationError(
-                'Optante do Simples nacional é requerida para NFSe.'
-            );
-        }
-        $this->simplesNacional = $simplesNacional;
-    }
-
-    public function getSimplesNacional()
-    {
-        return $this->simplesNacional;
     }
 
     public function setTelefone(Telefone $telefone)
