@@ -10,6 +10,12 @@ class ValorAliquota
     private $aliquota;
     private $valor;
 
+    public function __construct($valor = 0, $aliquota = 0)
+    {
+        $this->setAliquota($aliquota);
+        $this->setValor($valor);
+    }
+
     public function setValor($valor)
     {
         if (!v::numeric()->validate($valor)) {

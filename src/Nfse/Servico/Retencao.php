@@ -1,0 +1,77 @@
+<?php
+
+namespace TecnoSpeed\Plugnotas\Nfse\Servico;
+
+use Respect\Validation\Validator as v;
+use TecnoSpeed\Plugnotas\Common\ValorAliquota;
+use TecnoSpeed\Plugnotas\Error\ValidationError;
+
+class Retencao
+{
+    private $cofins;
+    private $csll;
+    private $inss;
+    private $irrf;
+    private $outrasRetencoes;
+    private $pis;
+
+    public function setCofins(ValorAliquota $cofins)
+    {
+        $this->cofins = $cofins;
+    }
+
+    public function getCofins()
+    {
+        return $this->cofins;
+    }
+
+    public function setCsll(ValorAliquota $csll)
+    {
+        $this->csll = $csll;
+    }
+
+    public function getCsll()
+    {
+        return $this->csll;
+    }
+
+    public function setInss(ValorAliquota $inss)
+    {
+        $this->inss = $inss;
+    }
+
+    public function getInss()
+    {
+        return $this->inss;
+    }
+
+    public function setIrrf(ValorAliquota $irrf)
+    {
+        $this->irrf = $irrf;
+    }
+
+    public function getIrrf()
+    {
+        return $this->irrf;
+    }
+
+    public function setOutrasRetencoes(ValorAliquota $outrasRetencoes)
+    {
+        $this->outrasRetencoes = $outrasRetencoes;
+    }
+
+    public function getOutrasRetencoes()
+    {
+        return $this->outrasRetencoes;
+    }
+
+    public function setPis(ValorAliquota $pis)
+    {
+        $this->pis = $pis;
+    }
+
+    public function getPis()
+    {
+        return $this->pis;
+    }
+}

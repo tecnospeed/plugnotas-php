@@ -2,8 +2,12 @@
 
 namespace TecnoSpeed\Plugnotas\Nfse;
 
-use TecnoSpeed\Plugnotas\Common\Retencao;
-use TecnoSpeed\Plugnotas\Nfse\Iss;
+use TecnoSpeed\Plugnotas\Nfse\Servico\Deducao;
+use TecnoSpeed\Plugnotas\Nfse\Servico\Evento;
+use TecnoSpeed\Plugnotas\Nfse\Servico\Iss;
+use TecnoSpeed\Plugnotas\Nfse\Servico\Obra;
+use TecnoSpeed\Plugnotas\Nfse\Servico\Retencao;
+use TecnoSpeed\Plugnotas\Nfse\Servico\Valor;
 
 class Servico
 {
@@ -62,7 +66,7 @@ class Servico
         return $this->codigoTributacao;
     }
 
-    public function setDeducao($deducao)
+    public function setDeducao(Deducao $deducao)
     {
         $this->deducao = $deducao;
     }
@@ -92,7 +96,7 @@ class Servico
         return $this->discriminacao;
     }
 
-    public function setEvento($evento)
+    public function setEvento(Evento $evento)
     {
         $this->evento = $evento;
     }
@@ -132,7 +136,7 @@ class Servico
         return $this->iss;
     }
 
-    public function setObra($obra)
+    public function setObra(Obra $obra)
     {
         $this->obra = $obra;
     }
@@ -142,7 +146,7 @@ class Servico
         return $this->obra;
     }
 
-    public function setRetencao($retencao)
+    public function setRetencao(Retencao $retencao)
     {
         $this->retencao = $retencao;
     }
@@ -152,7 +156,7 @@ class Servico
         return $this->retencao;
     }
 
-    public function setValor($valor)
+    public function setValor(Valor $valor)
     {
         $this->valor = $valor;
     }
