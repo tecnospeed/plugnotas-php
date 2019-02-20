@@ -129,6 +129,21 @@ class Nfse implements IDfe
 
     public static function fromArray($items)
     {
+        if (array_key_exists('prestador', $items)) {
+            $prestador = Prestador::fromArray($items['prestador']);
+            unset($items['prestador']);
+        }
+
+        if (array_key_exists('servico', $items)) {
+            $servico = Servico::fromArray($items['servico']);
+            unset($items['servico']);
+        }
+
+        if (array_key_exists('tomador', $items)) {
+            $tomador = Tomador::fromArray($items['tomador']);
+            unset($items['tomador']);
+        }
+
         if (array_key_exists('rps', $items)) {
             $rps = Rps::fromArray($items['rps']);
             unset($items['rps']);
@@ -148,5 +163,19 @@ class Nfse implements IDfe
         if (isset($cidadePrestacao)) {
             $resultObject->setCidadePrestacao($cidadePrestacao);
         }
+
+        if (isset($prestador)) {
+            $resultObject->setPrestador($prestador);
+        }
+
+        if (isset($servico)) {
+            $resultObject->setServico($servico);
+        }
+
+        if (isset($tomador)) {
+            $resultObject->setTomador($tomador);
+        }
+
+        return $resultObject;
     }
 }
