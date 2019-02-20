@@ -127,28 +127,28 @@ class Nfse implements IDfe
         
     }
 
-    public static function fromArray($items)
+    public static function fromArray($data)
     {
-        if (array_key_exists('prestador', $items)) {
-            $items['prestador'] = Prestador::fromArray($items['prestador']);
+        if (array_key_exists('prestador', $data)) {
+            $data['prestador'] = Prestador::fromArray($data['prestador']);
         }
 
-        if (array_key_exists('servico', $items)) {
-            $items['servico'] = Servico::fromArray($items['servico']);
+        if (array_key_exists('servico', $data)) {
+            $data['servico'] = Servico::fromArray($data['servico']);
         }
 
-        if (array_key_exists('tomador', $items)) {
-            $items['tomador'] = Tomador::fromArray($items['tomador']);
+        if (array_key_exists('tomador', $data)) {
+            $data['tomador'] = Tomador::fromArray($data['tomador']);
         }
 
-        if (array_key_exists('rps', $items)) {
-            $items['rps'] = Rps::fromArray($items['rps']);
+        if (array_key_exists('rps', $data)) {
+            $data['rps'] = Rps::fromArray($data['rps']);
         }
 
-        if (array_key_exists('cidadePrestacao', $items)) {
-            $items['cidadePrestacao'] = CidadePrestacao::fromArray($items['cidadePrestacao']);
+        if (array_key_exists('cidadePrestacao', $data)) {
+            $data['cidadePrestacao'] = CidadePrestacao::fromArray($data['cidadePrestacao']);
         }
 
-        return Hydratate::toObject(Nfse::class, $items);
+        return Hydratate::toObject(Nfse::class, $data);
     }
 }

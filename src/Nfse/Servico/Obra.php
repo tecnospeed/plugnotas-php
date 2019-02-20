@@ -3,9 +3,10 @@
 namespace TecnoSpeed\Plugnotas\Nfse\Servico;
 
 use Respect\Validation\Validator as v;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Obra
+class Obra extends BuilderAbstract
 {
     private $art;
     private $codigo;

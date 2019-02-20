@@ -3,9 +3,10 @@
 namespace TecnoSpeed\Plugnotas\Nfse\Servico;
 
 use Respect\Validation\Validator as v;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Iss
+class Iss extends BuilderAbstract
 {
     private $aliquota;
     private $exigibilidade;

@@ -207,20 +207,20 @@ class Prestador implements IBuilder
         return $this->telefone;
     }
 
-    public static function fromArray($items)
+    public static function fromArray($data)
     {
-        if (!is_array($items)) {
+        if (!is_array($data)) {
             throw new InvalidTypeError('Deve ser informado um array');
         }
 
-        if (array_key_exists('telefone', $items)) {
-            $items['telefone'] = Telefone::fromArray($items['telefone']);
+        if (array_key_exists('telefone', $data)) {
+            $data['telefone'] = Telefone::fromArray($data['telefone']);
         }
 
-        if (array_key_exists('endereco', $items)) {
-            $items['endereco'] = Endereco::fromArray($items['endereco']);
+        if (array_key_exists('endereco', $data)) {
+            $data['endereco'] = Endereco::fromArray($data['endereco']);
         }
 
-        return Hydratate::toObject(self::class, $items);
+        return Hydratate::toObject(self::class, $data);
     }
 }
