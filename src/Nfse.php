@@ -1,15 +1,17 @@
 <?php
 namespace TecnoSpeed\Plugnotas;
 
+use FerFabricio\Hydratate\Hydratate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
+use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
 use TecnoSpeed\Plugnotas\Nfse\Tomador;
 
-class Nfse
+class Nfse implements Ibuilder
 {
     private $cidadePrestacao;
     private $enviarEmail;
@@ -118,5 +120,13 @@ class Nfse
     public function getTomador()
     {
         return $this->tomador;
+    }
+
+    public static function fromArray($items)
+    {
+        $resultObject = new self::class;
+        if (array_key_exists('rps', $items)) {
+            $rps = Rps::fromArray($items['rps']);
+        }
     }
 }

@@ -2,12 +2,16 @@
 
 namespace TecnoSpeed\Plugnotas\Nfse;
 
+use FerFabricio\Hydratate\Hydratate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 
-class Tomador
+
+class Tomador extends BuilderAbstract
 {
     private $cpfCnpj;
     private $email;
@@ -120,4 +124,26 @@ class Tomador
         return $this->telefone;
     }
 
+    public static function fromArray($items)
+    {
+        if (!is_array($items)) {
+            throw new InvalidTypeError('Deve ser informado um array');
+        }
+
+        if (array_key_exists('telefone', $items)) {
+            $telefone = Telefone::toObject($items['telefone']);
+            unset($items['telefone']);
+        }
+
+        if (array_key_exists('endereco', $items)) {
+            $endereco = Endereco::toObject($items['endereco']);
+            unset($items['endereco']);
+        }
+
+        $resultObject = parent::fromArray($items);
+        $telefone ?? $resultObject->setTelefone($telefone);
+        $endereco ?? $resultObject->setEndereco($endereco);
+
+        return $resultObject;
+    }
 }

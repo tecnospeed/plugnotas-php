@@ -4,8 +4,52 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "036f589be37cca734faf8b619c2849ad",
+    "content-hash": "425d39b6efea9903e4a99914a21a6291",
     "packages": [
+        {
+            "name": "ferfabricio/hydratate-with-setters",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ferfabricio/hydratate-with-setters.git",
+                "reference": "21ada904877fdbe6e6757d83abd6a3b7dd217e6f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ferfabricio/hydratate-with-setters/zipball/21ada904877fdbe6e6757d83abd6a3b7dd217e6f",
+                "reference": "21ada904877fdbe6e6757d83abd6a3b7dd217e6f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.5.13"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FerFabricio\\Hydratate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fernando Fabricio dos Santos",
+                    "email": "ferfabricio@gmail.com"
+                }
+            ],
+            "description": "Hydratate your object with class setters",
+            "keywords": [
+                "design patterns",
+                "hydratate",
+                "object creation"
+            ],
+            "time": "2019-02-20T03:16:12+00:00"
+        },
         {
             "name": "respect/validation",
             "version": "1.1.29",
