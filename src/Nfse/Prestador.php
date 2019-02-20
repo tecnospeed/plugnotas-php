@@ -5,9 +5,10 @@ namespace TecnoSpeed\Plugnotas\Nfse;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Prestador
+class Prestador implements IBuilder
 {
     private $certificado;
     private $cpfCnpj;
@@ -206,4 +207,20 @@ class Prestador
         return $this->telefone;
     }
 
+    public static function fromArray($items)
+    {
+        if (!is_array($items)) {
+            throw new InvalidTypeError('Deve ser informado um array');
+        }
+
+        if (array_key_exists('telefone', $items)) {
+            $items['telefone'] = Telefone::fromArray($items['telefone']);
+        }
+
+        if (array_key_exists('endereco', $items)) {
+            $items['endereco'] = Endereco::fromArray($items['endereco']);
+        }
+
+        return Hydratate::toObject(self::class, $items);
+    }
 }

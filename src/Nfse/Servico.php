@@ -2,6 +2,8 @@
 
 namespace TecnoSpeed\Plugnotas\Nfse;
 
+use FerFabricio\Hydratate\Hydratate;
+use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Deducao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Evento;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Iss;
@@ -9,7 +11,7 @@ use TecnoSpeed\Plugnotas\Nfse\Servico\Obra;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Retencao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Valor;
 
-class Servico
+class Servico implements IBuilder
 {
     private $cnae;
     private $codigo;
@@ -166,4 +168,32 @@ class Servico
         return $this->valor;
     }
 
+    public static function fromArray($data)
+    {
+        if (array_key_exists('deducao', $data)) {
+            $data['deducao'] = Deducao::fromArray($data['deducao']);
+        }
+
+        if (array_key_exists('evento', $data)) {
+            $data['evento'] = Evento::fromArray($data['evento']);
+        }
+
+        if (array_key_exists('iss', $data)) {
+            $data['iss'] = Iss::fromArray($data['iss']);
+        }
+
+        if (array_key_exists('obra', $data)) {
+            $data['obra'] = Obra::fromArray($data['obra']);
+        }
+
+        if (array_key_exists('retencao', $data)) {
+            $data['retencao'] = Retencao::fromArray($data['retencao']);
+        }
+
+        if (array_key_exists('valor', $data)) {
+            $data['valor'] = Valor::fromArray($data['valor']);
+        }
+
+        return Hydratate::toObject(Servico::class, $data);
+    }
 }

@@ -130,52 +130,25 @@ class Nfse implements IDfe
     public static function fromArray($items)
     {
         if (array_key_exists('prestador', $items)) {
-            $prestador = Prestador::fromArray($items['prestador']);
-            unset($items['prestador']);
+            $items['prestador'] = Prestador::fromArray($items['prestador']);
         }
 
         if (array_key_exists('servico', $items)) {
-            $servico = Servico::fromArray($items['servico']);
-            unset($items['servico']);
+            $items['servico'] = Servico::fromArray($items['servico']);
         }
 
         if (array_key_exists('tomador', $items)) {
-            $tomador = Tomador::fromArray($items['tomador']);
-            unset($items['tomador']);
+            $items['tomador'] = Tomador::fromArray($items['tomador']);
         }
 
         if (array_key_exists('rps', $items)) {
-            $rps = Rps::fromArray($items['rps']);
-            unset($items['rps']);
+            $items['rps'] = Rps::fromArray($items['rps']);
         }
 
         if (array_key_exists('cidadePrestacao', $items)) {
-            $cidadePrestacao = CidadePrestacao::fromArray($items['cidadePrestacao']);
-            unset($items['cidadePrestacao']);
+            $items['cidadePrestacao'] = CidadePrestacao::fromArray($items['cidadePrestacao']);
         }
 
-        $resultObject = Hydratate::toObject(Nfse::class, $items);
-
-        if (isset($rps)) {
-            $resultObject->setRps($rps);
-        }
-
-        if (isset($cidadePrestacao)) {
-            $resultObject->setCidadePrestacao($cidadePrestacao);
-        }
-
-        if (isset($prestador)) {
-            $resultObject->setPrestador($prestador);
-        }
-
-        if (isset($servico)) {
-            $resultObject->setServico($servico);
-        }
-
-        if (isset($tomador)) {
-            $resultObject->setTomador($tomador);
-        }
-
-        return $resultObject;
+        return Hydratate::toObject(Nfse::class, $items);
     }
 }

@@ -30,5 +30,4 @@ class CidadePrestacao extends BuilderAbstract
     {
         return $this->descricao;
     }
-
 }

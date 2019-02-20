@@ -131,25 +131,13 @@ class Tomador implements IBuilder
         }
 
         if (array_key_exists('telefone', $items)) {
-            $telefone = Telefone::fromArray($items['telefone']);
-            unset($items['telefone']);
+            $items['telefone'] = Telefone::fromArray($items['telefone']);
         }
 
         if (array_key_exists('endereco', $items)) {
-            $endereco = Endereco::fromArray($items['endereco']);
-            unset($items['endereco']);
+            $items['endereco'] = Endereco::fromArray($items['endereco']);
         }
 
-        $resultObject = Hydratate::toObject(self::class, $items);
-
-        if ($telefone) {
-            $resultObject->setTelefone($telefone);
-        }
-
-        if ($endereco) {
-            $resultObject->setEndereco($endereco);
-        }
-
-        return $resultObject;
+        return Hydratate::toObject(self::class, $items);
     }
 }

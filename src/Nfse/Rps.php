@@ -3,9 +3,10 @@
 namespace TecnoSpeed\Plugnotas\Nfse;
 
 use Respect\Validation\Validator as v;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Rps
+class Rps extends BuilderAbstract
 {
     private $dataEmissao;
     private $competencia;
