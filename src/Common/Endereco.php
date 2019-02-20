@@ -2,9 +2,10 @@
 
 namespace TecnoSpeed\Plugnotas\Common;
 
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Endereco
+class Endereco extends BuilderAbstract
 {
     private $tipoLogradouro;
     private $logradouro;

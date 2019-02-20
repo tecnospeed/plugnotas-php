@@ -8,10 +8,10 @@ use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
-use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
+use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
 
 
-class Tomador extends BuilderAbstract
+class Tomador implements IBuilder
 {
     private $cpfCnpj;
     private $email;
@@ -131,18 +131,24 @@ class Tomador extends BuilderAbstract
         }
 
         if (array_key_exists('telefone', $items)) {
-            $telefone = Telefone::toObject($items['telefone']);
+            $telefone = Telefone::fromArray($items['telefone']);
             unset($items['telefone']);
         }
 
         if (array_key_exists('endereco', $items)) {
-            $endereco = Endereco::toObject($items['endereco']);
+            $endereco = Endereco::fromArray($items['endereco']);
             unset($items['endereco']);
         }
 
-        $resultObject = parent::fromArray($items);
-        $telefone ?? $resultObject->setTelefone($telefone);
-        $endereco ?? $resultObject->setEndereco($endereco);
+        $resultObject = Hydratate::toObject(self::class, $items);
+
+        if ($telefone) {
+            $resultObject->setTelefone($telefone);
+        }
+
+        if ($endereco) {
+            $resultObject->setEndereco($endereco);
+        }
 
         return $resultObject;
     }

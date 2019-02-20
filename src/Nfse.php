@@ -4,14 +4,14 @@ namespace TecnoSpeed\Plugnotas;
 use FerFabricio\Hydratate\Hydratate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
-use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
+use TecnoSpeed\Plugnotas\Interfaces\IDfe;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
 use TecnoSpeed\Plugnotas\Nfse\Tomador;
 
-class Nfse implements Ibuilder
+class Nfse implements IDfe
 {
     private $cidadePrestacao;
     private $enviarEmail;
@@ -122,11 +122,31 @@ class Nfse implements Ibuilder
         return $this->tomador;
     }
 
+    public function validate()
+    {
+        
+    }
+
     public static function fromArray($items)
     {
-        $resultObject = new self::class;
         if (array_key_exists('rps', $items)) {
             $rps = Rps::fromArray($items['rps']);
+            unset($items['rps']);
+        }
+
+        if (array_key_exists('cidadePrestacao', $items)) {
+            $cidadePrestacao = CidadePrestacao::fromArray($items['cidadePrestacao']);
+            unset($items['cidadePrestacao']);
+        }
+
+        $resultObject = Hydratate::toObject(Nfse::class, $items);
+
+        if (isset($rps)) {
+            $resultObject->setRps($rps);
+        }
+
+        if (isset($cidadePrestacao)) {
+            $resultObject->setCidadePrestacao($cidadePrestacao);
         }
     }
 }

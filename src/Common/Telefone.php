@@ -2,9 +2,10 @@
 
 namespace TecnoSpeed\Plugnotas\Common;
 
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Telefone
+class Telefone extends BuilderAbstract
 {
     private $ddd;
     private $numero;
