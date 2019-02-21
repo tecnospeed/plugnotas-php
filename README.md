@@ -70,4 +70,4 @@ Você pode conferir alguns exemplos na pasta `/examples`.
 - [Documentação da API](https://docs.plugnotas.com.br/)
 
 ## Changelog
-Acesse o [Changelog da aplicação por este link](CHANGELOG.md).
+Acesse o [Changelog da aplicação por este link](https://github.com/tecnospeed/plugnotas-php/blob/master/CHANGELOG.md).
