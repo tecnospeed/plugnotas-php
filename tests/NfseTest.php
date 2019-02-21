@@ -6,10 +6,12 @@ use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Common\ValorAliquota;
+use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
 use TecnoSpeed\Plugnotas\Nfse\Impressao;
+use TecnoSpeed\Plugnotas\Nfse\NfseBuilder;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
@@ -269,5 +271,48 @@ class NfseTest extends TestCase
         $this->assertInstanceOf(Servico::class, $nfse->getServico());
         $this->assertInstanceOf(Tomador::class, $nfse->getTomador());
         $this->assertInstanceOf(Impressao::class, $nfse->getImpressao());
+    }
+
+    public function testValidateWithValidData()
+    {
+        $nfse = (new NfseBuilder)
+            ->withPrestador([
+                'cpfCnpj' => '00.000.000/0001-91',
+                'inscricaoMunicipal' => '123456',
+                'razaoSocial' => 'Razao Social do Prestador',
+                'endereco' => [
+                    'logradouro' => 'Rua de Teste',
+                    'numero' => '1234',
+                    'codigoCidade' => '4115200',
+                    'cep' => '87.050-800'
+                ]
+            ])
+            ->withTomador([
+                'cpfCnpj' => '000.000.001-91',
+                'razaoSocial' => 'Razao Social do Tomador'
+            ])
+            ->withServico([
+                'codigo' => '1.02',
+                'discriminacao' => 'Exemplo',
+                'cnae' => '4751201',
+                'iss' => [
+                    'aliquota' => '3'
+                ],
+                'valor' => [
+                    'servico' => 1500.03
+                ]
+            ])
+            ->build([]);
+        $this->assertTrue($nfse->validate());
+    }
+
+    public function testValidateWithIncompleteData()
+    {
+        $this->expectException(RequiredError::class);
+        $this->expectExceptionMessage(
+            'Os parâmetros mínimos para criar uma Nfse não foram preenchidos.'
+        );
+        $nfse = (new NfseBuilder)->build([]);
+        $nfse->validate();
     }
 }

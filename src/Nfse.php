@@ -4,6 +4,7 @@ namespace TecnoSpeed\Plugnotas;
 use FerFabricio\Hydratator\Hydratate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
+use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Interfaces\IDfe;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
@@ -123,23 +124,32 @@ class Nfse extends BuilderAbstract implements IDfe
 
     public function validate()
     {
-        $required = [
-            'prestador.cpfCnpj',
-            'prestador.inscricaoMunicipal',
-            'prestador.razaoSocial',
-            'prestador.simplesNacional',
-            'prestador.endereco.logradouro',
-            'prestador.endereco.numero',
-            'prestador.endereco.codigoCidade',
-            'prestador.endereco.cep',
-            'tomador.cpfCnpj',
-            'tomador.razaoSocial',
-            'servico.codigo',
-            'servico.discriminacao',
-            'servico.cnae',
-            'servico.iss.aliquota',
-            'servico.valor.servico'
-        ];
+        $data = $this->toArray();
+        if(
+            !v::allOf(
+                v::keyNested('prestador.cpfCnpj'),
+                v::keyNested('prestador.inscricaoMunicipal'),
+                v::keyNested('prestador.razaoSocial'),
+                v::keyNested('prestador.simplesNacional'),
+                v::keyNested('prestador.endereco.logradouro'),
+                v::keyNested('prestador.endereco.numero'),
+                v::keyNested('prestador.endereco.codigoCidade'),
+                v::keyNested('prestador.endereco.cep'),
+                v::keyNested('tomador.cpfCnpj'),
+                v::keyNested('tomador.razaoSocial'),
+                v::keyNested('servico.codigo'),
+                v::keyNested('servico.discriminacao'),
+                v::keyNested('servico.cnae'),
+                v::keyNested('servico.iss.aliquota'),
+                v::keyNested('servico.valor.servico')  
+            )->validate($data)
+        ) {
+            throw new RequiredError(
+                'Os parâmetros mínimos para criar uma Nfse não foram preenchidos.'
+            );
+        }
+
+        return true;
     }
 
     public static function fromArray($data)
