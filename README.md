@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/tecnospeed/plugnotas-php.svg?branch=master)](https://travis-ci.org/tecnospeed/plugnotas-php) [![codecov](https://codecov.io/gh/tecnospeed/plugnotas-php/branch/master/graph/badge.svg)](https://codecov.io/gh/tecnospeed/plugnotas-php)
 # Plugnotas
 
 Este pacote foi construído com o objetivo de simplificar a integração com a API do [Plugnotas](https://plugnotas.com.br).
