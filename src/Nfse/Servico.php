@@ -2,7 +2,7 @@
 
 namespace TecnoSpeed\Plugnotas\Nfse;
 
-use FerFabricio\Hydratate\Hydratate;
+use FerFabricio\Hydratator\Hydratate;
 use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Deducao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Evento;

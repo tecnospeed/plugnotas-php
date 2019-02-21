@@ -5,6 +5,7 @@ namespace TecnoSpeed\Plugnotas\Tests\Nfse;
 use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\Tomador;
 
@@ -83,5 +84,39 @@ class TomadorTest extends TestCase
         $this->assertSame($tomador->getRazaoSocial(), 'Empresa Teste LTDA');
         $this->assertSame($tomador->getTelefone()->getDdd(), '44');
         $this->assertSame($tomador->getTelefone()->getNumero(), '12341234');
+    }
+
+    public function testBuildFromArray()
+    {
+        $data = ['cpfCnpj' => '00.000.000/0001-91'];
+        $tomador = Tomador::fromArray($data);
+        $this->assertInstanceOf(Tomador::class, $tomador);
+        $this->assertSame($tomador->getCpfCnpj(), '00000000000191');
+    }
+
+    public function testBuildFromArrayWithEnderecoAndTelefone()
+    {
+        $data = [
+            'cpfCnpj' => '00.000.000/0001-91',
+            'telefone' => [
+                'ddd' => '44',
+                'numero' => '12341234'
+            ],
+            'endereco' => [
+                'logradouro' => 'Rua de teste'
+            ]
+        ];
+        $tomador = Tomador::fromArray($data);
+        $this->assertInstanceOf(Tomador::class, $tomador);
+        $this->assertSame($tomador->getCpfCnpj(), '00000000000191');
+        $this->assertInstanceOf(Endereco::class, $tomador->getEndereco());
+        $this->assertInstanceOf(Telefone::class, $tomador->getTelefone());
+    }
+
+    public function testBuildFromArrayWithInvalidParameter()
+    {
+        $this->expectException(InvalidTypeError::class);
+        $this->expectExceptionMessage('Deve ser informado um array.');
+        $tomador = Tomador::fromArray('teste');
     }
 }

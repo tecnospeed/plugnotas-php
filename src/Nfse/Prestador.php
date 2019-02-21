@@ -2,10 +2,12 @@
 
 namespace TecnoSpeed\Plugnotas\Nfse;
 
+use FerFabricio\Hydratator\Hydratate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
+use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
 class Prestador implements IBuilder
@@ -210,7 +212,7 @@ class Prestador implements IBuilder
     public static function fromArray($data)
     {
         if (!is_array($data)) {
-            throw new InvalidTypeError('Deve ser informado um array');
+            throw new InvalidTypeError('Deve ser informado um array.');
         }
 
         if (array_key_exists('telefone', $data)) {

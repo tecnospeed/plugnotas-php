@@ -5,6 +5,7 @@ namespace TecnoSpeed\Plugnotas\Tests\Nfse;
 use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 
@@ -119,5 +120,39 @@ class PrestadorTest extends TestCase
         $this->assertSame($prestador->getSimplesNacional(), 0);
         $this->assertSame($prestador->getTelefone()->getDdd(), '44');
         $this->assertSame($prestador->getTelefone()->getNumero(), '12341234');
+    }
+
+    public function testBuildFromArray()
+    {
+        $data = ['certificado' => '5b855b0926ddb251e0f0ef42'];
+        $prestador = Prestador::fromArray($data);
+        $this->assertInstanceOf(Prestador::class, $prestador);
+        $this->assertSame($prestador->getCertificado(), '5b855b0926ddb251e0f0ef42');
+    }
+
+    public function testBuildFromArrayWithEnderecoAndTelefone()
+    {
+        $data = [
+            'certificado' => '5b855b0926ddb251e0f0ef42',
+            'telefone' => [
+                'ddd' => '44',
+                'numero' => '12341234'
+            ],
+            'endereco' => [
+                'logradouro' => 'Rua de teste'
+            ]
+        ];
+        $prestador = Prestador::fromArray($data);
+        $this->assertInstanceOf(Prestador::class, $prestador);
+        $this->assertSame($prestador->getCertificado(), '5b855b0926ddb251e0f0ef42');
+        $this->assertInstanceOf(Endereco::class, $prestador->getEndereco());
+        $this->assertInstanceOf(Telefone::class, $prestador->getTelefone());
+    }
+
+    public function testBuildFromArrayWithInvalidParameter()
+    {
+        $this->expectException(InvalidTypeError::class);
+        $this->expectExceptionMessage('Deve ser informado um array.');
+        $prestador = Prestador::fromArray('teste');
     }
 }

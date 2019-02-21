@@ -3,11 +3,11 @@
 namespace TecnoSpeed\Plugnotas\Nfse\Servico;
 
 use Respect\Validation\Validator as v;
-use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
+use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
 use TecnoSpeed\Plugnotas\Common\ValorAliquota;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Retencao extends BuilderAbstract
+class Retencao implements IBuilder
 {
     private $cofins;
     private $csll;
@@ -74,5 +74,16 @@ class Retencao extends BuilderAbstract
     public function getPis()
     {
         return $this->pis;
+    }
+
+    public static function fromArray($data)
+    {
+        $retencao = new Retencao();
+
+        foreach ($data as $key => $value) {
+            $retencao->{'set' . ucfirst($key)}(ValorAliquota::fromArray($value));
+        }
+
+        return $retencao;
     }
 }

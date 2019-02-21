@@ -3,6 +3,8 @@
 namespace TecnoSpeed\Plugnotas\Nfse;
 
 use TecnoSpeed\Plugnotas\Nfse;
+use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
+use TecnoSpeed\Plugnotas\Nfse\Impressao;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
@@ -11,10 +13,12 @@ use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 
 class NfseBuilder
 {
+    private $cidadePrestacao;
     private $rps;
     private $tomador;
     private $prestador;
     private $servico;
+    private $impressao;
 
     private function callFromArray($name, $class, $data)
     {
@@ -23,7 +27,7 @@ class NfseBuilder
             return $this;
         }
 
-        if (get_class($data) === $class) {
+        if (is_object($data) && get_class($data) === $class) {
             $this->{$name} = $data;
             return $this;
         }
@@ -33,7 +37,7 @@ class NfseBuilder
         );
     }
 
-    public function withTomador($tomador)
+    public function withTomador($data)
     {
         return $this->callFromArray('tomador', Tomador::class, $data);
     }
@@ -50,27 +54,36 @@ class NfseBuilder
 
     public function withRps($data)
     {
-        return $this->callFromArray('servico', Servico::class, $data);
+        return $this->callFromArray('rps', Rps::class, $data);
     }
 
-    public function build($data)
+    public function withImpressao($data)
+    {
+        return $this->callFromArray('impressao', Impressao::class, $data);
+    }
+
+    public function withCidadePrestacao($data)
+    {
+        return $this->callFromArray('cidadePrestacao', CidadePrestacao::class, $data);
+    }
+
+    public function build($data = [])
     {
         $nfse = Nfse::fromArray($data);
 
-        if (!is_null($this->prestador)) {
-            $nfse->setPrestador($this->prestador);
-        }
+        $properties = [
+            'cidadePrestacao',
+            'impressao',
+            'prestador',
+            'rps',
+            'servico',
+            'tomador'
+        ];
 
-        if (!is_null($this->tomador)) {
-            $nfse->setTomador($this->tomador);
-        }
-
-        if (!is_null($this->rps)) {
-            $nfse->setRps($this->rps);
-        }
-
-        if (!is_null($this->servico)) {
-            $nfse->setServico($this->servico);
+        foreach ($properties as $p) {
+            if (!is_null($this->{$p})) {
+                $nfse->{'set' . ucfirst($p)}($this->{$p});
+            }
         }
 
         return $nfse;

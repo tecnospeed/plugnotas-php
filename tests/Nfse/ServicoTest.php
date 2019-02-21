@@ -15,6 +15,41 @@ use TecnoSpeed\Plugnotas\Nfse\Servico\Valor;
 
 class ServicoTest extends TestCase
 {
+    public function testBuildFromArray()
+    {
+        $data = [
+            'deducao' => [
+                'tipo' => 99
+            ],
+            'evento' => [
+                'codigo' => '4051200'
+            ],
+            'iss' => [
+                'aliquota' => 1.01
+            ],
+            'obra' => [
+                'art' => '6270201'
+            ],
+            'retencao' => [
+                'cofins' => [
+                    'valor' => 100.10,
+                    'aliquota' => 1.01
+                ]
+            ],
+            'valor' => [
+                'baseCalculo' => 1010.00
+            ]
+        ];
+
+        $servico = Servico::fromArray($data);
+        $this->assertSame($servico->getDeducao()->getTipo(), 99);
+        $this->assertSame($servico->getEvento()->getCodigo(), '4051200');
+        $this->assertSame($servico->getIss()->getAliquota(), 1.01);
+        $this->assertSame($servico->getObra()->getArt(), '6270201');
+        $this->assertSame($servico->getRetencao()->getCofins()->getValor(), 100.10);
+        $this->assertSame($servico->getValor()->getBaseCalculo(), 1010.00);
+    }
+
     public function testWithValidData()
     {
         $deducao = new Deducao();

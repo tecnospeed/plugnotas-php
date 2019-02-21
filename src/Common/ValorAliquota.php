@@ -3,9 +3,10 @@
 namespace TecnoSpeed\Plugnotas\Common;
 
 use Respect\Validation\Validator as v;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class ValorAliquota
+class ValorAliquota extends BuilderAbstract
 {
     private $aliquota;
     private $valor;

@@ -9,6 +9,7 @@ use TecnoSpeed\Plugnotas\Common\ValorAliquota;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
+use TecnoSpeed\Plugnotas\Nfse\Impressao;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
@@ -28,14 +29,6 @@ class NfseTest extends TestCase
         $this->expectExceptionMessage('enviarEmail deve ser um valor booleano.');
         $nfse = new Nfse();
         $nfse->setEnviarEmail('teste');
-    }
-
-    public function testImpressaoWithInvalidValue()
-    {
-        $this->expectException(ValidationError::class);
-        $this->expectExceptionMessage('Impressão deve ser um array.');
-        $nfse = new Nfse();
-        $nfse->setImpressao('teste');
     }
 
     public function testSubstituicaoWithInvalidValue()
@@ -177,11 +170,14 @@ class NfseTest extends TestCase
         $rps->setDataEmissao($dateCompare);
         $rps->setCompetencia($dateCompare);
 
+        $impressao = new Impressao();
+        $impressao->setCamposCustomizados(['teste'=>'testeImpressao']);
+
         $nfse = new Nfse();
         $nfse->setCidadePrestacao($cidadePrestacao);
         $nfse->setEnviarEmail(false);
         $nfse->setIdIntegracao(1234);
-        $nfse->setImpressao(['teste'=>'testeImpressao']);
+        $nfse->setImpressao($impressao);
         $nfse->setPrestador($this->getPrestador());
         $nfse->setRps($rps);
         $nfse->setServico($this->getServico());
@@ -191,11 +187,87 @@ class NfseTest extends TestCase
         $this->assertSame($nfse->getCidadePrestacao()->getDescricao(), 'Cidade de Teste');
         $this->assertSame($nfse->getEnviarEmail(), false);
         $this->assertSame($nfse->getIdIntegracao(), 1234);
-        $this->assertSame($nfse->getImpressao()['teste'], 'testeImpressao');
+        $this->assertSame($nfse->getImpressao()->getCamposCustomizados()['teste'], 'testeImpressao');
         $this->assertSame($nfse->getPrestador()->getCertificado(), '5b855b0926ddb251e0f0ef42');
         $this->assertSame($nfse->getRps()->getDataEmissao()->format('Y-m-d h:i:s'), $dateCompare->format('Y-m-d h:i:s'));
         $this->assertSame($nfse->getServico()->getIdIntegracao(), 'A001XT');
         $this->assertSame($nfse->getSubstituicao(), false);
         $this->assertSame($nfse->getTomador()->getCpfCnpj(), '00000000000191');
+    }
+
+    public function testCreateObjectFromArray()
+    {
+        $data = [
+            'cidadePrestacao' => [
+                'codigo' => '123'
+            ],
+            'tomador' => [
+                'cpfCnpj' => '00.000.000/0001-91',
+                'razaoSocial' => 'Tomador Teste'
+            ],
+            'prestador' => [
+                'cpfCnpj' => '00.000.000/0001-91',
+                'razaoSocial' => 'Prestador Teste'
+            ],
+            'servico' => [
+                'iss' => [
+                    'aliquota' => 1.01
+                ]
+            ],
+            'rps' => [
+                'dataEmissao' => '2019-02-27'
+            ],
+            'impressao' => [
+                'camposCustomizados' => [
+                    'teste' => 'teste impressao'
+                ]
+            ]
+        ];
+
+        $nfse = Nfse::fromArray($data);
+        $this->assertInstanceOf(CidadePrestacao::class, $nfse->getCidadePrestacao());
+        $this->assertInstanceOf(Prestador::class, $nfse->getPrestador());
+        $this->assertInstanceOf(Rps::class, $nfse->getRps());
+        $this->assertInstanceOf(Servico::class, $nfse->getServico());
+        $this->assertInstanceOf(Tomador::class, $nfse->getTomador());
+        $this->assertInstanceOf(Impressao::class, $nfse->getImpressao());
+    }
+
+    public function testCreateObjectFromArrayWithOneObject()
+    {
+        $data = [
+            'cidadePrestacao' => [
+                'codigo' => '123'
+            ],
+            'tomador' => [
+                'cpfCnpj' => '00.000.000/0001-91',
+                'razaoSocial' => 'Tomador Teste'
+            ],
+            'prestador' => [
+                'cpfCnpj' => '00.000.000/0001-91',
+                'razaoSocial' => 'Prestador Teste'
+            ],
+            'servico' => [
+                'iss' => [
+                    'aliquota' => 1.01
+                ]
+            ],
+            'rps' => [
+                'dataEmissao' => '2019-02-27'
+            ],
+            'impressao' => Impressao::fromArray([
+                'camposCustomizados' => [
+                    'teste' => 'teste impressao'
+                ]
+            ])
+        ];
+
+        $nfse = Nfse::fromArray($data);
+        $this->assertInstanceOf(CidadePrestacao::class, $nfse->getCidadePrestacao());
+        $this->assertInstanceOf(Prestador::class, $nfse->getPrestador());
+        $this->assertInstanceOf(Rps::class, $nfse->getRps());
+        $this->assertInstanceOf(Servico::class, $nfse->getServico());
+        $this->assertInstanceOf(Tomador::class, $nfse->getTomador());
+        $this->assertInstanceOf(Impressao::class, $nfse->getImpressao());
     }
 }

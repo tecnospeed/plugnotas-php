@@ -1,11 +1,12 @@
 <?php
 namespace TecnoSpeed\Plugnotas;
 
-use FerFabricio\Hydratate\Hydratate;
+use FerFabricio\Hydratator\Hydratate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Interfaces\IDfe;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
+use TecnoSpeed\Plugnotas\Nfse\Impressao;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
@@ -56,11 +57,8 @@ class Nfse implements IDfe
         return $this->idIntegracao;
     }
 
-    public function setImpressao($impressao)
+    public function setImpressao(Impressao $impressao)
     {
-        if (!v::arrayVal()->validate($impressao)) {
-            throw new ValidationError('Impressão deve ser um array.');
-        }
         $this->impressao = $impressao;
     }
 
@@ -124,7 +122,23 @@ class Nfse implements IDfe
 
     public function validate()
     {
-        
+        $required = [
+            'prestador.cpfCnpj',
+            'prestador.inscricaoMunicipal',
+            'prestador.razaoSocial',
+            'prestador.simplesNacional',
+            'prestador.endereco.logradouro',
+            'prestador.endereco.numero',
+            'prestador.endereco.codigoCidade',
+            'prestador.endereco.cep',
+            'tomador.cpfCnpj',
+            'tomador.razaoSocial',
+            'servico.codigo',
+            'servico.discriminacao',
+            'servico.cnae',
+            'servico.iss.aliquota',
+            'servico.valor.servico'
+        ];
     }
 
     public static function fromArray($data)
@@ -147,6 +161,10 @@ class Nfse implements IDfe
 
         if (array_key_exists('cidadePrestacao', $data)) {
             $data['cidadePrestacao'] = CidadePrestacao::fromArray($data['cidadePrestacao']);
+        }
+
+        if (array_key_exists('impressao', $data)) {
+            $data['impressao'] = Impressao::fromArray($data['impressao']);
         }
 
         return Hydratate::toObject(Nfse::class, $data);

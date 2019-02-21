@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "425d39b6efea9903e4a99914a21a6291",
+    "content-hash": "63337dc15c33df860d1b71ae3c843bd9",
     "packages": [
         {
-            "name": "ferfabricio/hydratate-with-setters",
-            "version": "v1.0.0",
+            "name": "ferfabricio/hydratator",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ferfabricio/hydratate-with-setters.git",
-                "reference": "21ada904877fdbe6e6757d83abd6a3b7dd217e6f"
+                "url": "https://github.com/ferfabricio/hydratator.git",
+                "reference": "ab3b1b4b71ae4e0cf9bebec43f58344db3f1d8b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ferfabricio/hydratate-with-setters/zipball/21ada904877fdbe6e6757d83abd6a3b7dd217e6f",
-                "reference": "21ada904877fdbe6e6757d83abd6a3b7dd217e6f",
+                "url": "https://api.github.com/repos/ferfabricio/hydratator/zipball/ab3b1b4b71ae4e0cf9bebec43f58344db3f1d8b8",
+                "reference": "ab3b1b4b71ae4e0cf9bebec43f58344db3f1d8b8",
                 "shasum": ""
             },
             "require": {
@@ -29,7 +29,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "FerFabricio\\Hydratate\\": "src/"
+                    "FerFabricio\\Hydratator\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -45,10 +45,10 @@
             "description": "Hydratate your object with class setters",
             "keywords": [
                 "design patterns",
-                "hydratate",
+                "hydratator",
                 "object creation"
             ],
-            "time": "2019-02-20T03:16:12+00:00"
+            "time": "2019-02-21T15:43:13+00:00"
         },
         {
             "name": "respect/validation",
@@ -227,6 +227,50 @@
                 "instantiate"
             ],
             "time": "2017-07-22T11:58:36+00:00"
+        },
+        {
+            "name": "ferfabricio/hydratate-with-setters",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ferfabricio/hydratate-with-setters.git",
+                "reference": "21ada904877fdbe6e6757d83abd6a3b7dd217e6f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ferfabricio/hydratate-with-setters/zipball/21ada904877fdbe6e6757d83abd6a3b7dd217e6f",
+                "reference": "21ada904877fdbe6e6757d83abd6a3b7dd217e6f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.5.13"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FerFabricio\\Hydratate\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fernando Fabricio dos Santos",
+                    "email": "ferfabricio@gmail.com"
+                }
+            ],
+            "description": "Hydratate your object with class setters",
+            "keywords": [
+                "design patterns",
+                "hydratate",
+                "object creation"
+            ],
+            "time": "2019-02-20T03:16:12+00:00"
         },
         {
             "name": "myclabs/deep-copy",

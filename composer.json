@@ -25,7 +25,7 @@
     "require": {
         "php": "^7.0",
         "respect/validation": "^1.1",
-        "ferfabricio/hydratate-with-setters": "^1.0"
+        "ferfabricio/hydratator": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.5.13"
