@@ -1,15 +1,15 @@
 <?php
 
-namespace TecnoSpeed\Plugnotas\Tests\Nfse;
+namespace TecnoSpeed\Plugnotas\Tests\Builders;
 
 use PHPUnit\Framework\TestCase;
+use TecnoSpeed\Plugnotas\Builders\NfseBuilder;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
 use TecnoSpeed\Plugnotas\Nfse\Impressao;
-use TecnoSpeed\Plugnotas\Nfse\NfseBuilder;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;

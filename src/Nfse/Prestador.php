@@ -4,6 +4,8 @@ namespace TecnoSpeed\Plugnotas\Nfse;
 
 use FerFabricio\Hydratator\Hydratate;
 use Respect\Validation\Validator as v;
+use TecnoSpeed\Plugnotas\Configuration;
+use TecnoSpeed\Plugnotas\Communication\CallApi;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
@@ -224,5 +226,36 @@ class Prestador extends BuilderAbstract
         }
 
         return Hydratate::toObject(self::class, $data);
+    }
+
+    public function validate()
+    {
+        $data = $this->toArray();
+        if(
+            !v::allOf(
+                v::keyNested('cpfCnpj'),
+                v::keyNested('inscricaoMunicipal'),
+                v::keyNested('razaoSocial'),
+                v::keyNested('simplesNacional'),
+                v::keyNested('endereco.logradouro'),
+                v::keyNested('endereco.numero'),
+                v::keyNested('endereco.codigoCidade'),
+                v::keyNested('endereco.cep')
+            )->validate($data)
+        ) {
+            throw new RequiredError(
+                'Os parâmetros mínimos para criar um Prestador não foram preenchidos.'
+            );
+        }
+
+        return true;
+    }
+
+    public function send(Configuration $configuration)
+    {
+        $this->validate();
+
+        $communication = new CallApi($configuration);
+        return $communication->send('POST', '/nfse/prestador', $this->toArray(true));
     }
 }

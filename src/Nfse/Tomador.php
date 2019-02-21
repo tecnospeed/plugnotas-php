@@ -4,6 +4,8 @@ namespace TecnoSpeed\Plugnotas\Nfse;
 
 use FerFabricio\Hydratator\Hydratate;
 use Respect\Validation\Validator as v;
+use TecnoSpeed\Plugnotas\Configuration;
+use TecnoSpeed\Plugnotas\Communication\CallApi;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
@@ -122,6 +124,31 @@ class Tomador extends BuilderAbstract
     public function getTelefone()
     {
         return $this->telefone;
+    }
+
+    public function validate()
+    {
+        $data = $this->toArray();
+        if(
+            !v::allOf(
+                v::keyNested('cpfCnpj'),
+                v::keyNested('razaoSocial')
+            )->validate($data)
+        ) {
+            throw new RequiredError(
+                'Os parâmetros mínimos para criar um Tomador não foram preenchidos.'
+            );
+        }
+
+        return true;
+    }
+
+    public function send(Configuration $configuration)
+    {
+        $this->validate();
+
+        $communication = new CallApi($configuration);
+        return $communication->send('POST', '/nfse/tomador', $this->toArray(true));
     }
 
     public static function fromArray($data)

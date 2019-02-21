@@ -1,6 +1,6 @@
 <?php
 
-namespace TecnoSpeed\Plugnotas\Nfse;
+namespace TecnoSpeed\Plugnotas\Builders;
 
 use TecnoSpeed\Plugnotas\Nfse;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;

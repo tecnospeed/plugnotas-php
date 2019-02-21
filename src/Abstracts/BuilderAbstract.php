@@ -7,11 +7,11 @@ use FerFabricio\Hydratator\Hydratate;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
 
-class BuilderAbstract implements IBuilder
+abstract class BuilderAbstract implements IBuilder
 {
-    public function toArray()
+    public function toArray($excludeNull = false)
     {
-        return Extract::toArray($this);
+        return Extract::toArray($this, $excludeNull);
     }
 
     public static function fromArray($data)

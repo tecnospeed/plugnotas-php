@@ -4,6 +4,8 @@ namespace TecnoSpeed\Plugnotas;
 use FerFabricio\Hydratator\Hydratate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
+use TecnoSpeed\Plugnotas\Configuration;
+use TecnoSpeed\Plugnotas\Communication\CallApi;
 use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Interfaces\IDfe;
@@ -142,6 +144,11 @@ class Nfse extends BuilderAbstract implements IDfe
                 v::keyNested('servico.cnae'),
                 v::keyNested('servico.iss.aliquota'),
                 v::keyNested('servico.valor.servico')  
+            )->validate($data) ||
+            !v::allOf(
+                v::keyNested('prestador.cpfCnpj'),
+                v::keyNested('tomador.cpfCnpj'),
+                v::keyNested('servico.id')
             )->validate($data)
         ) {
             throw new RequiredError(
@@ -150,6 +157,14 @@ class Nfse extends BuilderAbstract implements IDfe
         }
 
         return true;
+    }
+
+    public function send(Configuration $configuration)
+    {
+        $this->validate();
+
+        $communication = new CallApi($configuration);
+        return $communication->send('POST', '/nfse', [$this->toArray(true)]);
     }
 
     public static function fromArray($data)

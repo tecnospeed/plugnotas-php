@@ -15,9 +15,20 @@ use TecnoSpeed\Plugnotas\Nfse\Servico\Valor;
 
 class ServicoTest extends TestCase
 {
+    public function testBuildFromArrayWithInvalidParameter()
+    {
+        $this->expectException(ValidationError::class);
+        $this->expectExceptionMessage('Id inválido.');
+        $data = [
+            'id' => '1234'
+        ];
+        $servico = Servico::fromArray($data);
+    }
+
     public function testBuildFromArray()
     {
         $data = [
+            'id' => '5af59d271f6e8f409178fbf3',
             'deducao' => [
                 'tipo' => 99
             ],
@@ -42,6 +53,7 @@ class ServicoTest extends TestCase
         ];
 
         $servico = Servico::fromArray($data);
+        $this->assertSame($servico->getId(), '5af59d271f6e8f409178fbf3');
         $this->assertSame($servico->getDeducao()->getTipo(), 99);
         $this->assertSame($servico->getEvento()->getCodigo(), '4051200');
         $this->assertSame($servico->getIss()->getAliquota(), 1.01);

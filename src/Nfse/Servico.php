@@ -3,7 +3,11 @@
 namespace TecnoSpeed\Plugnotas\Nfse;
 
 use FerFabricio\Hydratator\Hydratate;
+use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
+use TecnoSpeed\Plugnotas\Configuration;
+use TecnoSpeed\Plugnotas\Communication\CallApi;
+use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Deducao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Evento;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Iss;
@@ -21,6 +25,7 @@ class Servico extends BuilderAbstract
     private $descricaoCidadeIncidencia;
     private $discriminacao;
     private $evento;
+    private $id;
     private $idIntegracao;
     private $informacoesLegais;
     private $iss;
@@ -108,6 +113,23 @@ class Servico extends BuilderAbstract
         return $this->evento;
     }
 
+    public function setId($id)
+    {
+        $idFiltered = preg_replace('/[^0-9a-f]/', '', strtolower((string)$id));
+        if (strlen($idFiltered) !== 24) {
+            throw new ValidationError(
+                'Id inválido.'
+            );
+        }
+
+        $this->id = $idFiltered;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function setIdIntegracao($idIntegracao)
     {
         $this->idIntegracao = $idIntegracao;
@@ -166,6 +188,32 @@ class Servico extends BuilderAbstract
     public function getValor()
     {
         return $this->valor;
+    }
+
+    public function validate()
+    {
+        $data = $this->toArray();
+        if(
+            !v::allOf(
+                v::keyNested('codigo'),
+                v::keyNested('cnae'),
+                v::keyNested('iss.aliquota')
+            )->validate($data)
+        ) {
+            throw new RequiredError(
+                'Os parâmetros mínimos para criar um Serviço não foram preenchidos.'
+            );
+        }
+
+        return true;
+    }
+
+    public function send(Configuration $configuration)
+    {
+        $this->validate();
+
+        $communication = new CallApi($configuration);
+        return $communication->send('POST', '/nfse/servico', $this->toArray(true));
     }
 
     public static function fromArray($data)
