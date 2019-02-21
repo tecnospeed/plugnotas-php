@@ -8,10 +8,10 @@ use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
-use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 
 
-class Tomador implements IBuilder
+class Tomador extends BuilderAbstract
 {
     private $cpfCnpj;
     private $email;

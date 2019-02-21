@@ -2,12 +2,13 @@
 
 namespace TecnoSpeed\Plugnotas\Nfse\Servico;
 
+use FerFabricio\Hydratator\Extract;
 use Respect\Validation\Validator as v;
-use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Common\ValorAliquota;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Retencao implements IBuilder
+class Retencao extends BuilderAbstract
 {
     private $cofins;
     private $csll;

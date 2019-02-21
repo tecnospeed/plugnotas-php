@@ -3,6 +3,7 @@ namespace TecnoSpeed\Plugnotas;
 
 use FerFabricio\Hydratator\Hydratate;
 use Respect\Validation\Validator as v;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Interfaces\IDfe;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
@@ -12,7 +13,7 @@ use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
 use TecnoSpeed\Plugnotas\Nfse\Tomador;
 
-class Nfse implements IDfe
+class Nfse extends BuilderAbstract implements IDfe
 {
     private $cidadePrestacao;
     private $enviarEmail;

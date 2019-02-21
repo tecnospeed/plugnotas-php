@@ -6,11 +6,11 @@ use FerFabricio\Hydratator\Hydratate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
-use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
-class Prestador implements IBuilder
+class Prestador extends BuilderAbstract
 {
     private $certificado;
     private $cpfCnpj;

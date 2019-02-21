@@ -2,12 +2,18 @@
 
 namespace TecnoSpeed\Plugnotas\Abstracts;
 
+use FerFabricio\Hydratator\Extract;
 use FerFabricio\Hydratator\Hydratate;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
 
 class BuilderAbstract implements IBuilder
 {
+    public function toArray()
+    {
+        return Extract::toArray($this);
+    }
+
     public static function fromArray($data)
     {
         if (is_array($data)) {

@@ -17,4 +17,16 @@ class CidadePrestacaoTest extends TestCase
         $this->assertSame($cidadePrestacao->getCodigo(), '1234');
         $this->assertSame($cidadePrestacao->getDescricao(), 'Cidade de Teste');
     }
+
+    public function testToArray()
+    {
+        $cidadePrestacao = new CidadePrestacao();
+        $cidadePrestacao->setCodigo('1234');
+        $cidadePrestacao->setDescricao('Cidade de Teste');
+
+        $cidadePrestacaoArray = $cidadePrestacao->toArray();
+
+        $this->assertArrayHasKey('codigo', $cidadePrestacaoArray);
+        $this->assertArrayHasKey('descricao', $cidadePrestacaoArray);
+    }
 }

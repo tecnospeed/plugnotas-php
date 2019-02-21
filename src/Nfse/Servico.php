@@ -3,7 +3,7 @@
 namespace TecnoSpeed\Plugnotas\Nfse;
 
 use FerFabricio\Hydratator\Hydratate;
-use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Deducao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Evento;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Iss;
@@ -11,7 +11,7 @@ use TecnoSpeed\Plugnotas\Nfse\Servico\Obra;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Retencao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Valor;
 
-class Servico implements IBuilder
+class Servico extends BuilderAbstract
 {
     private $cnae;
     private $codigo;
