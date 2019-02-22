@@ -65,6 +65,8 @@ Nos links a seguir você encontra exemplos dos cadastros dos tipos:
 
 Você pode conferir alguns exemplos na pasta `/examples`.
 
+[Todos os objetos decompostos em arrays podem ser vistos no arquivo nfse.array.php](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.array.php).
+
 ## Documentações oficiais
 - [Site do Plugnotas](https://plugnotas.com.br/)
 - [Documentação oficial](https://atendimento.tecnospeed.com.br/hc/pt-br/categories/360001354313-Plugnotas)

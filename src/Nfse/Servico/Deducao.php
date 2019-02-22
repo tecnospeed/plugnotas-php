@@ -8,6 +8,7 @@ use TecnoSpeed\Plugnotas\Error\ValidationError;
 
 class Deducao extends BuilderAbstract
 {
+    private $descricao;
     private $tipo;
 
     public function setTipo($tipo)
