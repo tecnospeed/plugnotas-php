@@ -1,6 +1,11 @@
 # Changelog
 Alterações na biblioteca
 
+## [1.0.1] - 22/02/2019
+### Correção
+
+Correção no objeto RPS para salvar a data de acordo com que o webservice precisa.
+
 ## [1.0.0] - 21/02/2019
 ### Adicionado
 
