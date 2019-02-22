@@ -5,6 +5,7 @@ require '../vendor/autoload.php';
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Common\ValorAliquota;
+use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Nfse;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
 use TecnoSpeed\Plugnotas\Nfse\Impressao;
@@ -70,11 +71,11 @@ try {
     $tomador = new Tomador();
     $tomador->setCpfCnpj('00.000.000/0001-91');
     $tomador->setEmail('teste@plugnotas.com.br');
-    $tomador->setEndereco($endereco);
+    $tomador->setEndereco($enderecoTomador);
     $tomador->setInscricaoEstadual('8214100099');
     $tomador->setNomeFantasia('Empresa Teste');
     $tomador->setRazaoSocial('Empresa Teste LTDA');
-    $tomador->setTelefone($telefone);
+    $tomador->setTelefone($telefoneTomador);
 
     // Criando os objetos auxiliares necessários e o objeto Servico
     $deducao = new Deducao();
@@ -103,7 +104,7 @@ try {
     $retencao->setCsll(new ValorAliquota(202.20, 2.02));
     $retencao->setInss(new ValorAliquota(303.30, 3.03));
     $retencao->setIrrf(new ValorAliquota(404.40, 4.04));
-    $retencao->setOutrasRetencoes(new ValorAliquota(505.50, 5.05));
+    $retencao->setOutrasRetencoes(505.50);
     $retencao->setPis(new ValorAliquota(606.60, 6.06));
     
     $valor = new Valor();

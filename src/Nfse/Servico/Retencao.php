@@ -56,7 +56,7 @@ class Retencao extends BuilderAbstract
         return $this->irrf;
     }
 
-    public function setOutrasRetencoes(ValorAliquota $outrasRetencoes)
+    public function setOutrasRetencoes($outrasRetencoes)
     {
         $this->outrasRetencoes = $outrasRetencoes;
     }
@@ -81,6 +81,11 @@ class Retencao extends BuilderAbstract
         $retencao = new Retencao();
 
         foreach ($data as $key => $value) {
+            if ($key == 'outrasRetencoes') {
+                $retencao->setOutrasRetencoes($value);
+                continue;
+            }
+
             $retencao->{'set' . ucfirst($key)}(ValorAliquota::fromArray($value));
         }
 

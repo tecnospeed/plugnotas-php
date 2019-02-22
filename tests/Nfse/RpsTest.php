@@ -10,16 +10,14 @@ class RpsTest extends TestCase
 {
     public function testWithInvalidCompetencia()
     {
-        $this->expectException(ValidationError::class);
-        $this->expectExceptionMessage('competencia deve ser uma data válida.');
+        $this->expectException(\TypeError::class);
         $rps = new Rps();
         $rps->setCompetencia('teste');
     }
 
     public function testWithInvalidDataEmissao()
     {
-        $this->expectException(ValidationError::class);
-        $this->expectExceptionMessage('dataEmissao deve ser uma data válida.');
+        $this->expectException(\TypeError::class);
         $rps = new Rps();
         $rps->setDataEmissao('teste');
     }
@@ -31,7 +29,7 @@ class RpsTest extends TestCase
         $rps->setDataEmissao($dateCompare);
         $rps->setCompetencia($dateCompare);
 
-        $this->assertSame($rps->getDataEmissao()->format('Y-m-d h:i:s'), $dateCompare->format('Y-m-d h:i:s'));
-        $this->assertSame($rps->getCompetencia()->format('Y-m-d h:i:s'), $dateCompare->format('Y-m-d h:i:s'));
+        $this->assertSame($rps->getDataEmissao(), $dateCompare->format('Y-m-d'));
+        $this->assertSame($rps->getCompetencia(), $dateCompare->format('Y-m-d'));
     }
 }

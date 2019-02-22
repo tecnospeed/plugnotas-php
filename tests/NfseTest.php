@@ -191,7 +191,7 @@ class NfseTest extends TestCase
         $this->assertSame($nfse->getIdIntegracao(), 1234);
         $this->assertSame($nfse->getImpressao()->getCamposCustomizados()['teste'], 'testeImpressao');
         $this->assertSame($nfse->getPrestador()->getCertificado(), '5b855b0926ddb251e0f0ef42');
-        $this->assertSame($nfse->getRps()->getDataEmissao()->format('Y-m-d h:i:s'), $dateCompare->format('Y-m-d h:i:s'));
+        $this->assertSame($nfse->getRps()->getDataEmissao(), $dateCompare->format('Y-m-d'));
         $this->assertSame($nfse->getServico()->getIdIntegracao(), 'A001XT');
         $this->assertSame($nfse->getSubstituicao(), false);
         $this->assertSame($nfse->getTomador()->getCpfCnpj(), '00000000000191');
@@ -217,7 +217,7 @@ class NfseTest extends TestCase
                 ]
             ],
             'rps' => [
-                'dataEmissao' => '2019-02-27'
+                'dataEmissao' => new \DateTime('2019-02-27')
             ],
             'impressao' => [
                 'camposCustomizados' => [
@@ -255,7 +255,7 @@ class NfseTest extends TestCase
                 ]
             ],
             'rps' => [
-                'dataEmissao' => '2019-02-27'
+                'dataEmissao' => new \DateTime('2019-02-27')
             ],
             'impressao' => Impressao::fromArray([
                 'camposCustomizados' => [

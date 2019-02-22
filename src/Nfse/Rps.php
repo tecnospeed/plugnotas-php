@@ -11,12 +11,12 @@ class Rps extends BuilderAbstract
     private $dataEmissao;
     private $competencia;
 
-    public function setDataEmissao($dataEmissao)
+    public function setDataEmissao(\DateTimeInterface $dataEmissao)
     {
         if (!v::date()->validate($dataEmissao)) {
             throw new ValidationError('dataEmissao deve ser uma data válida.');
         }
-        $this->dataEmissao = $dataEmissao;
+        $this->dataEmissao = $dataEmissao->format('Y-m-d\TH:i:s');
     }
 
     public function getDataEmissao()
@@ -24,12 +24,12 @@ class Rps extends BuilderAbstract
         return $this->competencia;
     }
 
-    public function setCompetencia($competencia)
+    public function setCompetencia(\DateTimeInterface $competencia)
     {
         if (!v::date()->validate($competencia)) {
             throw new ValidationError('competencia deve ser uma data válida.');
         }
-        $this->competencia = $competencia;
+        $this->competencia = $competencia->format('Y-m-d');
     }
 
     public function getCompetencia()

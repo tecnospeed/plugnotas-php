@@ -58,7 +58,7 @@ class NfseBuilderTest extends TestCase
                 ]
             ])
             ->withRps([
-                'dataEmissao' => '2019-02-27'
+                'dataEmissao' => new \DateTime('2019-02-27')
             ])
             ->withImpressao([
                 'camposCustomizados' => [

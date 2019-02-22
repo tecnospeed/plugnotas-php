@@ -15,7 +15,7 @@ class RetencaoTest extends TestCase
         $retencao->setCsll(new ValorAliquota(202.20, 2.02));
         $retencao->setInss(new ValorAliquota(303.30, 3.03));
         $retencao->setIrrf(new ValorAliquota(404.40, 4.04));
-        $retencao->setOutrasRetencoes(new ValorAliquota(505.50, 5.05));
+        $retencao->setOutrasRetencoes(505.50);
         $retencao->setPis(new ValorAliquota(606.60, 6.06));
 
         $this->assertSame($retencao->getCofins()->getAliquota(), 1.01);
@@ -26,8 +26,7 @@ class RetencaoTest extends TestCase
         $this->assertSame($retencao->getInss()->getValor(), 303.30);
         $this->assertSame($retencao->getIrrf()->getAliquota(), 4.04);
         $this->assertSame($retencao->getIrrf()->getValor(), 404.40);
-        $this->assertSame($retencao->getOutrasRetencoes()->getAliquota(), 5.05);
-        $this->assertSame($retencao->getOutrasRetencoes()->getValor(), 505.50);
+        $this->assertSame($retencao->getOutrasRetencoes(), 505.50);
         $this->assertSame($retencao->getPis()->getAliquota(), 6.06);
         $this->assertSame($retencao->getPis()->getValor(), 606.60);
 
