@@ -238,6 +238,16 @@ class Nfse extends BuilderAbstract implements IDfe
         return $communication->send('GET', "/nfse/consultar/${idOrProtocol}", null);
     }
 
+    public function findCancel($id)
+    {
+        if (!$this->configuration) {
+            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
+        }
+
+        $communication = new CallApi($this->configuration);
+        return $communication->send('GET', "/nfse/cancelar/status/${id}", null);
+    }
+
     public function downloadPdf($id)
     {
         if (!$this->configuration) {
@@ -274,5 +284,25 @@ class Nfse extends BuilderAbstract implements IDfe
             null,
             $this->configuration->getNfseDownloadDirectory() . '/' . $cnpj . '-' . $idIntegracao . '.pdf'
         );
+    }
+
+    public function cancel($id)
+    {
+        if (!$this->configuration) {
+            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
+        }
+
+        $communication = new CallApi($this->configuration);
+        return $communication->send('POST', "/nfse/cancelar/${id}", null);
+    }
+
+    public function cancelByCnpjAndIdIntegracao()
+    {
+        if (!$this->configuration) {
+            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
+        }
+
+        $communication = new CallApi($this->configuration);
+        return $communication->send('POST', "/nfse/pdf/${idIntegracao}/${cnpj}", null);
     }
 }
