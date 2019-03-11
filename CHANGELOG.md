@@ -1,6 +1,11 @@
 # Changelog
 Alterações na biblioteca
 
+## [1.2.0] - 11/03/2019
+### Adicionado
+
+Download de PDF da NFSe utilizando o id, também como CNPJ do Prestador e ID Integração.
+
 ## [1.1.0] - 11/03/2019
 ### Adicionado
 

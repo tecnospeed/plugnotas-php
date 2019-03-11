@@ -58,4 +58,37 @@ class CallApi
             return ResponseObject::parse($response);
         }
     }
+
+    public function download($method, $destination, $data, $fileName)
+    {
+        try {
+            if ($method === 'GET') {
+                $response = $this->client->request(
+                    $method,
+                    $destination,
+                    [
+                        'headers' => $this->headers,
+                        'sink' => $fileName
+                    ]
+                );
+
+                return ResponseObject::parse($response);
+            }
+    
+            $response = $this->client->request(
+                $method,
+                $destination,
+                [
+                    'headers' => $this->headers,
+                    'json' => $data,
+                    'sink' => $fileName
+                ]
+            );
+
+            return true;
+        } catch (ClientException $ce) {
+            $response = $ce->getResponse();
+            return ResponseObject::parse($response);
+        }
+    }
 }

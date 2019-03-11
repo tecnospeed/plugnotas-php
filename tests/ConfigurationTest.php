@@ -28,4 +28,11 @@ final class ConfigurationTest extends TestCase
         $this->assertSame($configuration->getEnvironment(), Configuration::TYPE_ENVIRONMENT_PRODUCTION);
         $this->assertSame($configuration->getUrl(), 'https://api.plugnotas.com.br');
     }
+
+    public function testWithNfseDownloadDirectory()
+    {
+        $configuration = new Configuration();
+        $configuration->setNfseDownloadDirectory('/some/test/directory/');
+        $this->assertSame($configuration->getNfseDownloadDirectory(), '/some/test/directory/');
+    }
 }

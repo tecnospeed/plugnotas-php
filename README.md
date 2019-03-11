@@ -64,9 +64,24 @@ Nos links a seguir você encontra exemplos dos cadastros dos tipos:
 ### Consultando uma NFSe
 
 Para consultar uma NFSe é necessário criar um objeto do tipo `TecnoSpeed\Plugnotas\Configuration`, setar ele num novo objeto `TecnoSpeed\Plugnotas\Nfse` utilizando o método `setConfiguration`.
+
 Após este setup realizado, existe duas possibilidades de consulta, pelo ID da nota ou protocolo gerado na hora que você enviou a nota, ou passando o ID Integração e o CNPJ do Prestador utilizado para criar a NFSe. Os respectivos métodos são: `findByCnpjAndIdIntegracao` e `findByIdOrProtocol`.
 
 Exemplo utilizando o [método findByCnpjAndIdIntegracao pode ser encontrado aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.consulta.cnpjId.php) e [exemplo utilizando o método findByIdOrProtocol pode ser encontrado aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.consulta.cnpjId.php).
+
+### Download do PDF de uma NFSe
+
+Da mesma forma que a consulta o download do PDF da Nfse necessita de um objeto do tipo `TecnoSpeed\Plugnotas\Configuration`, o qual deve ser setado num novo objeto `TecnoSpeed\Plugnotas\Nfse` utilizando o método `setConfiguration`.
+Uma particularidade é que é necessário indicar a pasta para escrita dos arquivos no objeto de configuração utilizando o método `setNfseDownloadDirectory`.
+
+Existe a possibilidade de realizar o download utilizando o ID da nota retornado na criação utilizando o método `download`, como também realizar o download utilizando o CNPJ do Prestador e o ID Integração utilizados no envio da NFSe através do método `downloadPdfByCnpjAndIdIntegracao`.
+
+Os arquivos serão salvos na pasta configurada (a qual precisa ter permissão de escrita), o padrão do nome do arquivo será o seguinte:
+
+* Quando utilizado o método `download`: <pasta informada>/<id>.pdf
+* Quando utilizado o método `downloadPdfByCnpjAndIdIntegracao`: <pasta informada>/<cnpj>-<id integração>.pdf
+
+[Exemplo de download utilizando o ID pode ser encontrado aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.download.php) e [exemplo de download utilizando o CNPJ e ID Integração aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.download.cnpjId.php).
 
 ### Exemplos
 
