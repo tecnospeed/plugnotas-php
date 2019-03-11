@@ -78,8 +78,8 @@ Existe a possibilidade de realizar o download utilizando o ID da nota retornado 
 
 Os arquivos serão salvos na pasta configurada (a qual precisa ter permissão de escrita), o padrão do nome do arquivo será o seguinte:
 
-* Quando utilizado o método `download`: <pasta informada>/<id>.pdf
-* Quando utilizado o método `downloadPdfByCnpjAndIdIntegracao`: <pasta informada>/<cnpj>-<id integração>.pdf
+* Quando utilizado o método `download`: ```<pasta informada>/<id>.pdf```
+* Quando utilizado o método `downloadPdfByCnpjAndIdIntegracao`: ```<pasta informada>/<cnpj>-<id integração>.pdf```
 
 [Exemplo de download utilizando o ID pode ser encontrado aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.download.php) e [exemplo de download utilizando o CNPJ e ID Integração aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.download.cnpjId.php).
 
