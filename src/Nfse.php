@@ -6,6 +6,7 @@ use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Communication\CallApi;
+use TecnoSpeed\Plugnotas\Error\ConfigurationRequiredError;
 use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Interfaces\IDfe;
@@ -19,6 +20,7 @@ use TecnoSpeed\Plugnotas\Nfse\Tomador;
 class Nfse extends BuilderAbstract implements IDfe
 {
     private $cidadePrestacao;
+    private $configuration;
     private $enviarEmail;
     private $idIntegracao;
     private $impressao;
@@ -36,6 +38,11 @@ class Nfse extends BuilderAbstract implements IDfe
     public function getCidadePrestacao()
     {
         return $this->cidadePrestacao;
+    }
+
+    public function setConfiguration(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
     }
 
     public function setEnviarEmail($enviarEmail)
@@ -194,5 +201,25 @@ class Nfse extends BuilderAbstract implements IDfe
         }
 
         return Hydratate::toObject(Nfse::class, $data);
+    }
+
+    public function findByCnpjAndIdIntegracao($cnpj, $idIntegracao)
+    {
+        if (!$this->configuration) {
+            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
+        }
+
+        $communication = new CallApi($this->configuration);
+        return $communication->send('GET', "/nfse/consultar/${idIntegracao}/${cnpj}", null);
+    }
+
+    public function findByIdOrProtocol($idOrProtocol)
+    {
+        if (!$this->configuration) {
+            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
+        }
+
+        $communication = new CallApi($this->configuration);
+        return $communication->send('GET', "/nfse/consultar/${idOrProtocol}", null);
     }
 }

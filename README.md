@@ -61,6 +61,13 @@ Nos links a seguir você encontra exemplos dos cadastros dos tipos:
 * [Cadastro de Tomador](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.tomador.create.php)
 * [Cadastro de Serviço](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.servico.create.php)
 
+### Consultando uma NFSe
+
+Para consultar uma NFSe é necessário criar um objeto do tipo `TecnoSpeed\Plugnotas\Configuration`, setar ele num novo objeto `TecnoSpeed\Plugnotas\Nfse` utilizando o método `setConfiguration`.
+Após este setup realizado, existe duas possibilidades de consulta, pelo ID da nota ou protocolo gerado na hora que você enviou a nota, ou passando o ID Integração e o CNPJ do Prestador utilizado para criar a NFSe. Os respectivos métodos são: `findByCnpjAndIdIntegracao` e `findByIdOrProtocol`.
+
+Exemplo utilizando o [método findByCnpjAndIdIntegracao pode ser encontrado aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.consulta.cnpjId.php) e [exemplo utilizando o método findByIdOrProtocol pode ser encontrado aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.consulta.cnpjId.php).
+
 ### Exemplos
 
 Você pode conferir alguns exemplos na pasta `/examples`.
