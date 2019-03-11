@@ -1,6 +1,11 @@
 # Changelog
 Alterações na biblioteca
 
+## [1.1.0] - 11/03/2019
+### Adicionado
+
+Consulta para NFSe utilizando o ID e / ou protocolo, também como pelo CNPJ do Prestador e ID Integração.
+
 ## [1.0.1] - 22/02/2019
 ### Correção
 
