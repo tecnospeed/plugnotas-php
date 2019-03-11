@@ -32,7 +32,15 @@ class CallApi
     {
         try {
             if ($method === 'GET') {
-                return $this->client->request($method, $destination);
+                $response = $this->client->request(
+                    $method,
+                    $destination,
+                    [
+                        'headers' => $this->headers
+                    ]
+                );
+
+                return ResponseObject::parse($response);
             }
     
             $response = $this->client->request(

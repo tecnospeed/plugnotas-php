@@ -219,6 +219,7 @@ class Nfse extends BuilderAbstract implements IDfe
             throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
         }
 
+        $communication = new CallApi($this->configuration);
         return $communication->send('GET', "/nfse/consultar/${idOrProtocol}", null);
     }
 }
