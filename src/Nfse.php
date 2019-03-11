@@ -203,6 +203,16 @@ class Nfse extends BuilderAbstract implements IDfe
         return Hydratate::toObject(Nfse::class, $data);
     }
 
+    public function find($id)
+    {
+        if (!$this->configuration) {
+            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
+        }
+
+        $communication = new CallApi($this->configuration);
+        return $communication->send('GET', "/nfse/${id}", null);
+    }
+
     public function findByCnpjAndIdIntegracao($cnpj, $idIntegracao)
     {
         if (!$this->configuration) {
@@ -221,5 +231,43 @@ class Nfse extends BuilderAbstract implements IDfe
 
         $communication = new CallApi($this->configuration);
         return $communication->send('GET', "/nfse/consultar/${idOrProtocol}", null);
+    }
+
+    public function downloadPdf($id)
+    {
+        if (!$this->configuration) {
+            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
+        }
+
+        if (!$this->configuration->getNfseDownloadDirectory()) {
+            throw new RequiredError('É necessário setar o diretório para download do PDF.');
+        }
+
+        $communication = new CallApi($this->configuration);
+        return $communication->download(
+            'GET',
+            "/nfse/pdf/${id}",
+            null,
+            $this->configuration->getNfseDownloadDirectory() . '/' . $id . '.pdf'
+        );
+    }
+
+    public function downloadPdfByCnpjAndIdIntegracao($cnpj, $idIntegracao)
+    {
+        if (!$this->configuration) {
+            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
+        }
+
+        if (!$this->configuration->getNfseDownloadDirectory()) {
+            throw new RequiredError('É necessário setar o diretório para download do PDF.');
+        }
+
+        $communication = new CallApi($this->configuration);
+        return $communication->download(
+            'GET',
+            "/nfse/pdf/${idIntegracao}/${cnpj}",
+            null,
+            $this->configuration->getNfseDownloadDirectory() . '/' . $cnpj . '-' . $idIntegracao . '.pdf'
+        );
     }
 }

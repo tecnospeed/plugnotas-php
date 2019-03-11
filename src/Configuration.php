@@ -11,6 +11,7 @@ class Configuration
 
     private $apiKey = self::API_KEY_SANDBOX;
     private $environment = self::TYPE_ENVIRONMENT_SANDBOX;
+    private $nfseDownloadDirectory;
 
     public function __construct($environment = self::TYPE_ENVIRONMENT_SANDBOX, $apiKey = self::API_KEY_SANDBOX)
     {
@@ -45,5 +46,15 @@ class Configuration
         }
 
         return self::URL_SANDBOX;
+    }
+
+    public function setNfseDownloadDirectory($directory)
+    {
+        $this->nfseDownloadDirectory = $directory;
+    }
+
+    public function getNfseDownloadDirectory()
+    {
+        return $this->nfseDownloadDirectory;
     }
 }
