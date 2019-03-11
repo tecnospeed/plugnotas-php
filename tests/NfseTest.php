@@ -7,6 +7,7 @@ use TecnoSpeed\Plugnotas\Builders\NfseBuilder;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Common\ValorAliquota;
+use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse;
@@ -175,6 +176,8 @@ class NfseTest extends TestCase
         $impressao = new Impressao();
         $impressao->setCamposCustomizados(['teste'=>'testeImpressao']);
 
+        $configuration = new Configuration();
+
         $nfse = new Nfse();
         $nfse->setCidadePrestacao($cidadePrestacao);
         $nfse->setEnviarEmail(false);
@@ -185,6 +188,7 @@ class NfseTest extends TestCase
         $nfse->setServico($this->getServico());
         $nfse->setSubstituicao(false);
         $nfse->setTomador($this->getTomador());
+        $nfse->setConfiguration($configuration);
 
         $this->assertSame($nfse->getCidadePrestacao()->getDescricao(), 'Cidade de Teste');
         $this->assertSame($nfse->getEnviarEmail(), false);
@@ -195,6 +199,7 @@ class NfseTest extends TestCase
         $this->assertSame($nfse->getServico()->getIdIntegracao(), 'A001XT');
         $this->assertSame($nfse->getSubstituicao(), false);
         $this->assertSame($nfse->getTomador()->getCpfCnpj(), '00000000000191');
+        $this->assertInstanceOf(Configuration::class, $nfse->getConfiguration());
     }
 
     public function testCreateObjectFromArray()

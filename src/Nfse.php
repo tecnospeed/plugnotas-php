@@ -45,6 +45,11 @@ class Nfse extends BuilderAbstract implements IDfe
         $this->configuration = $configuration;
     }
 
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
     public function setEnviarEmail($enviarEmail)
     {
         if (!v::boolVal()->validate($enviarEmail)) {
