@@ -29,6 +29,23 @@ class RetencaoTest extends TestCase
         $this->assertSame($retencao->getOutrasRetencoes(), 505.50);
         $this->assertSame($retencao->getPis()->getAliquota(), 6.06);
         $this->assertSame($retencao->getPis()->getValor(), 606.60);
+    }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico\Retencao::fromArray
+     */
+    public function testFromArray()
+    {
+        $retencao = Retencao::fromArray([
+            'outrasRetencoes' => 505.50,
+            'pis' => [
+                'aliquota' => 6.06,
+                'valor' => 606.60
+            ]
+        ]);
+
+        $this->assertSame($retencao->getOutrasRetencoes(), 505.50);
+        $this->assertSame($retencao->getPis()->getAliquota(), 6.06);
+        $this->assertSame($retencao->getPis()->getValor(), 606.60);
     }
 }
