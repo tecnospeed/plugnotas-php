@@ -8,6 +8,9 @@ use TecnoSpeed\Plugnotas\Error\ValidationError;
 
 class RpsTest extends TestCase
 {
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Rps::setCompetencia
+     */
     public function testWithInvalidCompetencia()
     {
         $this->expectException(\TypeError::class);
@@ -15,6 +18,9 @@ class RpsTest extends TestCase
         $rps->setCompetencia('teste');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Rps::setDataEmissao
+     */
     public function testWithInvalidDataEmissao()
     {
         $this->expectException(\TypeError::class);
@@ -22,6 +28,12 @@ class RpsTest extends TestCase
         $rps->setDataEmissao('teste');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Rps::setDataEmissao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Rps::setCompetencia
+     * @covers TecnoSpeed\Plugnotas\Nfse\Rps::getDataEmissao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Rps::getCompetencia
+     */
     public function testWithValidRpsData()
     {
         $dateCompare = new \DateTime('now');

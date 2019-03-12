@@ -2,8 +2,16 @@
 
 namespace TecnoSpeed\Plugnotas\Tests\Nfse;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Common\ValorAliquota;
+use TecnoSpeed\Plugnotas\Communication\CallApi;
+use TecnoSpeed\Plugnotas\Configuration;
+use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Deducao;
@@ -15,6 +23,10 @@ use TecnoSpeed\Plugnotas\Nfse\Servico\Valor;
 
 class ServicoTest extends TestCase
 {
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setId
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::fromArray
+     */
     public function testBuildFromArrayWithInvalidParameter()
     {
         $this->expectException(ValidationError::class);
@@ -25,6 +37,10 @@ class ServicoTest extends TestCase
         $servico = Servico::fromArray($data);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setId
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::fromArray
+     */
     public function testBuildFromArray()
     {
         $data = [
@@ -62,6 +78,36 @@ class ServicoTest extends TestCase
         $this->assertSame($servico->getValor()->getBaseCalculo(), 1010.00);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getCnae
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getCodigo
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getCodigoCidadeIncidencia
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getCodigoTributacao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getDeducao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getDescricaoCidadeIncidencia
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getDiscriminacao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getEvento
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getIdIntegracao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getInformacoesLegais
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getIss
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getObra
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getRetencao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getValor
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setCnae
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setCodigo
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setCodigoCidadeIncidencia
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setCodigoTributacao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setDeducao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setDescricaoCidadeIncidencia
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setDiscriminacao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setEvento
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setIdIntegracao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setInformacoesLegais
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setIss
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setObra
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setRetencao
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setValor
+     */
     public function testWithValidData()
     {
         $deducao = new Deducao();
@@ -131,5 +177,80 @@ class ServicoTest extends TestCase
         $this->assertSame($servico->getObra()->getArt(), '6270201');
         $this->assertSame($servico->getRetencao()->getPis()->getValor(), 606.60);
         $this->assertSame($servico->getValor()->getBaseCalculo(), 0.01);
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::validate
+     */
+    public function testValidateWithInvalidObject()
+    {
+        $this->expectException(RequiredError::class);
+        $this->expectExceptionMessage(
+            'Os parâmetros mínimos para criar um Serviço não foram preenchidos.'
+        );
+        $data = [
+            'id' => '5b855b0926ddb251e0f0ef42'
+        ];
+        $servico = Servico::fromArray($data);
+        $servico->validate();
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::validate
+     */
+    public function testValidateWithValidObject()
+    {
+        $data = [
+            'codigo' => '1.02',
+            'discriminacao' => 'Exemplo',
+            'cnae' => '4751201',
+            'iss' => [
+                'aliquota' => '3'
+            ],
+            'valor' => [
+                'servico' => 1500.03
+            ]
+        ];
+        $servico = Servico::fromArray($data);
+        $this->assertTrue($servico->validate());
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::send
+     */
+    public function testSend()
+    {
+        $mock = new MockHandler([
+            new Response(200, [], '{"teste":"teste"}')
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $configuration = new Configuration(
+            Configuration::TYPE_ENVIRONMENT_SANDBOX,
+            '2da392a6-79d2-4304-a8b7-959572c7e44d'
+        );
+
+        $callApi = new CallApi($configuration);
+        $callApi->setClient($client);
+
+        $servico = $this->getMockBuilder(Servico::class)
+            ->setMethods(['getCallApiInstance'])
+            ->getMock();
+
+        $servico->expects($this->any())
+            ->method('getCallApiInstance')
+            ->will($this->returnValue($callApi));
+
+        $iss = new Iss();
+        $iss->setAliquota(0.03);
+
+        $servico->setIss($iss);
+        $servico->setCnae('4751201');
+        $servico->setCodigo('1.02');
+
+        $response = $servico->send($configuration);
+
+        $this->assertEquals(200, $response->statusCode);
     }
 }
