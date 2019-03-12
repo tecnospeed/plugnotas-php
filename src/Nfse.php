@@ -276,7 +276,7 @@ class Nfse extends BuilderAbstract implements IDfe
         return $communication->send('POST', "/nfse/cancelar/${id}", null);
     }
 
-    public function cancelByCnpjAndIdIntegracao()
+    public function cancelByCnpjAndIdIntegracao($cnpj, $idIntegracao)
     {
         $communication = $this->getCallApiInstance($this->configuration);
         return $communication->send('POST', "/nfse/pdf/${idIntegracao}/${cnpj}", null);
