@@ -9,6 +9,9 @@ use TecnoSpeed\Plugnotas\Error\ValidationError;
 
 class TelefoneTest extends TestCase
 {
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::setDdd
+     */
     public function testEmptyDDD()
     {
         $this->expectException(ValidationError::class);
@@ -17,6 +20,9 @@ class TelefoneTest extends TestCase
         $telefone->setDdd(null);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::setDdd
+     */
     public function testInvalidDDD()
     {
         $this->expectException(ValidationError::class);
@@ -25,6 +31,9 @@ class TelefoneTest extends TestCase
         $telefone->setDdd('123');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::setNumero
+     */
     public function testEmptyNumber()
     {
         $this->expectException(ValidationError::class);
@@ -33,6 +42,9 @@ class TelefoneTest extends TestCase
         $telefone->setNumero(null);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::setNumero
+     */
     public function testInvalidNumber()
     {
         $this->expectException(ValidationError::class);
@@ -41,6 +53,10 @@ class TelefoneTest extends TestCase
         $telefone->setNumero('1234567890');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::getDdd
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::setDdd
+     */
     public function testDddWithTraillingZero()
     {
         $telefone = new Telefone();
@@ -48,6 +64,10 @@ class TelefoneTest extends TestCase
         $this->assertSame($telefone->getDdd(), '44');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::getNumero
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::setNumero
+     */
     public function testNumberWithTraillingZero()
     {
         $telefone = new Telefone();
@@ -55,6 +75,9 @@ class TelefoneTest extends TestCase
         $this->assertSame($telefone->getNumero(), '12341234');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::getNumero
+     */
     public function testNumberWithNineCharacter()
     {
         $telefone = new Telefone();
@@ -62,6 +85,9 @@ class TelefoneTest extends TestCase
         $this->assertSame($telefone->getNumero(), '912341234');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::getNumero
+     */
     public function testNumberWithEightCharacter()
     {
         $telefone = new Telefone();
@@ -69,6 +95,10 @@ class TelefoneTest extends TestCase
         $this->assertSame($telefone->getNumero(), '12341234');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::getDdd
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::getNumero
+     */
     public function testConstructorWithValidNumber()
     {
         $telefone = new Telefone('44', '1234-1234');
@@ -76,6 +106,9 @@ class TelefoneTest extends TestCase
         $this->assertSame($telefone->getNumero(), '12341234');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::__construct
+     */
     public function testConstructorWithInvalidDdd()
     {
         $this->expectException(ValidationError::class);
@@ -83,6 +116,9 @@ class TelefoneTest extends TestCase
         $telefone = new Telefone('123', '1234-1234');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::__construct
+     */
     public function testConstructorWithInvalidNumber()
     {
         $this->expectException(ValidationError::class);
@@ -90,6 +126,9 @@ class TelefoneTest extends TestCase
         $telefone = new Telefone('44', '1234567890');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::fromArray
+     */
     public function testWithInvalidNumberFromArray()
     {
         $this->expectException(ValidationError::class);
@@ -100,6 +139,9 @@ class TelefoneTest extends TestCase
         ]);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::fromArray
+     */
     public function testWithNoArrayFromArray()
     {
         $this->expectException(InvalidTypeError::class);
@@ -107,6 +149,9 @@ class TelefoneTest extends TestCase
         $telefone = Telefone::fromArray('44 1234-1234');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Telefone::fromArray
+     */
     public function testWithValidArray()
     {
         $telefone = Telefone::fromArray([

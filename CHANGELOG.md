@@ -1,6 +1,11 @@
 # Changelog
 Alterações na biblioteca
 
+## [1.3.0] - 12/03/2019
+### Adicionado
+
+Cancelamento de NFSe utilizando o id da nota, consulta do status do cancelamento.
+
 ## [1.2.0] - 11/03/2019
 ### Adicionado
 

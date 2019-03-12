@@ -9,12 +9,15 @@ use TecnoSpeed\Plugnotas\Communication\CallApi;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
+use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
-
+use TecnoSpeed\Plugnotas\Traits\Communication;
 
 class Tomador extends BuilderAbstract
 {
+    use Communication;
+
     private $cpfCnpj;
     private $email;
     private $endereco;
@@ -128,7 +131,7 @@ class Tomador extends BuilderAbstract
 
     public function validate()
     {
-        $data = $this->toArray();
+        $data = $this->toArray(true);
         if(
             !v::allOf(
                 v::keyNested('cpfCnpj'),
@@ -147,7 +150,7 @@ class Tomador extends BuilderAbstract
     {
         $this->validate();
 
-        $communication = new CallApi($configuration);
+        $communication = $this->getCallApiInstance($configuration);
         return $communication->send('POST', '/nfse/tomador', $this->toArray(true));
     }
 

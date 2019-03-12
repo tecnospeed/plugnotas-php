@@ -2,15 +2,26 @@
 
 namespace TecnoSpeed\Plugnotas\Tests\Nfse;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Communication\CallApi;
+use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
+use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 
 class PrestadorTest extends TestCase
 {
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setCertificado
+     */
     public function testWithInvlidaCertificateId()
     {
         $this->expectException(ValidationError::class);
@@ -19,6 +30,9 @@ class PrestadorTest extends TestCase
         $prestador->setCertificado('123ASD');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setCpfCnpj
+     */
     public function testWithInvalidLengthCpfCnpj()
     {
         $this->expectException(ValidationError::class);
@@ -27,6 +41,9 @@ class PrestadorTest extends TestCase
         $prestador->setCpfCnpj('12345678901234567890');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setCpfCnpj
+     */
     public function testWithInvalidCpfFormation()
     {
         $this->expectException(ValidationError::class);
@@ -35,6 +52,9 @@ class PrestadorTest extends TestCase
         $prestador->setCpfCnpj('123.456.789-01');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setCpfCnpj
+     */
     public function testWithInvalidCnpjFormation()
     {
         $this->expectException(ValidationError::class);
@@ -43,6 +63,9 @@ class PrestadorTest extends TestCase
         $prestador->setCpfCnpj('12.345.678/0001-90');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setSimplesNacional
+     */
     public function testWithNullSimplesNacional()
     {
         $this->expectException(ValidationError::class);
@@ -51,6 +74,9 @@ class PrestadorTest extends TestCase
         $prestador->setSimplesNacional(null);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setRazaoSocial
+     */
     public function testWithNullRazaoSocial()
     {
         $this->expectException(ValidationError::class);
@@ -59,6 +85,9 @@ class PrestadorTest extends TestCase
         $prestador->setRazaoSocial(null);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setInscricaoMunicipal
+     */
     public function testWithNullIncricaoMunicipal()
     {
         $this->expectException(ValidationError::class);
@@ -67,6 +96,9 @@ class PrestadorTest extends TestCase
         $prestador->setInscricaoMunicipal(null);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setEmail
+     */
     public function testWithInvalidEmail()
     {
         $this->expectException(ValidationError::class);
@@ -75,6 +107,34 @@ class PrestadorTest extends TestCase
         $prestador->setEmail('teste');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getCertificado
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getCpfCnpj
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getEmail
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getEndereco
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getIncentivadorCultural
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getIncentivoFiscal
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getInscricaoMunicipal
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getNomeFantasia
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getRazaoSocial
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getRegimeTributario
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getRegimeTributarioEspecial
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getSimplesNacional
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getTelefone
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setCertificado
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setCpfCnpj
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setEmail
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setEndereco
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setIncentivadorCultural
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setIncentivoFiscal
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setInscricaoMunicipal
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setNomeFantasia
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setRazaoSocial
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setRegimeTributario
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setRegimeTributarioEspecial
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setSimplesNacional
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setTelefone
+     */
     public function testValidPrestadorCreation()
     {
         $endereco = new Endereco();
@@ -122,6 +182,9 @@ class PrestadorTest extends TestCase
         $this->assertSame($prestador->getTelefone()->getNumero(), '12341234');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::fromArray
+     */
     public function testBuildFromArray()
     {
         $data = ['certificado' => '5b855b0926ddb251e0f0ef42'];
@@ -130,6 +193,9 @@ class PrestadorTest extends TestCase
         $this->assertSame($prestador->getCertificado(), '5b855b0926ddb251e0f0ef42');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::fromArray
+     */
     public function testBuildFromArrayWithEnderecoAndTelefone()
     {
         $data = [
@@ -149,10 +215,92 @@ class PrestadorTest extends TestCase
         $this->assertInstanceOf(Telefone::class, $prestador->getTelefone());
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::fromArray
+     */
     public function testBuildFromArrayWithInvalidParameter()
     {
         $this->expectException(InvalidTypeError::class);
         $this->expectExceptionMessage('Deve ser informado um array.');
         $prestador = Prestador::fromArray('teste');
     }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::validate
+     */
+    public function testValidateWithInvalidObject()
+    {
+        $this->expectException(RequiredError::class);
+        $this->expectExceptionMessage(
+            'Os parâmetros mínimos para criar um Prestador não foram preenchidos.'
+        );
+        $data = [
+            'certificado' => '5b855b0926ddb251e0f0ef42'
+        ];
+        $prestador = Prestador::fromArray($data);
+        $prestador->validate();
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::validate
+     */
+    public function testValidateWithValidObject()
+    {
+        $data = [
+            'cpfCnpj' => '00.000.000/0001-91',
+            'inscricaoMunicipal' => '123456',
+            'razaoSocial' => 'Razao Social do Prestador',
+            'endereco' => [
+                'logradouro' => 'Rua de Teste',
+                'numero' => '1234',
+                'codigoCidade' => '4115200',
+                'cep' => '87.050-800'
+            ]
+        ];
+        $prestador = Prestador::fromArray($data);
+        $this->assertTrue($prestador->validate());
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::send
+     */
+    public function testSend()
+    {
+        $mock = new MockHandler([
+            new Response(200, [], '{"teste":"teste"}')
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $configuration = new Configuration(
+            Configuration::TYPE_ENVIRONMENT_SANDBOX,
+            '2da392a6-79d2-4304-a8b7-959572c7e44d'
+        );
+
+        $callApi = new CallApi($configuration);
+        $callApi->setClient($client);
+
+        $prestador = $this->getMockBuilder(Prestador::class)
+            ->setMethods(['getCallApiInstance'])
+            ->getMock();
+
+        $prestador->expects($this->any())
+            ->method('getCallApiInstance')
+            ->will($this->returnValue($callApi));
+
+        $endereco = Endereco::fromArray([
+            'logradouro' => 'Rua de Teste',
+            'numero' => '1234',
+            'codigoCidade' => '4115200',
+            'cep' => '87.050-800'
+        ]);
+        $prestador->setCpfCnpj('00.000.000/0001-91');
+        $prestador->setInscricaoMunicipal('123456');
+        $prestador->setRazaoSocial('Razao Social do Prestador');
+        $prestador->setEndereco($endereco);
+        $response = $prestador->send($configuration);
+
+        $this->assertEquals(200, $response->statusCode);
+    }
 }
+

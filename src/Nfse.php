@@ -4,9 +4,8 @@ namespace TecnoSpeed\Plugnotas;
 use FerFabricio\Hydratator\Hydratate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
-use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Communication\CallApi;
-use TecnoSpeed\Plugnotas\Error\ConfigurationRequiredError;
+use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Interfaces\IDfe;
@@ -16,9 +15,12 @@ use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
 use TecnoSpeed\Plugnotas\Nfse\Tomador;
+use TecnoSpeed\Plugnotas\Traits\Communication;
 
 class Nfse extends BuilderAbstract implements IDfe
 {
+    use Communication;
+
     private $cidadePrestacao;
     private $configuration;
     private $enviarEmail;
@@ -155,7 +157,7 @@ class Nfse extends BuilderAbstract implements IDfe
                 v::keyNested('servico.discriminacao'),
                 v::keyNested('servico.cnae'),
                 v::keyNested('servico.iss.aliquota'),
-                v::keyNested('servico.valor.servico')  
+                v::keyNested('servico.valor.servico')
             )->validate($data) ||
             !v::allOf(
                 v::keyNested('prestador.cpfCnpj'),
@@ -210,45 +212,40 @@ class Nfse extends BuilderAbstract implements IDfe
 
     public function find($id)
     {
-        if (!$this->configuration) {
-            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
-        }
-
-        $communication = new CallApi($this->configuration);
+        $communication = $this->getCallApiInstance($this->configuration);
         return $communication->send('GET', "/nfse/${id}", null);
     }
 
     public function findByCnpjAndIdIntegracao($cnpj, $idIntegracao)
     {
-        if (!$this->configuration) {
-            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
-        }
-
-        $communication = new CallApi($this->configuration);
+        $communication = $this->getCallApiInstance($this->configuration);
         return $communication->send('GET', "/nfse/consultar/${idIntegracao}/${cnpj}", null);
     }
 
     public function findByIdOrProtocol($idOrProtocol)
     {
-        if (!$this->configuration) {
-            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
-        }
-
-        $communication = new CallApi($this->configuration);
+        $communication = $this->getCallApiInstance($this->configuration);
         return $communication->send('GET', "/nfse/consultar/${idOrProtocol}", null);
+    }
+
+    public function findCancel($id)
+    {
+        $communication = $this->getCallApiInstance($this->configuration);
+        return $communication->send('GET', "/nfse/cancelar/status/${id}", null);
+    }
+
+    public function download($id)
+    {
+        return $this->downloadPdf($id);
     }
 
     public function downloadPdf($id)
     {
-        if (!$this->configuration) {
-            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
-        }
-
+        $communication = $this->getCallApiInstance($this->configuration);
         if (!$this->configuration->getNfseDownloadDirectory()) {
             throw new RequiredError('É necessário setar o diretório para download do PDF.');
         }
 
-        $communication = new CallApi($this->configuration);
         return $communication->download(
             'GET',
             "/nfse/pdf/${id}",
@@ -259,20 +256,35 @@ class Nfse extends BuilderAbstract implements IDfe
 
     public function downloadPdfByCnpjAndIdIntegracao($cnpj, $idIntegracao)
     {
-        if (!$this->configuration) {
-            throw new ConfigurationRequiredError('É necessário setar a configuração utilizando o método setConfiguration.');
-        }
+        $communication = $this->getCallApiInstance($this->configuration);
 
         if (!$this->configuration->getNfseDownloadDirectory()) {
             throw new RequiredError('É necessário setar o diretório para download do PDF.');
         }
 
-        $communication = new CallApi($this->configuration);
         return $communication->download(
             'GET',
             "/nfse/pdf/${idIntegracao}/${cnpj}",
             null,
             $this->configuration->getNfseDownloadDirectory() . '/' . $cnpj . '-' . $idIntegracao . '.pdf'
         );
+    }
+
+    public function cancel($id)
+    {
+        $communication = $this->getCallApiInstance($this->configuration);
+        return $communication->send('POST', "/nfse/cancelar/${id}", null);
+    }
+
+    public function cancelByCnpjAndIdIntegracao($cnpj, $idIntegracao)
+    {
+        $communication = $this->getCallApiInstance($this->configuration);
+        return $communication->send('POST', "/nfse/pdf/${idIntegracao}/${cnpj}", null);
+    }
+
+    public function cancelStatus($id)
+    {
+        $communication = $this->getCallApiInstance($this->configuration);
+        return $communication->send('POST', "/nfse/cancelar/status/${id}", null);
     }
 }

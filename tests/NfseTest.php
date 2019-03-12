@@ -2,6 +2,7 @@
 
 namespace TecnoSpeed\Plugnotas\Tests;
 
+
 use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Builders\NfseBuilder;
 use TecnoSpeed\Plugnotas\Common\Endereco;

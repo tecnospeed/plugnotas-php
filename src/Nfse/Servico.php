@@ -7,6 +7,7 @@ use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Communication\CallApi;
+use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Deducao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Evento;
@@ -14,9 +15,12 @@ use TecnoSpeed\Plugnotas\Nfse\Servico\Iss;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Obra;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Retencao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Valor;
+use TecnoSpeed\Plugnotas\Traits\Communication;
 
 class Servico extends BuilderAbstract
 {
+    use Communication;
+
     private $cnae;
     private $codigo;
     private $codigoCidadeIncidencia;
@@ -212,7 +216,7 @@ class Servico extends BuilderAbstract
     {
         $this->validate();
 
-        $communication = new CallApi($configuration);
+        $communication = $this->getCallApiInstance($configuration);
         return $communication->send('POST', '/nfse/servico', $this->toArray(true));
     }
 

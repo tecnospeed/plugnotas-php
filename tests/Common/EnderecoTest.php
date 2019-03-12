@@ -8,6 +8,9 @@ use TecnoSpeed\Plugnotas\Error\ValidationError;
 
 class EnderecoTest extends TestCase
 {
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setTipoLogradouro
+     */
     public function testInvalidTipoLogradouro()
     {
         $this->expectException(ValidationError::class);
@@ -16,6 +19,9 @@ class EnderecoTest extends TestCase
         $endereco->setTipoLogradouro('teste');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setLogradouro
+     */
     public function testEmptyLogradouro()
     {
         $this->expectException(ValidationError::class);
@@ -24,6 +30,9 @@ class EnderecoTest extends TestCase
         $endereco->setLogradouro(null);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setNumero
+     */
     public function testEmptyNumero()
     {
         $this->expectException(ValidationError::class);
@@ -32,6 +41,9 @@ class EnderecoTest extends TestCase
         $endereco->setNumero(null);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setTipoBairro
+     */
     public function testInvalidTipoBairro()
     {
         $this->expectException(ValidationError::class);
@@ -40,6 +52,9 @@ class EnderecoTest extends TestCase
         $endereco->setTipoBairro('teste');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setCodigoCidade
+     */
     public function testInvalidCodigoCidade()
     {
         $this->expectException(ValidationError::class);
@@ -50,6 +65,9 @@ class EnderecoTest extends TestCase
         $endereco->setCodigoCidade('1234');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setEstado
+     */
     public function testInvalidEstado()
     {
         $this->expectException(ValidationError::class);
@@ -58,6 +76,9 @@ class EnderecoTest extends TestCase
         $endereco->setEstado('ZZ');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setCep
+     */
     public function testInvalidCep()
     {
         $this->expectException(ValidationError::class);
@@ -66,6 +87,19 @@ class EnderecoTest extends TestCase
         $endereco->setCep('123456');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setCep
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setTipoLogradouro
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setLogradouro
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setNumero
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setComplemento
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setTipoBairro
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setBairro
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setCodigoCidade
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setDescricaoCidade
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setEstado
+     * @covers TecnoSpeed\Plugnotas\Common\Endereco::setCep
+     */
     public function testFullAddress()
     {
         $endereco = new Endereco();
