@@ -28,6 +28,11 @@ class CallApi
         $this->url = $configuration->getUrl();
     }
 
+    public function setClient($client)
+    {
+        $this->client = $client;
+    }
+
     public function send($method, $destination, $data)
     {
         try {
@@ -42,7 +47,7 @@ class CallApi
 
                 return ResponseObject::parse($response);
             }
-    
+
             $response = $this->client->request(
                 $method,
                 $destination,
@@ -74,7 +79,7 @@ class CallApi
 
                 return ResponseObject::parse($response);
             }
-    
+
             $response = $this->client->request(
                 $method,
                 $destination,
@@ -85,7 +90,7 @@ class CallApi
                 ]
             );
 
-            return true;
+            return ResponseObject::parse($response);
         } catch (ClientException $ce) {
             $response = $ce->getResponse();
             return ResponseObject::parse($response);

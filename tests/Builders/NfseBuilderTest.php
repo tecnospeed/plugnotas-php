@@ -17,6 +17,10 @@ use TecnoSpeed\Plugnotas\Nfse\Tomador;
 
 class NfseBuilderTest extends TestCase
 {
+    /**
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withCidadePrestacao
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::build
+     */
     public function testWithWrongObjectType()
     {
         $this->expectException(InvalidTypeError::class);
@@ -28,6 +32,10 @@ class NfseBuilderTest extends TestCase
             ->build();
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withCidadePrestacao
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::build
+     */
     public function testWithOneObject()
     {
         $nfse = (new NfseBuilder)
@@ -38,6 +46,57 @@ class NfseBuilderTest extends TestCase
         $this->assertInstanceOf(CidadePrestacao::class, $nfse->getCidadePrestacao());
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::build
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::callFromArray
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withRps
+     */
+    public function testWithRpsObject()
+    {
+        $dateCompare = new \DateTime('now');
+        $rps = new Rps();
+        $rps->setDataEmissao($dateCompare);
+        $rps->setCompetencia($dateCompare);
+
+        $nfse = (new NfseBuilder)
+            ->withRps($rps)
+            ->build();
+        
+        $this->assertInstanceOf(Rps::class, $nfse->getRps());
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::build
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::callFromArray
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withRps
+     */
+    public function testWithInvalidTypeObject()
+    {
+        $this->expectException(InvalidTypeError::class);
+        $this->expectExceptionMessage(
+            'Deve ser informado um array ou um objeto do tipo: ' . Prestador::class
+        );
+
+        $dateCompare = new \DateTime('now');
+        $rps = new Rps();
+        $rps->setDataEmissao($dateCompare);
+        $rps->setCompetencia($dateCompare);
+
+        $nfse = (new NfseBuilder)
+            ->withPrestador($rps)
+            ->build();
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::build
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::callFromArray
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withCidadePrestacao
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withImpressao
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withPrestador
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withRps
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withServico
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withTomador
+     */
     public function testWithValidData()
     {
         $nfse = (new NfseBuilder)
