@@ -83,6 +83,16 @@ Os arquivos serão salvos na pasta configurada (a qual precisa ter permissão de
 
 [Exemplo de download utilizando o ID pode ser encontrado aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.download.php) e [exemplo de download utilizando o CNPJ e ID Integração aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.download.cnpjId.php).
 
+### Cancelamento
+
+O cancelamento de uma NFSe pode ser realizado da mesma forma com que a busca e o download, informando o ID da Nfse ou o Cnpj do prestador e o ID Integração.
+
+Da mesma forma que a consulta e o download do PDF da Nfse é necessário de um objeto do tipo `TecnoSpeed\Plugnotas\Configuration`, o qual deve ser setado num novo objeto `TecnoSpeed\Plugnotas\Nfse` utilizando o método `setConfiguration`.
+
+Os respectivos métodos para realizar este procedimento são: `cancel` e `cancelByCnpjAndIdIntegracao`.
+
+Ao criar um cancelamento será retornado um protocolo, tal protocolo pode ser utilizado para consultar o status do cancelamento utilizando a rota `cancelStatus`.
+
 ### Exemplos
 
 Você pode conferir alguns exemplos na pasta `/examples`.
