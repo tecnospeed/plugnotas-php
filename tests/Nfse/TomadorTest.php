@@ -2,15 +2,26 @@
 
 namespace TecnoSpeed\Plugnotas\Tests\Nfse;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
+use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Communication\CallApi;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
+use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\Tomador;
 
 class TomadorTest extends TestCase
 {
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setCpfCnpj
+     */
     public function testWithInvalidLengthCpfCnpj()
     {
         $this->expectException(ValidationError::class);
@@ -19,6 +30,9 @@ class TomadorTest extends TestCase
         $tomador->setCpfCnpj('12345678901234567890');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setCpfCnpj
+     */
     public function testWithInvalidCpfFormation()
     {
         $this->expectException(ValidationError::class);
@@ -27,6 +41,9 @@ class TomadorTest extends TestCase
         $tomador->setCpfCnpj('123.456.789-01');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setCpfCnpj
+     */
     public function testWithInvalidCnpjFormation()
     {
         $this->expectException(ValidationError::class);
@@ -35,6 +52,9 @@ class TomadorTest extends TestCase
         $tomador->setCpfCnpj('12.345.678/0001-90');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setRazaoSocial
+     */
     public function testWithNullRazaoSocial()
     {
         $this->expectException(ValidationError::class);
@@ -43,6 +63,9 @@ class TomadorTest extends TestCase
         $tomador->setRazaoSocial(null);
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setEmail
+     */
     public function testWithInvalidEmail()
     {
         $this->expectException(ValidationError::class);
@@ -51,6 +74,22 @@ class TomadorTest extends TestCase
         $tomador->setEmail('teste');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setCpfCnpj
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setEmail
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setEndereco
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setInscricaoEstadual
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setNomeFantasia
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setRazaoSocial
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setTelefone
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::getCpfCnpj
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::getEmail
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::getEndereco
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::getInscricaoEstadual
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::getNomeFantasia
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::getRazaoSocial
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::getTelefone
+     */
     public function testValidPrestadorCreation()
     {
         $endereco = new Endereco();
@@ -86,6 +125,9 @@ class TomadorTest extends TestCase
         $this->assertSame($tomador->getTelefone()->getNumero(), '12341234');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::fromArray
+     */
     public function testBuildFromArray()
     {
         $data = ['cpfCnpj' => '00.000.000/0001-91'];
@@ -94,6 +136,9 @@ class TomadorTest extends TestCase
         $this->assertSame($tomador->getCpfCnpj(), '00000000000191');
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::fromArray
+     */
     public function testBuildFromArrayWithEnderecoAndTelefone()
     {
         $data = [
@@ -113,10 +158,76 @@ class TomadorTest extends TestCase
         $this->assertInstanceOf(Telefone::class, $tomador->getTelefone());
     }
 
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::fromArray
+     */
     public function testBuildFromArrayWithInvalidParameter()
     {
         $this->expectException(InvalidTypeError::class);
         $this->expectExceptionMessage('Deve ser informado um array.');
         $tomador = Tomador::fromArray('teste');
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::validate
+     */
+    public function testValidateWithInvalidObject()
+    {
+        $this->expectException(RequiredError::class);
+        $this->expectExceptionMessage(
+            'Os parâmetros mínimos para criar um Tomador não foram preenchidos.'
+        );
+        $tomador = Tomador::fromArray([
+            'inscricaoEstadual' => '8214100099'
+        ]);
+        $tomador->validate();
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::validate
+     */
+    public function testValidateWithValidObject()
+    {
+        $data = [
+            'cpfCnpj' => '00.000.000/0001-91',
+            'razaoSocial' => 'Razao Social Teste'
+        ];
+        $tomador = Tomador::fromArray($data);
+        $this->assertTrue($tomador->validate());
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::send
+     */
+    public function testSend()
+    {
+        $mock = new MockHandler([
+            new Response(200, [], '{"teste":"teste"}')
+        ]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
+
+        $configuration = new Configuration(
+            Configuration::TYPE_ENVIRONMENT_SANDBOX,
+            '2da392a6-79d2-4304-a8b7-959572c7e44d'
+        );
+
+        $callApi = new CallApi($configuration);
+        $callApi->setClient($client);
+
+        $tomador = $this->getMockBuilder(Tomador::class)
+            ->setMethods(['getCallApiInstance'])
+            ->getMock();
+
+        $tomador->expects($this->any())
+            ->method('getCallApiInstance')
+            ->will($this->returnValue($callApi));
+
+        $tomador->setCpfCnpj('00.000.000/0001-91');
+        $tomador->setRazaoSocial('Razao Social Teste');
+
+        $response = $tomador->send($configuration);
+
+        $this->assertEquals(200, $response->statusCode);
     }
 }
