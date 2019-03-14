@@ -9,7 +9,7 @@ interface IDfe
     public function cancel($id);
     public function download($id);
     public function find($id);
-    public function send(Configuration $configuration);
+    public function send($configuration = null);
     public function toArray();
     public function validate();
     public static function fromArray($items);

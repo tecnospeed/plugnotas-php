@@ -1,0 +1,80 @@
+object(TecnoSpeed\Plugnotas\Communication\Response)#35 (2) {
+  ["body"]=>
+  array(1) {
+    [0]=>
+    object(stdClass)#33 (15) {
+      ["id"]=>
+      string(24) "5c8953d3fb7f3bd47aee1535"
+      ["emissao"]=>
+      string(10) "13/03/2019"
+      ["tipoAutorizacao"]=>
+      string(10) "WEBSERVICE"
+      ["situacao"]=>
+      string(9) "CONCLUIDO"
+      ["prestador"]=>
+      string(14) "17406193000188"
+      ["tomador"]=>
+      string(11) "01652836616"
+      ["valorServico"]=>
+      int(350)
+      ["numeroNfse"]=>
+      string(5) "17085"
+      ["serie"]=>
+      string(3) "LAL"
+      ["lote"]=>
+      int(290008)
+      ["codigoVerificacao"]=>
+      string(9) "5278FE6A7"
+      ["autorizacao"]=>
+      string(10) "13/03/2019"
+      ["mensagem"]=>
+      string(26) "RPS Autorizada com sucesso"
+      ["pdf"]=>
+      string(66) "http://api.sandbox.erphub.com.br/nfse/pdf/5c8953d3fb7f3bd47aee1535"
+      ["xml"]=>
+      string(66) "http://api.sandbox.erphub.com.br/nfse/xml/5c8953d3fb7f3bd47aee1535"
+    }
+  }
+  ["statusCode"]=>
+  int(200)
+}
+object(TecnoSpeed\Plugnotas\Communication\Response)#35 (2) {
+  ["body"]=>
+  array(1) {
+    [0]=>
+    object(stdClass)#33 (15) {
+      ["id"]=>
+      string(24) "5c891f537b4b9b54a4a51155"
+      ["emissao"]=>
+      string(10) "13/03/2019"
+      ["tipoAutorizacao"]=>
+      string(10) "WEBSERVICE"
+      ["situacao"]=>
+      string(9) "CONCLUIDO"
+      ["prestador"]=>
+      string(14) "17406193000188"
+      ["tomador"]=>
+      string(11) "01652836616"
+      ["valorServico"]=>
+      int(0)
+      ["numeroNfse"]=>
+      string(5) "25419"
+      ["serie"]=>
+      string(3) "LAL"
+      ["lote"]=>
+      int(290008)
+      ["codigoVerificacao"]=>
+      string(9) "5278FE6A7"
+      ["autorizacao"]=>
+      string(10) "13/03/2019"
+      ["mensagem"]=>
+      string(26) "RPS Autorizada com sucesso"
+      ["pdf"]=>
+      string(66) "http://api.sandbox.erphub.com.br/nfse/pdf/5c891f537b4b9b54a4a51155"
+      ["xml"]=>
+      string(66) "http://api.sandbox.erphub.com.br/nfse/xml/5c891f537b4b9b54a4a51155"
+    }
+  }
+  ["statusCode"]=>
+  int(200)
+}
