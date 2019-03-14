@@ -1,6 +1,15 @@
 # Changelog
 Alterações na biblioteca
 
+## [1.4.0] - 14/03/2019
+### Adicionado
+
+Download do XML e aumento na cobertura de testes.
+
+### Corrigido
+
+Busca dos dados do cancelamento e cancelamento.
+
 ## [1.3.0] - 12/03/2019
 ### Adicionado
 

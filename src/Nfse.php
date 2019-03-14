@@ -173,11 +173,15 @@ class Nfse extends BuilderAbstract implements IDfe
         return true;
     }
 
-    public function send(Configuration $configuration)
+    public function send($configuration = null)
     {
         $this->validate();
 
-        $communication = new CallApi($configuration);
+        if ($configuration) {
+            $this->setConfiguration($configuration);
+        }
+
+        $communication = $this->getCallApiInstance($this->configuration);
         return $communication->send('POST', '/nfse', [$this->toArray(true)]);
     }
 
@@ -236,7 +240,7 @@ class Nfse extends BuilderAbstract implements IDfe
 
     public function download($id)
     {
-        return $this->downloadPdf($id);
+        return $this->downloadXml($id);
     }
 
     public function downloadPdf($id)
@@ -270,6 +274,37 @@ class Nfse extends BuilderAbstract implements IDfe
         );
     }
 
+    public function downloadXml($id)
+    {
+        $communication = $this->getCallApiInstance($this->configuration);
+        if (!$this->configuration->getNfseDownloadDirectory()) {
+            throw new RequiredError('É necessário setar o diretório para download do XML.');
+        }
+
+        return $communication->download(
+            'GET',
+            "/nfse/xml/${id}",
+            null,
+            $this->configuration->getNfseDownloadDirectory() . '/' . $id . '.xml'
+        );
+    }
+
+    public function downloadXmlByCnpjAndIdIntegracao($cnpj, $idIntegracao)
+    {
+        $communication = $this->getCallApiInstance($this->configuration);
+
+        if (!$this->configuration->getNfseDownloadDirectory()) {
+            throw new RequiredError('É necessário setar o diretório para download do XML.');
+        }
+
+        return $communication->download(
+            'GET',
+            "/nfse/xml/${idIntegracao}/${cnpj}",
+            null,
+            $this->configuration->getNfseDownloadDirectory() . '/' . $cnpj . '-' . $idIntegracao . '.xml'
+        );
+    }
+
     public function cancel($id)
     {
         $communication = $this->getCallApiInstance($this->configuration);
@@ -279,12 +314,12 @@ class Nfse extends BuilderAbstract implements IDfe
     public function cancelByCnpjAndIdIntegracao($cnpj, $idIntegracao)
     {
         $communication = $this->getCallApiInstance($this->configuration);
-        return $communication->send('POST', "/nfse/pdf/${idIntegracao}/${cnpj}", null);
+        return $communication->send('POST', "/nfse/cancelar/${idIntegracao}/${cnpj}", null);
     }
 
     public function cancelStatus($id)
     {
         $communication = $this->getCallApiInstance($this->configuration);
-        return $communication->send('POST', "/nfse/cancelar/status/${id}", null);
+        return $communication->send('GET', "/nfse/cancelar/status/${id}", null);
     }
 }
