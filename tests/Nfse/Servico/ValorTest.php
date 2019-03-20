@@ -57,6 +57,24 @@ class ValorTest extends TestCase
         $valor->setServico('teste');
     }
 
+    public function testTypeConversion()
+    {
+        $valor = new Valor();
+        $valor->setBaseCalculo('0.01');
+        $valor->setDeducoes('0.02');
+        $valor->setDescontoCondicionado('0.03');
+        $valor->setDescontoIncondicionado('0.04');
+        $valor->setLiquido('0.05');
+        $valor->setServico('0.06');
+
+        $this->assertInternalType('double', $valor->getBaseCalculo());
+        $this->assertInternalType('double', $valor->getDeducoes());
+        $this->assertInternalType('double', $valor->getDescontoCondicionado());
+        $this->assertInternalType('double', $valor->getDescontoIncondicionado());
+        $this->assertInternalType('double', $valor->getLiquido());
+        $this->assertInternalType('double', $valor->getServico());
+    }
+
     public function testWithValidData()
     {
         $valor = new Valor();

@@ -22,7 +22,7 @@ class Valor extends BuilderAbstract
                 'Base de cálculo deve ser um valor numérico.'
             );
         }
-        $this->baseCalculo = $baseCalculo;
+        $this->baseCalculo = (float)$baseCalculo;
     }
 
     public function getBaseCalculo()
@@ -37,7 +37,7 @@ class Valor extends BuilderAbstract
                 'Deduções deve ser um valor numérico.'
             );
         }
-        $this->deducoes = $deducoes;
+        $this->deducoes = (float)$deducoes;
     }
 
     public function getDeducoes()
@@ -52,7 +52,7 @@ class Valor extends BuilderAbstract
                 'Desconto condicional deve ser um valor numérico.'
             );
         }
-        $this->descontoCondicionado = $descontoCondicionado;
+        $this->descontoCondicionado = (float)$descontoCondicionado;
     }
 
     public function getDescontoCondicionado()
@@ -67,7 +67,7 @@ class Valor extends BuilderAbstract
                 'Desconto incondicional deve ser um valor numérico.'
             );
         }
-        $this->descontoIncondicionado = $descontoIncondicionado;
+        $this->descontoIncondicionado = (float)$descontoIncondicionado;
     }
 
     public function getDescontoIncondicionado()
@@ -82,7 +82,7 @@ class Valor extends BuilderAbstract
                 'Valor líquido deve ser um valor numérico.'
             );
         }
-        $this->liquido = $liquido;
+        $this->liquido = (float)$liquido;
     }
 
     public function getLiquido()
@@ -97,7 +97,7 @@ class Valor extends BuilderAbstract
                 'O valor do serviço deve ser um valor numérico.'
             );
         }
-        $this->servico = $servico;
+        $this->servico = (float)$servico;
     }
 
     public function getServico()
