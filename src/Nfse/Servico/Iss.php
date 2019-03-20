@@ -23,7 +23,7 @@ class Iss extends BuilderAbstract
                 'É necessário informar um valor numérico para aliquota.'
             );
         }
-        $this->aliquota = $aliquota;
+        $this->aliquota = (float)$aliquota;
     }
 
     public function getAliquota()
@@ -63,7 +63,7 @@ class Iss extends BuilderAbstract
                 'Retido deve ser um valor booleano.'
             );
         }
-        $this->retido = $retido;
+        $this->retido = (bool)$retido;
     }
 
     public function getRetido()
@@ -93,7 +93,7 @@ class Iss extends BuilderAbstract
                 'É necessário informar um valor numérico para o campo valor.'
             );
         }
-        $this->valor = $valor;
+        $this->valor = (float)$valor;
     }
 
     public function getValor()
@@ -108,7 +108,7 @@ class Iss extends BuilderAbstract
                 'É necessário informar um valor numérico para o campo valorRetido.'
             );
         }
-        $this->valorRetido = $valorRetido;
+        $this->valorRetido = (float)$valorRetido;
     }
 
     public function getValorRetido()

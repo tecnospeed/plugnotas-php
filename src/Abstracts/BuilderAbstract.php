@@ -9,7 +9,7 @@ use TecnoSpeed\Plugnotas\Interfaces\IBuilder;
 
 abstract class BuilderAbstract implements IBuilder
 {
-    public function toArray($excludeNull = false)
+    public function toArray($excludeNull = true)
     {
         return Extract::toArray($this, $excludeNull);
     }

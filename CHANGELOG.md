@@ -1,6 +1,12 @@
 # Changelog
 Alterações na biblioteca
 
+## [1.4.1] - 20/03/2019
+### Corrigido
+
+Correção nos tipos float e boolean que não estavam fazendo o cast adequadamente.
+Também corrigido campos nulos que deveriam ser tratados antes de enviar para a API.
+
 ## [1.4.0] - 14/03/2019
 ### Adicionado
 

@@ -250,6 +250,7 @@ class PrestadorTest extends TestCase
             'cpfCnpj' => '00.000.000/0001-91',
             'inscricaoMunicipal' => '123456',
             'razaoSocial' => 'Razao Social do Prestador',
+            'simplesNacional' => false,
             'endereco' => [
                 'logradouro' => 'Rua de Teste',
                 'numero' => '1234',
@@ -298,6 +299,7 @@ class PrestadorTest extends TestCase
         $prestador->setInscricaoMunicipal('123456');
         $prestador->setRazaoSocial('Razao Social do Prestador');
         $prestador->setEndereco($endereco);
+        $prestador->setSimplesNacional(false);
         $response = $prestador->send($configuration);
 
         $this->assertEquals(200, $response->statusCode);
