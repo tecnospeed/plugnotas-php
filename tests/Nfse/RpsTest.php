@@ -36,12 +36,14 @@ class RpsTest extends TestCase
      */
     public function testWithValidRpsData()
     {
-        $dateCompare = new \DateTime('now');
+        $dateBase = new \DateTime('now');
+        $competencia = $dateBase->format('Y-m-d');
+        $dataEmissao = $dateBase->format('Y-m-d\TH:i:s');
         $rps = new Rps();
-        $rps->setDataEmissao($dateCompare);
-        $rps->setCompetencia($dateCompare);
+        $rps->setDataEmissao($dateBase);
+        $rps->setCompetencia($dateBase);
 
-        $this->assertSame($rps->getDataEmissao(), $dateCompare->format('Y-m-d'));
-        $this->assertSame($rps->getCompetencia(), $dateCompare->format('Y-m-d'));
+        $this->assertSame($rps->getDataEmissao(), $dataEmissao);
+        $this->assertSame($rps->getCompetencia(), $competencia);
     }
 }
