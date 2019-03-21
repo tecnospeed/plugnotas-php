@@ -17,7 +17,7 @@ class Rps extends BuilderAbstract
 
     public function getDataEmissao()
     {
-        return $this->competencia;
+        return $this->dataEmissao;
     }
 
     public function setCompetencia(\DateTimeInterface $competencia)

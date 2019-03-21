@@ -40,8 +40,8 @@ $prestador = [
 ];
 
 $rps = [
-    'dataEmissao' => \DateTime(),
-    'competencia' => \DateTime()
+    'dataEmissao' => new \DateTime(),
+    'competencia' => new \DateTime()
 ];
 
 $servico = [

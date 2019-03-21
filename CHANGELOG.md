@@ -1,6 +1,11 @@
 # Changelog
 Alterações na biblioteca
 
+## [1.4.2] - 21/03/2019
+### Corrigido
+
+Data de emissão no RPS
+
 ## [1.4.1] - 20/03/2019
 ### Corrigido
 
