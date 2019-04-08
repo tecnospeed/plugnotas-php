@@ -25,7 +25,7 @@
     "require": {
         "php": "^7.0",
         "respect/validation": "^1.1",
-        "ferfabricio/hydratator": "^1.0",
+        "ferfabricio/hydrator": "^2.0",
         "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {

@@ -2,7 +2,7 @@
 
 namespace TecnoSpeed\Plugnotas\Nfse;
 
-use FerFabricio\Hydratator\Hydratate;
+use FerFabricio\Hydrator\Hydrate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Configuration;
@@ -246,6 +246,6 @@ class Servico extends BuilderAbstract
             $data['valor'] = Valor::fromArray($data['valor']);
         }
 
-        return Hydratate::toObject(Servico::class, $data);
+        return Hydrate::toObject(Servico::class, $data);
     }
 }
