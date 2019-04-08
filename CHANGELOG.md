@@ -1,6 +1,11 @@
 # Changelog
 Alterações na biblioteca
 
+## [1.4.3] - 08/04/2019
+### Corrigido
+
+Pacote de hidratação de objetos / conversão de objetos para array teve seu nome alterado, afetando assim o componente.
+
 ## [1.4.2] - 21/03/2019
 ### Corrigido
 
