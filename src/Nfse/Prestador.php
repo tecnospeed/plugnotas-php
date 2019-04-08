@@ -2,7 +2,7 @@
 
 namespace TecnoSpeed\Plugnotas\Nfse;
 
-use FerFabricio\Hydratator\Hydratate;
+use FerFabricio\Hydrator\Hydrate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Common\Endereco;
@@ -229,7 +229,7 @@ class Prestador extends BuilderAbstract
             $data['endereco'] = Endereco::fromArray($data['endereco']);
         }
 
-        return Hydratate::toObject(self::class, $data);
+        return Hydrate::toObject(self::class, $data);
     }
 
     public function validate()

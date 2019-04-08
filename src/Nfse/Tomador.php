@@ -2,7 +2,7 @@
 
 namespace TecnoSpeed\Plugnotas\Nfse;
 
-use FerFabricio\Hydratator\Hydratate;
+use FerFabricio\Hydrator\Hydrate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Communication\CallApi;
@@ -168,6 +168,6 @@ class Tomador extends BuilderAbstract
             $data['endereco'] = Endereco::fromArray($data['endereco']);
         }
 
-        return Hydratate::toObject(self::class, $data);
+        return Hydrate::toObject(self::class, $data);
     }
 }

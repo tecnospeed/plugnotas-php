@@ -1,7 +1,7 @@
 <?php
 namespace TecnoSpeed\Plugnotas;
 
-use FerFabricio\Hydratator\Hydratate;
+use FerFabricio\Hydrator\Hydrate;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Communication\CallApi;
@@ -211,7 +211,7 @@ class Nfse extends BuilderAbstract implements IDfe
             $data['impressao'] = Impressao::fromArray($data['impressao']);
         }
 
-        return Hydratate::toObject(Nfse::class, $data);
+        return Hydrate::toObject(Nfse::class, $data);
     }
 
     public function find($id)
