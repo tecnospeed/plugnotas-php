@@ -10,6 +10,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Common\Nfse;
 use TecnoSpeed\Plugnotas\Communication\CallApi;
 use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
@@ -86,17 +87,6 @@ class PrestadorTest extends TestCase
     }
 
     /**
-     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setInscricaoMunicipal
-     */
-    public function testWithNullIncricaoMunicipal()
-    {
-        $this->expectException(ValidationError::class);
-        $this->expectExceptionMessage('Inscrição municipal é requerida para NFSe.');
-        $prestador = new Prestador();
-        $prestador->setInscricaoMunicipal(null);
-    }
-
-    /**
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setEmail
      */
     public function testWithInvalidEmail()
@@ -121,6 +111,7 @@ class PrestadorTest extends TestCase
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getRegimeTributarioEspecial
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getSimplesNacional
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getTelefone
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::getNfse
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setCertificado
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setCpfCnpj
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setEmail
@@ -134,6 +125,7 @@ class PrestadorTest extends TestCase
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setRegimeTributarioEspecial
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setSimplesNacional
      * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setTelefone
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::setNfse
      */
     public function testValidPrestadorCreation()
     {
@@ -151,6 +143,10 @@ class PrestadorTest extends TestCase
 
         $telefone = new Telefone('44', '1234-1234');
 
+        $nfse = new Nfse();
+        $nfse->setAtivo(true);
+        $nfse->setTipoContrato(1);
+
         $prestador = new Prestador();
         $prestador->setCertificado('5b855b0926ddb251e0f0ef42');
         $prestador->setCpfCnpj('00.000.000/0001-91');
@@ -165,7 +161,8 @@ class PrestadorTest extends TestCase
         $prestador->setRegimeTributarioEspecial(0);
         $prestador->setSimplesNacional(0);
         $prestador->setTelefone($telefone);
-
+        $prestador->setNfse($nfse);
+    
         $this->assertSame($prestador->getCertificado(), '5b855b0926ddb251e0f0ef42');
         $this->assertSame($prestador->getCpfCnpj(), '00000000000191');
         $this->assertSame($prestador->getEmail(), 'teste@plugnotas.com.br');
@@ -179,7 +176,9 @@ class PrestadorTest extends TestCase
         $this->assertSame($prestador->getRegimeTributarioEspecial(), 0);
         $this->assertSame($prestador->getSimplesNacional(), 0);
         $this->assertSame($prestador->getTelefone()->getDdd(), '44');
-        $this->assertSame($prestador->getTelefone()->getNumero(), '12341234');
+        $this->assertSame($prestador->getTelefone()->getNumero(), '12341234');       
+        $this->assertSame($prestador->getNfse()->getAtivo(), true);
+        $this->assertSame($prestador->getNfse()->getTipoContrato(), 1);        
     }
 
     /**
@@ -191,6 +190,44 @@ class PrestadorTest extends TestCase
         $prestador = Prestador::fromArray($data);
         $this->assertInstanceOf(Prestador::class, $prestador);
         $this->assertSame($prestador->getCertificado(), '5b855b0926ddb251e0f0ef42');
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::fromArray
+     */
+    public function testBuildFromArrayWithNfse()
+    {
+        $data = [
+            'certificado' => '5b855b0926ddb251e0f0ef42',
+            'nfse' => [
+                'ativo' => true,
+                'tipoContrato' => 1
+            ]
+        ];
+        $prestador = Prestador::fromArray($data);
+        $this->assertInstanceOf(Prestador::class, $prestador);
+        $this->assertSame($prestador->getCertificado(), '5b855b0926ddb251e0f0ef42');
+        $this->assertInstanceOf(Nfse::class, $prestador->getNfse());
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::fromArray
+     */
+    public function testBuildFromArrayWithNfseInvalid()
+    {
+        $this->expectExceptionMessage(
+            'Valor inválido para o TipoContrato. Valores aceitos: null, 0, 1'
+        );
+
+        $data = [
+            'certificado' => '5b855b0926ddb251e0f0ef42',
+            'nfse' => [
+                'ativo' => true,
+                'tipoContrato' => 3
+            ]
+        ];
+        $prestador = Prestador::fromArray($data);
+        $prestador->validate();
     }
 
     /**
@@ -248,7 +285,6 @@ class PrestadorTest extends TestCase
     {
         $data = [
             'cpfCnpj' => '00.000.000/0001-91',
-            'inscricaoMunicipal' => '123456',
             'razaoSocial' => 'Razao Social do Prestador',
             'simplesNacional' => false,
             'endereco' => [
@@ -295,10 +331,15 @@ class PrestadorTest extends TestCase
             'codigoCidade' => '4115200',
             'cep' => '87.050-800'
         ]);
+        $nfse = Nfse::fromArray([
+            'ativo' => true,
+            'tipoContrato' => 1
+        ]);        
         $prestador->setCpfCnpj('00.000.000/0001-91');
         $prestador->setInscricaoMunicipal('123456');
         $prestador->setRazaoSocial('Razao Social do Prestador');
         $prestador->setEndereco($endereco);
+        $prestador->setNfse($nfse);
         $prestador->setSimplesNacional(false);
         $response = $prestador->send($configuration);
 
