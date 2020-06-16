@@ -13,6 +13,7 @@ use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Traits\Communication;
+use TecnoSpeed\Plugnotas\Common\Nfse;
 
 class Prestador extends BuilderAbstract
 {
@@ -25,12 +26,14 @@ class Prestador extends BuilderAbstract
     private $incentivadorCultural;
     private $incentivoFiscal;
     private $inscricaoMunicipal;
+    private $inscricaoEstadual;
     private $nomeFantasia;
     private $razaoSocial;
     private $regimeTributario;
     private $regimeTributarioEspecial;
     private $simplesNacional;
     private $telefone;
+    private $nfse;
 
     public function setCertificado($certificado)
     {
@@ -107,6 +110,16 @@ class Prestador extends BuilderAbstract
         return $this->endereco;
     }
 
+    public function setNfse(Nfse $nfse)
+    {
+        $this->nfse = $nfse;
+    }
+
+    public function getNfse()
+    {
+        return $this->nfse;
+    }
+
     public function setIncentivadorCultural($incentivadorCultural)
     {
         $this->incentivadorCultural = $incentivadorCultural;
@@ -129,17 +142,22 @@ class Prestador extends BuilderAbstract
 
     public function setInscricaoMunicipal($inscricaoMunicipal)
     {
-        if (is_null($inscricaoMunicipal)) {
-            throw new ValidationError(
-                'Inscrição municipal é requerida para NFSe.'
-            );
-        }
         $this->inscricaoMunicipal = $inscricaoMunicipal;
     }
 
     public function getInscricaoMunicipal()
     {
         return $this->inscricaoMunicipal;
+    }
+
+    public function setInscricaoEstadual($inscricaoEstadual)
+    {
+        $this->inscricaoEstadual = $inscricaoEstadual;
+    }
+
+    public function getInscricaoEstadual()
+    {
+        return $this->inscricaoEstadual;
     }
 
     public function setNomeFantasia($nomeFantasia)
@@ -229,6 +247,10 @@ class Prestador extends BuilderAbstract
             $data['endereco'] = Endereco::fromArray($data['endereco']);
         }
 
+        if (array_key_exists('nfse', $data)) {
+            $data['nfse'] = Nfse::fromArray($data['nfse']);
+        }    
+
         return Hydrate::toObject(self::class, $data);
     }
 
@@ -238,7 +260,6 @@ class Prestador extends BuilderAbstract
         if(
             !v::allOf(
                 v::keyNested('cpfCnpj'),
-                v::keyNested('inscricaoMunicipal'),
                 v::keyNested('razaoSocial'),
                 v::keyNested('simplesNacional'),
                 v::keyNested('endereco.logradouro'),
@@ -260,6 +281,6 @@ class Prestador extends BuilderAbstract
         $this->validate();
 
         $communication = $this->getCallApiInstance($configuration);
-        return $communication->send('POST', '/nfse/prestador', $this->toArray(true));
+        return $communication->send('POST', '/empresa', $this->toArray(true));
     }
 }

@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Builders\NfseBuilder;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
+use TecnoSpeed\Plugnotas\Common\Nfse;
 use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
