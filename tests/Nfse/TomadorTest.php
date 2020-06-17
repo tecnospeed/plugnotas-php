@@ -22,10 +22,20 @@ class TomadorTest extends TestCase
     /**
      * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setCpfCnpj
      */
+    public function testWithNullcpfCnpj()
+    {
+        $tomador = new Tomador();
+        $tomador->setCpfCnpj(null);
+        $this->assertSame($tomador->getCpfCnpj(), '');        
+    }
+
+    /**
+     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::setCpfCnpj
+     */
     public function testWithInvalidLengthCpfCnpj()
     {
         $this->expectException(ValidationError::class);
-        $this->expectExceptionMessage('Campo cpfCnpj deve ter 11 ou 14 números.');
+        $this->expectExceptionMessage('Quando preenchido, o campo cpfCnpj deve possuir 11 ou 14 números.');
         $tomador = new Tomador();
         $tomador->setCpfCnpj('12345678901234567890');
     }
