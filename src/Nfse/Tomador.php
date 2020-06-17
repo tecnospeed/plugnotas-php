@@ -30,9 +30,12 @@ class Tomador extends BuilderAbstract
     {
         $cleanCpfCnpj = preg_replace('/[^0-9]/', '', $cpfCnpj);
 
-        if (!(strlen($cleanCpfCnpj) === 11 || strlen($cleanCpfCnpj) === 14)) {
+        if (
+            !is_null($cpfCnpj) &&
+            !((strlen($cleanCpfCnpj) === 11 || strlen($cleanCpfCnpj) === 14))
+            ) {
             throw new ValidationError(
-                'Campo cpfCnpj deve ter 11 ou 14 números.'
+                'Quando preenchido, o campo cpfCnpj deve possuir 11 ou 14 números.'
             );
         }
 

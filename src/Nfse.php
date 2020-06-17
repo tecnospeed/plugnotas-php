@@ -31,6 +31,7 @@ class Nfse extends BuilderAbstract implements IDfe
     private $servico;
     private $substituicao;
     private $tomador;
+    private $naturezaTributacao;
 
     public function setCidadePrestacao(CidadePrestacao $cidadePrestacao)
     {
@@ -75,6 +76,15 @@ class Nfse extends BuilderAbstract implements IDfe
         return $this->idIntegracao;
     }
 
+    public function setNaturezaTributacao($naturezaTributacao)
+    {
+        $this->naturezaTributacao = $naturezaTributacao;
+    }
+
+    public function getNaturezaTributacao()
+    {
+        return $this->naturezaTributacao;
+    }
     public function setImpressao(Impressao $impressao)
     {
         $this->impressao = $impressao;
@@ -144,15 +154,6 @@ class Nfse extends BuilderAbstract implements IDfe
         if(
             !v::allOf(
                 v::keyNested('prestador.cpfCnpj'),
-                v::keyNested('prestador.inscricaoMunicipal'),
-                v::keyNested('prestador.razaoSocial'),
-                v::keyNested('prestador.simplesNacional'),
-                v::keyNested('prestador.endereco.logradouro'),
-                v::keyNested('prestador.endereco.numero'),
-                v::keyNested('prestador.endereco.codigoCidade'),
-                v::keyNested('prestador.endereco.cep'),
-                v::keyNested('tomador.cpfCnpj'),
-                v::keyNested('tomador.razaoSocial'),
                 v::keyNested('servico.codigo'),
                 v::keyNested('servico.discriminacao'),
                 v::keyNested('servico.cnae'),
@@ -161,7 +162,6 @@ class Nfse extends BuilderAbstract implements IDfe
             )->validate($data) ||
             !v::allOf(
                 v::keyNested('prestador.cpfCnpj'),
-                v::keyNested('tomador.cpfCnpj'),
                 v::keyNested('servico.id')
             )->validate($data)
         ) {
