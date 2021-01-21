@@ -64,6 +64,25 @@ class CallApi
         }
     }
 
+    public function sendWithFiles($method, $destination, $data)
+    {
+        try {
+            $response = $this->client->request(
+                $method,
+                $destination,
+                [
+                    'headers' => $this->headers,
+                    'multipart' => $data
+                ]
+            );
+
+            return ResponseObject::parse($response);
+        } catch (ClientException $ce) {
+            $response = $ce->getResponse();
+            return ResponseObject::parse($response);
+        }
+    }
+
     public function download($method, $destination, $data, $fileName)
     {
         try {
