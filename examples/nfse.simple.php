@@ -23,15 +23,17 @@ try {
             'cpfCnpj' => '000.000.001-91',
             'razaoSocial' => 'Razao Social do Tomador'
         ])
-        ->withServico([
-            'codigo' => '1.02',
-            'discriminacao' => 'Exemplo',
-            'cnae' => '4751201',
-            'iss' => [
-                'aliquota' => '3'
-            ],
-            'valor' => [
-                'servico' => 1500.03
+        ->withServicos([
+            0 => [
+                'codigo' => '1.02',
+                'discriminacao' => 'Exemplo',
+                'cnae' => '4751201',
+                'iss' => [
+                    'aliquota' => '3'
+                ],
+                'valor' => [
+                    'servico' => 1500.03
+                ]
             ]
         ])
         ->build([]);
