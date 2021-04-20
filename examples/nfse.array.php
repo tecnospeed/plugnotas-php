@@ -45,67 +45,69 @@ $rps = [
 ];
 
 $servico = [
-    'cnae' => '',
-    'codigo' => '',
-    'codigoCidadeIncidencia' => '',
-    'codigoTributacao' => '',
-    'deducao' => [
-        'descricao' => '',
-        'tipo' => ''
-    ],
-    'descricaoCidadeIncidencia' => '',
-    'discriminacao' => '',
-    'evento' => [
+    0 => [
+        'cnae' => '',
         'codigo' => '',
-        'descricao' => ''
-    ],
-    'id' => '',
-    'idIntegracao' => '',
-    'informacoesLegais' => '',
-    'iss' => [
-        'aliquota' => '',
-        'exigibilidade' => '',
-        'processoSuspensao' => '',
-        'retido' => '',
-        'tipoTributacao' => '',
-        'valor' => '',
-        'valorRetido' => '',
-    ],
-    'obra' => [
-        'art' => '',
-        'codigo' => ''
-    ],
-    'retencao' => [
-        'cofins' => [
-            'aliquota' => '',
-            'valor' => ''
+        'codigoCidadeIncidencia' => '',
+        'codigoTributacao' => '',
+        'deducao' => [
+            'descricao' => '',
+            'tipo' => ''
         ],
-        'csll' => [
-            'aliquota' => '',
-            'valor' => ''
+        'descricaoCidadeIncidencia' => '',
+        'discriminacao' => '',
+        'evento' => [
+            'codigo' => '',
+            'descricao' => ''
         ],
-        'inss' => [
+        'id' => '',
+        'idIntegracao' => '',
+        'informacoesLegais' => '',
+        'iss' => [
             'aliquota' => '',
-            'valor' => ''
+            'exigibilidade' => '',
+            'processoSuspensao' => '',
+            'retido' => '',
+            'tipoTributacao' => '',
+            'valor' => '',
+            'valorRetido' => '',
         ],
-        'irrf' => [
-            'aliquota' => '',
-            'valor' => ''
+        'obra' => [
+            'art' => '',
+            'codigo' => ''
         ],
-        'outrasRetencoes' => '',
-        'pis' => [
-            'aliquota' => '',
-            'valor' => ''
-        ]
-    ],
-    'valor' => [
-        'baseCalculo' => '',
-        'deducoes' => '',
-        'descontoCondicionado' => '',
-        'descontoIncondicionado' => '',
-        'liquido' => '',
-        'servico' => ''
-    ],
+        'retencao' => [
+            'cofins' => [
+                'aliquota' => '',
+                'valor' => ''
+            ],
+            'csll' => [
+                'aliquota' => '',
+                'valor' => ''
+            ],
+            'inss' => [
+                'aliquota' => '',
+                'valor' => ''
+            ],
+            'irrf' => [
+                'aliquota' => '',
+                'valor' => ''
+            ],
+            'outrasRetencoes' => '',
+            'pis' => [
+                'aliquota' => '',
+                'valor' => ''
+            ]
+        ],
+        'valor' => [
+            'baseCalculo' => '',
+            'deducoes' => '',
+            'descontoCondicionado' => '',
+            'descontoIncondicionado' => '',
+            'liquido' => '',
+            'servico' => ''
+        ],
+    ]
 ];
 
 $tomador = [
@@ -176,67 +178,69 @@ $nfse = [
         'competencia' => \DateTime()
     ],
     'servico' => [
-        'cnae' => '',
-        'codigo' => '',
-        'codigoCidadeIncidencia' => '',
-        'codigoTributacao' => '',
-        'deducao' => [
-            'descricao' => '',
-            'tipo' => ''
-        ],
-        'descricaoCidadeIncidencia' => '',
-        'discriminacao' => '',
-        'evento' => [
+        0 => [
+            'cnae' => '',
             'codigo' => '',
-            'descricao' => ''
-        ],
-        'id' => '',
-        'idIntegracao' => '',
-        'informacoesLegais' => '',
-        'iss' => [
-            'aliquota' => '',
-            'exigibilidade' => '',
-            'processoSuspensao' => '',
-            'retido' => '',
-            'tipoTributacao' => '',
-            'valor' => '',
-            'valorRetido' => '',
-        ],
-        'obra' => [
-            'art' => '',
-            'codigo' => ''
-        ],
-        'retencao' => [
-            'cofins' => [
-                'aliquota' => '',
-                'valor' => ''
+            'codigoCidadeIncidencia' => '',
+            'codigoTributacao' => '',
+            'deducao' => [
+                'descricao' => '',
+                'tipo' => ''
             ],
-            'csll' => [
-                'aliquota' => '',
-                'valor' => ''
+            'descricaoCidadeIncidencia' => '',
+            'discriminacao' => '',
+            'evento' => [
+                'codigo' => '',
+                'descricao' => ''
             ],
-            'inss' => [
+            'id' => '',
+            'idIntegracao' => '',
+            'informacoesLegais' => '',
+            'iss' => [
                 'aliquota' => '',
-                'valor' => ''
+                'exigibilidade' => '',
+                'processoSuspensao' => '',
+                'retido' => '',
+                'tipoTributacao' => '',
+                'valor' => '',
+                'valorRetido' => '',
             ],
-            'irrf' => [
-                'aliquota' => '',
-                'valor' => ''
+            'obra' => [
+                'art' => '',
+                'codigo' => ''
             ],
-            'outrasRetencoes' => '',
-            'pis' => [
-                'aliquota' => '',
-                'valor' => ''
-            ]
-        ],
-        'valor' => [
-            'baseCalculo' => '',
-            'deducoes' => '',
-            'descontoCondicionado' => '',
-            'descontoIncondicionado' => '',
-            'liquido' => '',
-            'servico' => ''
-        ],
+            'retencao' => [
+                'cofins' => [
+                    'aliquota' => '',
+                    'valor' => ''
+                ],
+                'csll' => [
+                    'aliquota' => '',
+                    'valor' => ''
+                ],
+                'inss' => [
+                    'aliquota' => '',
+                    'valor' => ''
+                ],
+                'irrf' => [
+                    'aliquota' => '',
+                    'valor' => ''
+                ],
+                'outrasRetencoes' => '',
+                'pis' => [
+                    'aliquota' => '',
+                    'valor' => ''
+                ]
+            ],
+            'valor' => [
+                'baseCalculo' => '',
+                'deducoes' => '',
+                'descontoCondicionado' => '',
+                'descontoIncondicionado' => '',
+                'liquido' => '',
+                'servico' => ''
+            ],
+        ]
     ],
     'substituicao' => '',
     'tomador' => [

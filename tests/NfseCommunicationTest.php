@@ -14,6 +14,7 @@ class NfseCommunicationTest extends TestCase
 {
     private function fillNfse($nfse)
     {
+        $servicos = [];
         $servico = Servico::fromArray([
             'codigo' => '1.02',
             'discriminacao' => 'Exemplo',
@@ -25,6 +26,7 @@ class NfseCommunicationTest extends TestCase
                 'servico' => 1500.03
             ]
         ]);
+        array_push($servicos, $servico->toArray());
         $prestador = Prestador::fromArray([
             'cpfCnpj' => '00.000.000/0001-91',
             'inscricaoMunicipal' => '123456',
@@ -40,7 +42,7 @@ class NfseCommunicationTest extends TestCase
             'cpfCnpj' => '000.000.001-91',
             'razaoSocial' => 'Razao Social do Tomador'
         ]);
-        $nfse->setServico($servico);
+        $nfse->setServico($servicos);
         $nfse->setTomador($tomador);
         $nfse->setPrestador($prestador);
 

@@ -35,9 +35,9 @@ try {
     $enderecoPrestador->setDescricaoCidade('Maringá');
     $enderecoPrestador->setEstado('PR');
     $enderecoPrestador->setCep('87.020-025');
-    
+
     $telefonePrestador = new Telefone('44', '1234-1234');
-    
+
     $prestador = new Prestador();
     $prestador->setCertificado('5b855b0926ddb251e0f0ef42');
     $prestador->setCpfCnpj('00.000.000/0001-91');
@@ -52,7 +52,7 @@ try {
     $prestador->setRegimeTributarioEspecial(0);
     $prestador->setSimplesNacional(0);
     $prestador->setTelefone($telefonePrestador);
-    
+
     // Criando os objetos auxiliares necessários e o objeto Tomador
     $enderecoTomador = new Endereco();
     $enderecoTomador->setTipoLogradouro('Avenida');
@@ -81,11 +81,11 @@ try {
     $deducao = new Deducao();
     $deducao->setTipo(99);
     $deducao->setDescricao('Teste de deducao');
-    
+
     $evento = new Evento();
     $evento->setCodigo('4051200');
     $evento->setDescricao('CONFERENCIA');
-    
+
     $iss = new Iss();
     $iss->setAliquota(0.03);
     $iss->setExigibilidade(1);
@@ -94,11 +94,11 @@ try {
     $iss->setTipoTributacao(1);
     $iss->setValor(12.30);
     $iss->setValorRetido(1.23);
-    
+
     $obra = new Obra();
     $obra->setArt('6270201');
     $obra->setCodigo('21');
-    
+
     $retencao = new Retencao();
     $retencao->setCofins(new ValorAliquota(100.10, 1.01));
     $retencao->setCsll(new ValorAliquota(202.20, 2.02));
@@ -106,7 +106,7 @@ try {
     $retencao->setIrrf(new ValorAliquota(404.40, 4.04));
     $retencao->setOutrasRetencoes(505.50);
     $retencao->setPis(new ValorAliquota(606.60, 6.06));
-    
+
     $valor = new Valor();
     $valor->setBaseCalculo(0.01);
     $valor->setDeducoes(0.02);
@@ -114,7 +114,8 @@ try {
     $valor->setDescontoIncondicionado(0.04);
     $valor->setLiquido(0.05);
     $valor->setServico(0.06);
-    
+
+    $services = [];
     $servico = new Servico();
     $servico->setCnae('4751201');
     $servico->setCodigo('1.02');
@@ -130,6 +131,7 @@ try {
     $servico->setObra($obra);
     $servico->setRetencao($retencao);
     $servico->setValor($valor);
+    array_push($services, $servico->toArray());
 
     // Criando os objetos auxiliares necessários e o objeto Rps
     $dateEmission = new \DateTime('now');
@@ -161,7 +163,7 @@ try {
     $nfse->setImpressao($impressao);
     $nfse->setPrestador($prestador);
     $nfse->setRps($rps);
-    $nfse->setServico($servico);
+    $nfse->setServico($services);
     $nfse->setSubstituicao(false);
     $nfse->setTomador($tomador);
 
