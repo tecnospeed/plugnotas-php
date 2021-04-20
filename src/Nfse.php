@@ -115,9 +115,9 @@ class Nfse extends BuilderAbstract implements IDfe
         return $this->rps;
     }
 
-    public function setServico(Servico $servico)
+    public function setServico(array $servicos)
     {
-        $this->servico = $servico;
+        $this->servico = $servicos;
     }
 
     public function getServico()
@@ -151,26 +151,41 @@ class Nfse extends BuilderAbstract implements IDfe
     public function validate()
     {
         $data = $this->toArray();
-        if(
-            !v::allOf(
-                v::keyNested('prestador.cpfCnpj'),
-                v::keyNested('servico.codigo'),
-                v::keyNested('servico.discriminacao'),
-                v::keyNested('servico.cnae'),
-                v::keyNested('servico.iss.aliquota'),
-                v::keyNested('servico.valor.servico')
-            )->validate($data) ||
-            !v::allOf(
-                v::keyNested('prestador.cpfCnpj'),
-                v::keyNested('servico.id')
-            )->validate($data)
-        ) {
+
+        $validateHasPrestadorCpfCnpj = v::allOf(
+            v::keyNested('prestador.cpfCnpj')
+        )->validate($data);
+        $validateArrayServices = $this->validateArrayServices($data['servico']);
+
+        $validateData = $validateHasPrestadorCpfCnpj && $validateArrayServices;
+
+        if(!$validateData) {
             throw new RequiredError(
                 'Os parâmetros mínimos para criar uma Nfse não foram preenchidos.'
             );
         }
 
         return true;
+    }
+
+    private function validateArrayServices($services): bool
+    {
+        $validateServices = v::arrayVal()->each(
+            v::oneOf(
+                v::allOf(
+                    v::keyNested('codigo'),
+                    v::keyNested('discriminacao'),
+                    v::keyNested('cnae'),
+                    v::keyNested('iss.aliquota'),
+                    v::keyNested('valor.servico')
+                ),
+                v::allOf(
+                    v::keyNested('id')
+                )
+            )
+        )->validate($services);
+
+        return $validateServices;
     }
 
     public function send($configuration = null)
@@ -192,7 +207,13 @@ class Nfse extends BuilderAbstract implements IDfe
         }
 
         if (array_key_exists('servico', $data)) {
-            $data['servico'] = Servico::fromArray($data['servico']);
+            $arrayServices = [];
+            foreach($data['servico'] as $servico) {
+                $instanceService = Servico::fromArray($servico);
+                array_push($arrayServices, $instanceService->toArray());
+            }
+
+            $data['servico'] = $arrayServices;
         }
 
         if (array_key_exists('tomador', $data)) {

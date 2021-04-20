@@ -20,10 +20,26 @@ class NfseBuilder
     private $servico;
     private $impressao;
 
+    private function buildArrayServices($services, $class)
+    {
+        $arrayServices = [];
+        foreach($services as $service) {
+            $instanceService = $class::fromArray($service);
+            array_push($arrayServices, $instanceService->toArray());
+        }
+
+        return $arrayServices;
+    }
+
     private function callFromArray($name, $class, $data)
     {
         if (is_array($data)) {
-            $this->{$name} = $class::fromArray($data);
+            if($name === 'servico') {
+                $this->servico = $this->buildArrayServices($data, $class);
+            } else {
+                $this->{$name} = $class::fromArray($data);
+            }
+
             return $this;
         }
 
@@ -47,7 +63,7 @@ class NfseBuilder
         return $this->callFromArray('prestador', Prestador::class, $data);
     }
 
-    public function withServico($data)
+    public function withServicos(array $data)
     {
         return $this->callFromArray('servico', Servico::class, $data);
     }
