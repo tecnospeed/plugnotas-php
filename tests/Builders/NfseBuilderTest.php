@@ -95,7 +95,7 @@ class NfseBuilderTest extends TestCase
      * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withImpressao
      * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withPrestador
      * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withRps
-     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withServico
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withServicos
      * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withTomador
      */
     public function testWithValidData()
