@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/tecnospeed/plugnotas-php.svg?branch=master)](https://travis-ci.org/tecnospeed/plugnotas-php) [![codecov](https://codecov.io/gh/tecnospeed/plugnotas-php/branch/master/graph/badge.svg)](https://codecov.io/gh/tecnospeed/plugnotas-php)
+
 # Plugnotas
 
 Este pacote foi construído com o objetivo de simplificar a integração com a API do [Plugnotas](https://plugnotas.com.br).
@@ -21,7 +22,7 @@ Ou adicionado manualmente no arquivo `composer.json`:
 ```
 {
   "require": {
-    "tecnospeedsa\plugnotas": "~1.4"
+    "tecnospeedsa/plugnotas": "~1.4"
   }
 }
 ```
@@ -50,16 +51,15 @@ A classe `TecnoSpeed\Plugnotas\Builders\NfseBuilder` é uma classe auxiliar que 
 
 Com esta classe auxiliar utilizando os métodos: `withTomador`, `withPrestador`, `withServico`, `withRps`, `withImpressao` e `withCidadePrestacao` você pode compor o objeto Nfse, [um exemplo disso é mostrado no arquivo nfse.simple.php](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.simple.php).
 
-
 ### Cadastro de Prestador, Tomador e Serviço
 
 O cadastro de Prestador, Tomador e Serviço simplifica o envio da NFSe, sendo que uma vez cadastrado você pode enviar a nota com menos parâmetros pois o que já tem cadastrado será consultado.
 
 Nos links a seguir você encontra exemplos dos cadastros dos tipos:
 
-* [Cadastro de Prestador](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.prestador.create.php)
-* [Cadastro de Tomador](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.tomador.create.php)
-* [Cadastro de Serviço](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.servico.create.php)
+- [Cadastro de Prestador](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.prestador.create.php)
+- [Cadastro de Tomador](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.tomador.create.php)
+- [Cadastro de Serviço](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.servico.create.php)
 
 ### Consultando uma NFSe
 
@@ -78,8 +78,8 @@ Existe a possibilidade de realizar o download utilizando o ID da nota retornado 
 
 Os arquivos serão salvos na pasta configurada (a qual precisa ter permissão de escrita), o padrão do nome do arquivo será o seguinte:
 
-* Quando utilizado o método `download`: ```<pasta informada>/<id>.pdf```
-* Quando utilizado o método `downloadPdfByCnpjAndIdIntegracao`: ```<pasta informada>/<cnpj>-<id integração>.pdf```
+- Quando utilizado o método `download`: `<pasta informada>/<id>.pdf`
+- Quando utilizado o método `downloadPdfByCnpjAndIdIntegracao`: `<pasta informada>/<cnpj>-<id integração>.pdf`
 
 [Exemplo de download utilizando o ID pode ser encontrado aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.download.php) e [exemplo de download utilizando o CNPJ e ID Integração aqui](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.download.cnpjId.php).
 
@@ -100,9 +100,11 @@ Você pode conferir alguns exemplos na pasta `/examples`.
 [Todos os objetos decompostos em arrays podem ser vistos no arquivo nfse.array.php](https://github.com/tecnospeed/plugnotas-php/blob/master/examples/nfse.array.php).
 
 ## Documentações oficiais
+
 - [Site do Plugnotas](https://plugnotas.com.br/)
 - [Documentação oficial](https://atendimento.tecnospeed.com.br/hc/pt-br/categories/360001354313-Plugnotas)
 - [Documentação da API](https://docs.plugnotas.com.br/)
 
 ## Changelog
+
 Acesse o [Changelog da aplicação por este link](https://github.com/tecnospeed/plugnotas-php/blob/master/CHANGELOG.md).
