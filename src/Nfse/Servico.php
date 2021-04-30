@@ -262,8 +262,7 @@ class Servico extends BuilderAbstract
             !v::allOf(
                 v::keyNested('codigo'),
                 v::keyNested('cnae'),
-                v::keyNested('iss.aliquota'),
-
+                v::keyNested('iss.aliquota')
             )->validate($data)
         ) {
             throw new RequiredError(
