@@ -250,7 +250,7 @@ class Prestador extends BuilderAbstract
 
         if (array_key_exists('nfse', $data)) {
             $data['nfse'] = Nfse::fromArray($data['nfse']);
-        }    
+        }
 
         return Hydrate::toObject(self::class, $data);
     }
@@ -277,11 +277,14 @@ class Prestador extends BuilderAbstract
         return true;
     }
 
-    public function send(Configuration $configuration)
+    public function send(Configuration $configuration, $cnpj = null)
     {
         $this->validate();
 
+        $method = isset($cnpj) ? 'PATCH' : 'POST';
+        $url = isset($cnpj) ? "/empresa/${cnpj}" : '/empresa';
+
         $communication = $this->getCallApiInstance($configuration);
-        return $communication->send('POST', '/empresa', $this->toArray(true));
+        return $communication->send($method, $url, $this->toArray(true));
     }
 }
