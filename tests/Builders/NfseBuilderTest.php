@@ -1,5 +1,4 @@
 <?php
-
 namespace TecnoSpeed\Plugnotas\Tests\Builders;
 
 use PHPUnit\Framework\TestCase;
@@ -62,7 +61,7 @@ class NfseBuilderTest extends TestCase
         $nfse = (new NfseBuilder)
             ->withRps($rps)
             ->build();
-        
+
         $this->assertInstanceOf(Rps::class, $nfse->getRps());
     }
 
@@ -95,11 +94,38 @@ class NfseBuilderTest extends TestCase
      * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withImpressao
      * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withPrestador
      * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withRps
-     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withServico
+     * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withServicos
      * @covers TecnoSpeed\Plugnotas\Builders\NfseBuilder::withTomador
      */
     public function testWithValidData()
     {
+        $services = [];
+        array_push($services, [
+            'codigo' => 'codigo',
+            'discriminacao' => 'discriminação',
+            'codigoTributacao' => null,
+            'cnae' => 'cnae',
+            'iss' => [
+                'aliquota' => 1.01
+            ],
+            'valor' => [
+                'servico' => 10
+            ]
+        ]);
+
+        array_push($services, [
+            'codigo' => 'codigo2',
+            'discriminacao' => 'discriminação2',
+            'codigoTributacao' => null,
+            'cnae' => 'cnae2',
+            'iss' => [
+                'aliquota' => 1.01
+            ],
+            'valor' => [
+                'servico' => 10
+            ]
+        ]);
+
         $nfse = (new NfseBuilder)
             ->withCidadePrestacao([
                 'codigo' => '123'
@@ -112,13 +138,7 @@ class NfseBuilderTest extends TestCase
                 'cpfCnpj' => '00.000.000/0001-91',
                 'razaoSocial' => 'Prestador Teste'
             ])
-            ->withServicos([
-                0 => [
-                    'iss' => [
-                        'aliquota' => '3'
-                    ]
-                ],
-            ])
+            ->withServicos($services)
             ->withRps([
                 'dataEmissao' => new \DateTime('2019-02-27')
             ])
@@ -132,10 +152,61 @@ class NfseBuilderTest extends TestCase
                 'idIntegracao' => 'asdf1234',
                 'substituicao' => false
             ]);
+
         $this->assertInstanceOf(CidadePrestacao::class, $nfse->getCidadePrestacao());
         $this->assertInstanceOf(Prestador::class, $nfse->getPrestador());
         $this->assertInstanceOf(Rps::class, $nfse->getRps());
-        $this->assertInstanceOf(Servico::class, $nfse->getServico());
+        $this->assertEquals([
+            [
+                'codigo' => 'codigo',
+                'discriminacao' => 'discriminação',
+                'cnae' => 'cnae',
+                'iss' => [
+                    'aliquota' => 1.01,
+                    "exigibilidade" => null,
+                    "processoSuspensao" => null,
+                    "retido" => null,
+                    "tipoTributacao" => null,
+                    "valor" => null,
+                    "valorRetido" => null,
+                ],
+                'valor' => [
+                    'servico' => 10,
+                    "baseCalculo" => null,
+                    "deducoes" => null,
+                    "descontoCondicionado" => null,
+                    "descontoIncondicionado" => null,
+                    "liquido" =>null,
+                    'unitario' => null,
+                    'valorAproximadoTributos' => null
+                ]
+            ],
+            [
+                'codigo' => 'codigo2',
+                'discriminacao' => 'discriminação2',
+                'cnae' => 'cnae2',
+                'iss' => [
+                    'aliquota' => 1.01,
+                    "exigibilidade" => null,
+                    "processoSuspensao" => null,
+                    "retido" => null,
+                    "tipoTributacao" => null,
+                    "valor" => null,
+                    "valorRetido" => null,
+                ],
+                'valor' => [
+                    'servico' => 10,
+                    "baseCalculo" => null,
+                    "deducoes" => null,
+                    "descontoCondicionado" => null,
+                    "descontoIncondicionado" => null,
+                    "liquido" =>null,
+                    'unitario' => null,
+                    'valorAproximadoTributos' => null
+
+                ]
+            ]
+        ], $nfse->getServico());
         $this->assertInstanceOf(Tomador::class, $nfse->getTomador());
         $this->assertInstanceOf(Impressao::class, $nfse->getImpressao());
         $this->assertSame(true, $nfse->getEnviarEmail());

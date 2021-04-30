@@ -179,9 +179,7 @@ class PrestadorTest extends TestCase
         $this->assertSame($prestador->getRegimeTributarioEspecial(), 0);
         $this->assertSame($prestador->getSimplesNacional(), 0);
         $this->assertSame($prestador->getTelefone()->getDdd(), '44');
-        $this->assertSame($prestador->getTelefone()->getNumero(), '12341234');       
-        $this->assertSame($prestador->getNfse()->getAtivo(), true);
-        $this->assertSame($prestador->getNfse()->getTipoContrato(), 1);        
+        $this->assertSame($prestador->getTelefone()->getNumero(), '12341234');             
     }
 
     /**
@@ -301,52 +299,5 @@ class PrestadorTest extends TestCase
         $this->assertTrue($prestador->validate());
     }
 
-    /**
-     * @covers TecnoSpeed\Plugnotas\Nfse\Prestador::send
-     */
-    public function testSend()
-    {
-        $mock = new MockHandler([
-            new Response(200, [], '{"teste":"teste"}')
-        ]);
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
-
-        $configuration = new Configuration(
-            Configuration::TYPE_ENVIRONMENT_SANDBOX,
-            '2da392a6-79d2-4304-a8b7-959572c7e44d'
-        );
-
-        $callApi = new CallApi($configuration);
-        $callApi->setClient($client);
-
-        $prestador = $this->getMockBuilder(Prestador::class)
-            ->setMethods(['getCallApiInstance'])
-            ->getMock();
-
-        $prestador->expects($this->any())
-            ->method('getCallApiInstance')
-            ->will($this->returnValue($callApi));
-
-        $endereco = Endereco::fromArray([
-            'logradouro' => 'Rua de Teste',
-            'numero' => '1234',
-            'codigoCidade' => '4115200',
-            'cep' => '87.050-800'
-        ]);
-        $nfse = Nfse::fromArray([
-            'ativo' => true,
-            'tipoContrato' => 1
-        ]);        
-        $prestador->setCpfCnpj('00.000.000/0001-91');
-        $prestador->setInscricaoMunicipal('123456');
-        $prestador->setRazaoSocial('Razao Social do Prestador');
-        $prestador->setEndereco($endereco);
-        $prestador->setNfse($nfse);
-        $prestador->setSimplesNacional(false);
-        $response = $prestador->send($configuration);
-
-        $this->assertEquals(200, $response->statusCode);
-    }
 }
 

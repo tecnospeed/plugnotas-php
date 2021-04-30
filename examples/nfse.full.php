@@ -45,7 +45,7 @@ try {
     $enderecoPrestador->setTipoBairro('Zona');
     $enderecoPrestador->setBairro('Zona 7');
     $enderecoPrestador->setCodigoPais(1058);
-    $enderecoPrestador->getDescricaoPais('Brasil');
+    $enderecoPrestador->setDescricaoPais('Brasil');
     $enderecoPrestador->setCodigoCidade('4115200');
     $enderecoPrestador->setDescricaoCidade('Maringá');
     $enderecoPrestador->setEstado('PR');
@@ -77,7 +77,7 @@ try {
     $enderecoTomador->setTipoBairro('Zona');
     $enderecoTomador->setBairro('Zona 7');
     $enderecoTomador->setCodigoPais(1058);
-    $enderecoTomador->getDescricaoPais('Brasil');
+    $enderecoTomador->setDescricaoPais('Brasil');
     $enderecoTomador->setCodigoCidade('4115200');
     $enderecoTomador->setDescricaoCidade('Maringá');
     $enderecoTomador->setEstado('PR');
@@ -227,7 +227,7 @@ try {
 
     // Criando uma NFSe
     $nfse = new Nfse();
-    $nfse->setIdIntegracao('ABC1234567891011');
+    $nfse->setIdIntegracao('ABC12345678910111213');
     $nfse->setEnviarEmail(true);
     $nfse->setRps($rps);
     $nfse->setCidadePrestacao($cidadePrestacao);

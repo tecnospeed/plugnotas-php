@@ -168,7 +168,7 @@ class Endereco extends BuilderAbstract
 
     public function getCodigoCidade()
     {
-        return $this->descricaoPais;
+        return $this->codigoCidade;
     }
 
     public function setCodigoCidade($codigoCidade)

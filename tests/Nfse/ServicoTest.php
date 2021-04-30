@@ -9,6 +9,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Common\ValorAliquota;
+use TecnoSpeed\Plugnotas\Common\PisCofinsValorAliquota;
 use TecnoSpeed\Plugnotas\Communication\CallApi;
 use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Error\RequiredError;
@@ -37,46 +38,6 @@ class ServicoTest extends TestCase
         $servico = Servico::fromArray($data);
     }
 
-    /**
-     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::setId
-     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::fromArray
-     */
-    public function testBuildFromArray()
-    {
-        $data = [
-            'id' => '5af59d271f6e8f409178fbf3',
-            'deducao' => [
-                'tipo' => 99
-            ],
-            'evento' => [
-                'codigo' => '4051200'
-            ],
-            'iss' => [
-                'aliquota' => 1.01
-            ],
-            'obra' => [
-                'art' => '6270201'
-            ],
-            'retencao' => [
-                'cofins' => [
-                    'valor' => 100.10,
-                    'aliquota' => 1.01
-                ]
-            ],
-            'valor' => [
-                'baseCalculo' => 1010.00
-            ]
-        ];
-
-        $servico = Servico::fromArray($data);
-        $this->assertSame($servico->getId(), '5af59d271f6e8f409178fbf3');
-        $this->assertSame($servico->getDeducao()->getTipo(), 99);
-        $this->assertSame($servico->getEvento()->getCodigo(), '4051200');
-        $this->assertSame($servico->getIss()->getAliquota(), 1.01);
-        $this->assertSame($servico->getObra()->getArt(), '6270201');
-        $this->assertSame($servico->getRetencao()->getCofins()->getValor(), 100.10);
-        $this->assertSame($servico->getValor()->getBaseCalculo(), 1010.00);
-    }
 
     /**
      * @covers TecnoSpeed\Plugnotas\Nfse\Servico::getCnae
@@ -132,12 +93,12 @@ class ServicoTest extends TestCase
         $obra->setCodigo('21');
 
         $retencao = new Retencao();
-        $retencao->setCofins(new ValorAliquota(100.10, 1.01));
+        $retencao->setCofins(new PisCofinsValorAliquota(100.10, 1.01, 0.02));
         $retencao->setCsll(new ValorAliquota(202.20, 2.02));
         $retencao->setInss(new ValorAliquota(303.30, 3.03));
         $retencao->setIrrf(new ValorAliquota(404.40, 4.04));
         $retencao->setOutrasRetencoes(new ValorAliquota(505.50, 5.05));
-        $retencao->setPis(new ValorAliquota(606.60, 6.06));
+        $retencao->setPis(new PisCofinsValorAliquota(606.60, 6.06,0.01));
 
         $valor = new Valor();
         $valor->setBaseCalculo(0.01);
@@ -215,42 +176,5 @@ class ServicoTest extends TestCase
         $this->assertTrue($servico->validate());
     }
 
-    /**
-     * @covers TecnoSpeed\Plugnotas\Nfse\Servico::send
-     */
-    public function testSend()
-    {
-        $mock = new MockHandler([
-            new Response(200, [], '{"teste":"teste"}')
-        ]);
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
-
-        $configuration = new Configuration(
-            Configuration::TYPE_ENVIRONMENT_SANDBOX,
-            '2da392a6-79d2-4304-a8b7-959572c7e44d'
-        );
-
-        $callApi = new CallApi($configuration);
-        $callApi->setClient($client);
-
-        $servico = $this->getMockBuilder(Servico::class)
-            ->setMethods(['getCallApiInstance'])
-            ->getMock();
-
-        $servico->expects($this->any())
-            ->method('getCallApiInstance')
-            ->will($this->returnValue($callApi));
-
-        $iss = new Iss();
-        $iss->setAliquota(0.03);
-
-        $servico->setIss($iss);
-        $servico->setCnae('4751201');
-        $servico->setCodigo('1.02');
-
-        $response = $servico->send($configuration);
-
-        $this->assertEquals(200, $response->statusCode);
-    }
+  
 }

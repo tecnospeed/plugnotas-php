@@ -32,16 +32,9 @@ try {
                     'aliquota' => '3'
                 ],
                 'valor' => [
-                    'servico' => 1500.9,
-                    'baseCalculo' => 0.01,
-                    'deducoes' => 0.02,
-                    'descontoCondicionado' => 0.03,
-                    'descontoIncondicionado' => 0.04,
-                    'liquido' => 0.05,
-                    'unitario' => 1,
-                    'valorAproximadoTributos' => 0.07
-                ],
-            ],
+                    'servico' => 1500.03
+                ]
+            ]
         ])
         ->build([]);
 

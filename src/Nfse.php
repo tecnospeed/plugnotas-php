@@ -44,6 +44,7 @@ class Nfse extends BuilderAbstract implements IDfe
     private $camposExtras;
     private $parcelas;
     private $informacoesComplementares;
+    private $ativo;
 
 
     public function setCidadePrestacao(CidadePrestacao $cidadePrestacao)
@@ -133,9 +134,9 @@ class Nfse extends BuilderAbstract implements IDfe
         return $this->rps;
     }
 
-    public function setServico(array $servico)
+    public function setServico(array $servicos)
     {
-        $this->servico = $servico;
+        $this->servico = $servicos;
     }
 
     public function getServico()
@@ -235,6 +236,15 @@ class Nfse extends BuilderAbstract implements IDfe
     {
         return $this->parcelas;
     }
+    public function setAtivo($ativo)
+    {
+        $this->ativo = $ativo;
+    }
+
+    public function getAtivo()
+    {
+        return $this->ativo;
+    }
 
     public function validate()
     {
@@ -276,8 +286,7 @@ class Nfse extends BuilderAbstract implements IDfe
         return $validateServices;
     }
 
-
-    public function send($configuration = null)
+  public function send($configuration = null)
     {
         $this->validate();
 

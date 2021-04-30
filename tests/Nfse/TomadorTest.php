@@ -206,38 +206,5 @@ class TomadorTest extends TestCase
         $this->assertTrue($tomador->validate());
     }
 
-    /**
-     * @covers TecnoSpeed\Plugnotas\Nfse\Tomador::send
-     */
-    public function testSend()
-    {
-        $mock = new MockHandler([
-            new Response(200, [], '{"teste":"teste"}')
-        ]);
-        $handler = HandlerStack::create($mock);
-        $client = new Client(['handler' => $handler]);
-
-        $configuration = new Configuration(
-            Configuration::TYPE_ENVIRONMENT_SANDBOX,
-            '2da392a6-79d2-4304-a8b7-959572c7e44d'
-        );
-
-        $callApi = new CallApi($configuration);
-        $callApi->setClient($client);
-
-        $tomador = $this->getMockBuilder(Tomador::class)
-            ->setMethods(['getCallApiInstance'])
-            ->getMock();
-
-        $tomador->expects($this->any())
-            ->method('getCallApiInstance')
-            ->will($this->returnValue($callApi));
-
-        $tomador->setCpfCnpj('00.000.000/0001-91');
-        $tomador->setRazaoSocial('Razao Social Teste');
-
-        $response = $tomador->send($configuration);
-
-        $this->assertEquals(200, $response->statusCode);
-    }
+    
 }

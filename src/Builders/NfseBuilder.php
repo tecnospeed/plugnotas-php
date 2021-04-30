@@ -19,7 +19,6 @@ class NfseBuilder
     private $prestador;
     private $servico;
     private $impressao;
-    private $ibpt;
 
     private function buildArrayServices($services, $class)
     {
