@@ -112,10 +112,12 @@ class NfseBuilderTest extends TestCase
                 'cpfCnpj' => '00.000.000/0001-91',
                 'razaoSocial' => 'Prestador Teste'
             ])
-            ->withServico([
-                'iss' => [
-                    'aliquota' => 1.01
-                ]
+            ->withServicos([
+                0 => [
+                    'iss' => [
+                        'aliquota' => '3'
+                    ]
+                ],
             ])
             ->withRps([
                 'dataEmissao' => new \DateTime('2019-02-27')

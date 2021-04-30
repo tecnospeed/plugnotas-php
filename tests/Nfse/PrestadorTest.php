@@ -136,6 +136,8 @@ class PrestadorTest extends TestCase
         $endereco->setComplemento('17 andar');
         $endereco->setTipoBairro('Zona');
         $endereco->setBairro('Zona 7');
+        $endereco->setCodigoPais(1058);
+        $endereco->getDescricaoPais('Brasil');
         $endereco->setCodigoCidade('4115200');
         $endereco->setDescricaoCidade('Maringá');
         $endereco->setEstado('PR');
@@ -155,13 +157,13 @@ class PrestadorTest extends TestCase
         $prestador->setIncentivadorCultural(false);
         $prestador->setIncentivoFiscal(false);
         $prestador->setInscricaoMunicipal('8214100099');
+        $prestador->setInscricaoEstadual('21548818154845');
         $prestador->setNomeFantasia('Empresa Teste');
         $prestador->setRazaoSocial('Empresa Teste LTDA');
         $prestador->setRegimeTributario(0);
         $prestador->setRegimeTributarioEspecial(0);
         $prestador->setSimplesNacional(0);
         $prestador->setTelefone($telefone);
-        $prestador->setNfse($nfse);
     
         $this->assertSame($prestador->getCertificado(), '5b855b0926ddb251e0f0ef42');
         $this->assertSame($prestador->getCpfCnpj(), '00000000000191');
@@ -170,6 +172,7 @@ class PrestadorTest extends TestCase
         $this->assertSame($prestador->getIncentivadorCultural(), false);
         $this->assertSame($prestador->getIncentivoFiscal(), false);
         $this->assertSame($prestador->getInscricaoMunicipal(), '8214100099');
+        $this->assertSame($prestador->getInscricaoEstadual(), '21548818154845');
         $this->assertSame($prestador->getNomeFantasia(), 'Empresa Teste');
         $this->assertSame($prestador->getRazaoSocial(), 'Empresa Teste LTDA');
         $this->assertSame($prestador->getRegimeTributario(), 0);

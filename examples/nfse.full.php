@@ -5,9 +5,15 @@ require '../vendor/autoload.php';
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
 use TecnoSpeed\Plugnotas\Common\ValorAliquota;
+use TecnoSpeed\Plugnotas\Common\PisCofinsValorAliquota;
 use TecnoSpeed\Plugnotas\Configuration;
+
 use TecnoSpeed\Plugnotas\Nfse;
+use TecnoSpeed\Plugnotas\Nfse\Parcelas;
+use TecnoSpeed\Plugnotas\Nfse\Intermediario;
+use TecnoSpeed\Plugnotas\Nfse\CamposExtras;
 use TecnoSpeed\Plugnotas\Nfse\CidadePrestacao;
+use TecnoSpeed\Plugnotas\Nfse\CargaTributaria;
 use TecnoSpeed\Plugnotas\Nfse\Impressao;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
@@ -15,6 +21,7 @@ use TecnoSpeed\Plugnotas\Nfse\Servico;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Deducao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Evento;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Iss;
+use TecnoSpeed\Plugnotas\Nfse\Servico\Ibpt;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Obra;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Retencao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Valor;
@@ -23,6 +30,12 @@ use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
 try {
+
+
+    $aliquotaSimplificado = ["aliquota" => 0];
+    $aliquotaDetalahdo = ['aliquota' => ['municipal' => 0,'estadual' => 0,'federal' => 0]];
+
+
     // Criando os objetos auxiliares necessários e o objeto Prestador
     $enderecoPrestador = new Endereco();
     $enderecoPrestador->setTipoLogradouro('Avenida');
@@ -31,6 +44,8 @@ try {
     $enderecoPrestador->setComplemento('17 andar');
     $enderecoPrestador->setTipoBairro('Zona');
     $enderecoPrestador->setBairro('Zona 7');
+    $enderecoPrestador->setCodigoPais(1058);
+    $enderecoPrestador->getDescricaoPais('Brasil');
     $enderecoPrestador->setCodigoCidade('4115200');
     $enderecoPrestador->setDescricaoCidade('Maringá');
     $enderecoPrestador->setEstado('PR');
@@ -39,19 +54,19 @@ try {
     $telefonePrestador = new Telefone('44', '1234-1234');
     
     $prestador = new Prestador();
-    $prestador->setCertificado('5b855b0926ddb251e0f0ef42');
     $prestador->setCpfCnpj('00.000.000/0001-91');
-    $prestador->setEmail('teste@plugnotas.com.br');
-    $prestador->setEndereco($enderecoPrestador);
-    $prestador->setIncentivadorCultural(false);
-    $prestador->setIncentivoFiscal(false);
     $prestador->setInscricaoMunicipal('8214100099');
-    $prestador->setNomeFantasia('Empresa Teste');
+    $prestador->setInscricaoEstadual('21548818154845');
     $prestador->setRazaoSocial('Empresa Teste LTDA');
+    $prestador->setNomeFantasia('Empresa Teste');
+    $prestador->setSimplesNacional(true);
     $prestador->setRegimeTributario(0);
+    $prestador->setIncentivoFiscal(false);
+    $prestador->setIncentivadorCultural(false);
     $prestador->setRegimeTributarioEspecial(0);
-    $prestador->setSimplesNacional(0);
+    $prestador->setEndereco($enderecoPrestador);
     $prestador->setTelefone($telefonePrestador);
+    $prestador->setEmail('teste@plugnotas.com.br');
     
     // Criando os objetos auxiliares necessários e o objeto Tomador
     $enderecoTomador = new Endereco();
@@ -61,6 +76,8 @@ try {
     $enderecoTomador->setComplemento('17 andar');
     $enderecoTomador->setTipoBairro('Zona');
     $enderecoTomador->setBairro('Zona 7');
+    $enderecoTomador->setCodigoPais(1058);
+    $enderecoTomador->getDescricaoPais('Brasil');
     $enderecoTomador->setCodigoCidade('4115200');
     $enderecoTomador->setDescricaoCidade('Maringá');
     $enderecoTomador->setEstado('PR');
@@ -70,77 +87,121 @@ try {
 
     $tomador = new Tomador();
     $tomador->setCpfCnpj('00.000.000/0001-91');
-    $tomador->setEmail('teste@plugnotas.com.br');
-    $tomador->setEndereco($enderecoTomador);
+    $tomador->setInscricaoMunicipal('654646646343');
     $tomador->setInscricaoEstadual('8214100099');
-    $tomador->setNomeFantasia('Empresa Teste');
+    $tomador->setInscricaoSuframa("12112145454");
+    $tomador->setIndicadorInscricaoEstadual(9);
     $tomador->setRazaoSocial('Empresa Teste LTDA');
+    $tomador->setNomeFantasia('Empresa Teste');
+    $tomador->setEndereco($enderecoTomador);
     $tomador->setTelefone($telefoneTomador);
+    $tomador->setEmail('teste@plugnotas.com.br');
+    $tomador->setOrgaoPublico(false);
+
+    $intermediario = new Intermediario();
+    $intermediario->setTipo(0);
+    $intermediario->setCpfCnpj('00.000.000/0001-91');
+    $intermediario->setRazaoSocial('Empresa Teste LTDA');
+    $intermediario->setInscricaoMunicipal('654646646343');
 
     // Criando os objetos auxiliares necessários e o objeto Servico
     $deducao = new Deducao();
     $deducao->setTipo(99);
     $deducao->setDescricao('Teste de deducao');
     
-    $evento = new Evento();
-    $evento->setCodigo('4051200');
-    $evento->setDescricao('CONFERENCIA');
     
     $iss = new Iss();
-    $iss->setAliquota(0.03);
-    $iss->setExigibilidade(1);
-    $iss->setProcessoSuspensao('1234');
-    $iss->setRetido(true);
     $iss->setTipoTributacao(1);
+    $iss->setExigibilidade(1);
+    $iss->setRetido(false);
+    $iss->setAliquota(0.03);
     $iss->setValor(12.30);
     $iss->setValorRetido(1.23);
+    $iss->setProcessoSuspensao('1234');
+
     
     $obra = new Obra();
     $obra->setArt('6270201');
     $obra->setCodigo('21');
+    $obra->setCei('12345678910');
     
     $retencao = new Retencao();
-    $retencao->setCofins(new ValorAliquota(100.10, 1.01));
+    $retencao->setPis(new PisCofinsValorAliquota(606.60, 6.06, 0.00));
+    $retencao->setCofins(new PisCofinsValorAliquota(100.10, 1.01,0.00));
     $retencao->setCsll(new ValorAliquota(202.20, 2.02));
     $retencao->setInss(new ValorAliquota(303.30, 3.03));
     $retencao->setIrrf(new ValorAliquota(404.40, 4.04));
     $retencao->setOutrasRetencoes(505.50);
-    $retencao->setPis(new ValorAliquota(606.60, 6.06));
+    $retencao->setCpp(new ValorAliquota(303.30, 3.03));
+
     
     $valor = new Valor();
+    $valor->setServico(0.06);
     $valor->setBaseCalculo(0.01);
     $valor->setDeducoes(0.02);
     $valor->setDescontoCondicionado(0.03);
     $valor->setDescontoIncondicionado(0.04);
     $valor->setLiquido(0.05);
-    $valor->setServico(0.06);
+    $valor->setUnitario(1);
+    $valor->setValorAproximadoTributos(0.07);
+
+
+     $ibpt = new Ibpt();
+     $ibpt->setSimplificado($aliquotaSimplificado);   
+     $ibpt->setDetalhado($aliquotaDetalahdo);
     
+    $services = [];
     $servico = new Servico();
-    $servico->setCnae('4751201');
     $servico->setCodigo('1.02');
-    $servico->setCodigoCidadeIncidencia('4115200');
-    $servico->setCodigoTributacao('4115200');
-    $servico->setDeducao($deducao);
-    $servico->setDescricaoCidadeIncidencia('MARINGA');
-    $servico->setDiscriminacao('Programação de software');
-    $servico->setEvento($evento);
     $servico->setIdIntegracao('A001XT');
-    $servico->setInformacoesLegais('Informações necessárias a serem adicionadas na NFSe');
+    $servico->setDiscriminacao('Programação de software');
+    $servico->setCodigoTributacao('4115200');
+    $servico->setCnae('4751201');
+    $servico->setCodigoCidadeIncidencia('4115200');
+    $servico->setDescricaoCidadeIncidencia('MARINGA');
+    $servico->setUnidade(1);
+    $servico->setQuantidade(1);
     $servico->setIss($iss);
     $servico->setObra($obra);
-    $servico->setRetencao($retencao);
     $servico->setValor($valor);
+    $servico->setDeducao($deducao);
+    $servico->setRetencao($retencao);
+    $servico->setTributavel(false);
+    $servico->setIbpt($ibpt);
+    $servico->setResponsavelRetencao(2);
+    array_push($services, $servico->toArray());
+      
+      
+    
+    
 
     // Criando os objetos auxiliares necessários e o objeto Rps
     $dateEmission = new \DateTime('now');
+    
+
     $rps = new Rps();
     $rps->setDataEmissao($dateEmission);
     $rps->setCompetencia($dateEmission);
+  
+
 
     // Criando os objetos auxiliares necessários e o objeto CidadePrestacao
     $cidadePrestacao = new CidadePrestacao();
     $cidadePrestacao->setCodigo('4115200');
     $cidadePrestacao->setDescricao('MARINGA');
+    $cidadePrestacao->setTipoLogradouro('Rua');
+    $cidadePrestacao->setLogradouro("Teste A");
+    $cidadePrestacao->setNumero("1705");
+    $cidadePrestacao->setComplemento("Casa");
+    $cidadePrestacao->setTipoBairro("Chácara");
+    $cidadePrestacao->setBairro("Bairro A");
+    $cidadePrestacao->setEstado("PR");
+    $cidadePrestacao->setCep("87010-890");
+
+    $cargaTributaria = new CargaTributaria();
+    $cargaTributaria->setValor(1);
+    $cargaTributaria->setPercentual(0.5);
+    $cargaTributaria->setFonte('teste');
 
     // Criando configuração (este objeto é onde você irá colocar seu api-key)
     $configuration = new Configuration(
@@ -153,17 +214,35 @@ try {
        'inscricaoMunicipalTomador' => '123456'
     ]);
 
+    $camposExtras = new CamposExtras();
+    $camposExtras->setCopiasEmail(['teste@plugnotas.com.br','teste2@plugnotas.com.br']);
+    
+  
+    $parcelas = new Parcelas();
+    $parcelas->setTipoPagamento(1);
+    $parcelas->setNumero(1);
+    $parcelas->setDataVencimento('2021-04-29T19:04:49.488Z');
+    $parcelas->setValor(0.01);
+
+
     // Criando uma NFSe
     $nfse = new Nfse();
-    $nfse->setCidadePrestacao($cidadePrestacao);
+    $nfse->setIdIntegracao('ABC1234567891011');
     $nfse->setEnviarEmail(true);
-    $nfse->setIdIntegracao('ABC123');
-    $nfse->setImpressao($impressao);
-    $nfse->setPrestador($prestador);
     $nfse->setRps($rps);
-    $nfse->setServico($servico);
-    $nfse->setSubstituicao(false);
+    $nfse->setCidadePrestacao($cidadePrestacao);
+    $nfse->setIdNotaSubstituida("608af4c3778d437fa5ed80a9");
+    $nfse->setNaturezaTributacao(1);
+    $nfse->setPrestador($prestador);
     $nfse->setTomador($tomador);
+    $nfse->setIntermediario($intermediario);
+    $nfse->setServico($services);
+    $nfse->setCargaTributaria($cargaTributaria);
+    $nfse->setImpressao($impressao);
+    $nfse->setDescricao("Descrição do RPS e serviços prestados.");
+    $nfse->setCamposExtras($camposExtras);
+    $nfse->setInformacoesComplementares("Informações complementares a nota.");
+    $nfse->setParcelas($parcelas);
 
     $response = $nfse->send($configuration); // A resposta sempre será um objeto TecnoSpeed\Plugnotas\Communication\Response
     var_dump($response);

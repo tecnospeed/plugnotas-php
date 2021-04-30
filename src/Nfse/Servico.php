@@ -15,6 +15,7 @@ use TecnoSpeed\Plugnotas\Nfse\Servico\Iss;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Obra;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Retencao;
 use TecnoSpeed\Plugnotas\Nfse\Servico\Valor;
+use TecnoSpeed\Plugnotas\Nfse\Servico\Ibpt;
 use TecnoSpeed\Plugnotas\Traits\Communication;
 
 class Servico extends BuilderAbstract
@@ -36,6 +37,12 @@ class Servico extends BuilderAbstract
     private $obra;
     private $retencao;
     private $valor;
+    private $unidade;
+    private $quantidade;
+    private $tributavel;
+    private $responsavelRetencao;
+    private $ibpt;
+
 
     public function setCnae($cnae)
     {
@@ -165,7 +172,7 @@ class Servico extends BuilderAbstract
     }
 
     public function setObra(Obra $obra)
-    {
+    {  
         $this->obra = $obra;
     }
 
@@ -194,6 +201,60 @@ class Servico extends BuilderAbstract
         return $this->valor;
     }
 
+    public function setUnidade($unidade)
+    {
+        $this->unidade = $unidade;
+    }
+
+    public function getUnidade()
+    {
+        return $this->unidade;
+    }
+
+    public function setQuantidade($quantidade)
+    {
+        $this->quantidade = $quantidade;
+    }
+
+    public function getQuantidade()
+    {
+        return $this->quantidade;
+    }
+
+    public function setTributavel($tributavel)
+    {
+        $this->tributavel = $tributavel;
+    }
+
+    public function getTributavel()
+    {
+        return $this->tributavel;
+    }
+
+    public function setResponsavelRetencao($responsavelRetencao){
+    if (!v::in([1,2])->validate($responsavelRetencao)) {
+        throw new ValidationError(
+            'Responsável Retencao inválido.'
+        );
+    }
+    $this->responsavelRetencao = $responsavelRetencao;
+ 
+    }
+
+    public function getResponsavelRetencao()
+    {
+        return $this->responsavelRetencao;
+    }
+    public function setIbpt(Ibpt $ibpt)
+    {
+        $this->ibpt = $ibpt;
+    }
+
+    public function getIbpt()
+    {
+        return $this->ibpt;
+    }
+
     public function validate()
     {
         $data = $this->toArray();
@@ -201,7 +262,8 @@ class Servico extends BuilderAbstract
             !v::allOf(
                 v::keyNested('codigo'),
                 v::keyNested('cnae'),
-                v::keyNested('iss.aliquota')
+                v::keyNested('iss.aliquota'),
+
             )->validate($data)
         ) {
             throw new RequiredError(
@@ -244,6 +306,9 @@ class Servico extends BuilderAbstract
 
         if (array_key_exists('valor', $data)) {
             $data['valor'] = Valor::fromArray($data['valor']);
+        }
+        if (array_key_exists('ibpt', $data)) {
+            $data['ibpt'] = Ibpt::fromArray($data['ibpt']);
         }
 
         return Hydrate::toObject(Servico::class, $data);

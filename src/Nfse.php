@@ -14,8 +14,13 @@ use TecnoSpeed\Plugnotas\Nfse\Impressao;
 use TecnoSpeed\Plugnotas\Nfse\Prestador;
 use TecnoSpeed\Plugnotas\Nfse\Rps;
 use TecnoSpeed\Plugnotas\Nfse\Servico;
+use TecnoSpeed\Plugnotas\Nfse\CargaTributaria;
 use TecnoSpeed\Plugnotas\Nfse\Tomador;
+use TecnoSpeed\Plugnotas\Nfse\Intermediario;
+use TecnoSpeed\Plugnotas\Nfse\CamposExtras;
+use TecnoSpeed\Plugnotas\Nfse\Parcelas;
 use TecnoSpeed\Plugnotas\Traits\Communication;
+
 
 class Nfse extends BuilderAbstract implements IDfe
 {
@@ -31,7 +36,15 @@ class Nfse extends BuilderAbstract implements IDfe
     private $servico;
     private $substituicao;
     private $tomador;
+    private $intermediario;
     private $naturezaTributacao;
+    private $idNotaSubstituida;
+    private $cargaTributaria;
+    private $descricao;
+    private $camposExtras;
+    private $parcelas;
+    private $informacoesComplementares;
+
 
     public function setCidadePrestacao(CidadePrestacao $cidadePrestacao)
     {
@@ -78,6 +91,11 @@ class Nfse extends BuilderAbstract implements IDfe
 
     public function setNaturezaTributacao($naturezaTributacao)
     {
+        if (!v::in([1,2,3,4,5,6])->validate($naturezaTributacao)) {
+            throw new ValidationError(
+                'Tipo de Natureza da Tributação inválido.'
+            );
+        }
         $this->naturezaTributacao = $naturezaTributacao;
     }
 
@@ -115,7 +133,7 @@ class Nfse extends BuilderAbstract implements IDfe
         return $this->rps;
     }
 
-    public function setServico(Servico $servico)
+    public function setServico(array $servico)
     {
         $this->servico = $servico;
     }
@@ -148,23 +166,88 @@ class Nfse extends BuilderAbstract implements IDfe
         return $this->tomador;
     }
 
+    public function setIntermediario(Intermediario $intermediario)
+    {
+        $this->intermediario = $intermediario;
+    }
+
+    public function getIntermediario()
+    {
+        return $this->intermediario;
+    }
+
+    public function setIdNotaSubstituida($idNotaSubstituida)
+    {
+        $this->idNotaSubstituida = $idNotaSubstituida;
+    }
+
+    public function getIdNotaSubstituida()
+    {
+        return $this->idNotaSubstituida;
+    }
+
+    public function setCargaTributaria(CargaTributaria $cargaTributaria)
+    {
+        $this->cargaTributaria = $cargaTributaria;
+    }
+
+    public function getCargaTributaria()
+    {
+        return $this->cargaTributaria;
+    }
+
+    public function setDescricao($descricao)
+    {
+        $this->descricao = $descricao;
+    }
+
+    public function getDescricao()
+    {
+        return $this->descricao;
+    }
+
+    public function setCamposExtras(CamposExtras $camposExtras)
+    {
+        $this->camposExtras = $camposExtras;
+    }
+
+    public function getCamposExtras()
+    {
+        return $this->camposExtras;
+    }
+
+    public function setInformacoesComplementares($informacoesComplementares)
+    {
+        $this->informacoesComplementares = $informacoesComplementares;
+    }
+
+    public function getInformacoesComplementares()
+    {
+        return $this->informacoesComplementares;
+    }
+
+    public function setParcelas(Parcelas $parcelas)
+    {
+        $this->parcelas = $parcelas;
+    }
+
+    public function getParcelas()
+    {
+        return $this->parcelas;
+    }
+
     public function validate()
     {
         $data = $this->toArray();
-        if(
-            !v::allOf(
-                v::keyNested('prestador.cpfCnpj'),
-                v::keyNested('servico.codigo'),
-                v::keyNested('servico.discriminacao'),
-                v::keyNested('servico.cnae'),
-                v::keyNested('servico.iss.aliquota'),
-                v::keyNested('servico.valor.servico')
-            )->validate($data) ||
-            !v::allOf(
-                v::keyNested('prestador.cpfCnpj'),
-                v::keyNested('servico.id')
-            )->validate($data)
-        ) {
+
+        $validateHasPrestadorCpfCnpj = v::allOf(
+            v::keyNested('prestador.cpfCnpj')
+        )->validate($data);
+        $validateArrayServices = $this->validateArrayServices($data['servico']);
+
+        $validateData = $validateHasPrestadorCpfCnpj && $validateArrayServices;
+
+        if(!$validateData) {
             throw new RequiredError(
                 'Os parâmetros mínimos para criar uma Nfse não foram preenchidos.'
             );
@@ -172,6 +255,27 @@ class Nfse extends BuilderAbstract implements IDfe
 
         return true;
     }
+
+    private function validateArrayServices($servico): bool
+    {
+        $validateServices = v::arrayVal()->each(
+            v::oneOf(
+                v::allOf(
+                    v::keyNested('codigo'),
+                    v::keyNested('discriminacao'),
+                    v::keyNested('cnae'),
+                    v::keyNested('iss.aliquota'),
+                    v::keyNested('valor.servico')
+                ),
+                v::allOf(
+                    v::keyNested('id')
+                )
+            )
+        )->validate($servico);
+
+        return $validateServices;
+    }
+
 
     public function send($configuration = null)
     {
@@ -209,6 +313,22 @@ class Nfse extends BuilderAbstract implements IDfe
 
         if (array_key_exists('impressao', $data)) {
             $data['impressao'] = Impressao::fromArray($data['impressao']);
+        }
+
+        if (array_key_exists('intermediario', $data)) {
+            $data['intermediario'] = Intermediario::fromArray($data['intermediario']);
+        }
+
+        if (array_key_exists('cargaTributaria', $data)) {
+            $data['cargaTributaria'] = CargaTributaria::fromArray($data['cargaTributaria']);
+        }
+
+        if (array_key_exists('camposExtras', $data)) {
+            $data['camposExtras'] = CamposExtras::fromArray($data['camposExtras']);
+        }
+
+        if (array_key_exists('parcelas', $data)) {
+            $data['parcelas'] = Parcelas::fromArray($data['parcelas']);
         }
 
         return Hydrate::toObject(Nfse::class, $data);

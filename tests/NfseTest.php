@@ -7,7 +7,8 @@ use PHPUnit\Framework\TestCase;
 use TecnoSpeed\Plugnotas\Builders\NfseBuilder;
 use TecnoSpeed\Plugnotas\Common\Endereco;
 use TecnoSpeed\Plugnotas\Common\Telefone;
-use TecnoSpeed\Plugnotas\Common\ValorAliquota;
+use TecnoSpeed\Plugnotas\Common\ValorAliquota; 
+use TecnoSpeed\Plugnotas\Common\PisCofinsValorAliquota;
 use TecnoSpeed\Plugnotas\Configuration;
 use TecnoSpeed\Plugnotas\Error\RequiredError;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
@@ -52,6 +53,8 @@ class NfseTest extends TestCase
         $endereco->setComplemento('17 andar');
         $endereco->setTipoBairro('Zona');
         $endereco->setBairro('Zona 7');
+        $endereco->setCodigoPais(1058);
+        $endereco->getDescricaoPais('Brasil');
         $endereco->setCodigoCidade('4115200');
         $endereco->setDescricaoCidade('Maringá');
         $endereco->setEstado('PR');
@@ -60,25 +63,29 @@ class NfseTest extends TestCase
         $telefone = new Telefone('44', '1234-1234');
 
         $prestador = new Prestador();
-        $prestador->setCertificado('5b855b0926ddb251e0f0ef42');
         $prestador->setCpfCnpj('00.000.000/0001-91');
-        $prestador->setEmail('teste@plugnotas.com.br');
-        $prestador->setEndereco($endereco);
-        $prestador->setIncentivadorCultural(false);
-        $prestador->setIncentivoFiscal(false);
         $prestador->setInscricaoMunicipal('8214100099');
-        $prestador->setNomeFantasia('Empresa Teste');
+        $prestador->setInscricaoEstadual('21548818154845');
         $prestador->setRazaoSocial('Empresa Teste LTDA');
+        $prestador->setNomeFantasia('Empresa Teste');
+        $prestador->setSimplesNacional(true);
         $prestador->setRegimeTributario(0);
+        $prestador->setIncentivoFiscal(false);
+        $prestador->setIncentivadorCultural(false);
         $prestador->setRegimeTributarioEspecial(0);
-        $prestador->setSimplesNacional(0);
-        $prestador->setTelefone($telefone);
+        $prestador->setEndereco($enderecoPrestador);
+        $prestador->setTelefone($telefonePrestador);
+        $prestador->setEmail('teste@plugnotas.com.br');
+        
 
         return $prestador;
     }
 
     private function getServico()
     {
+        $aliquotaSimplificado = ["aliquota" => 0];
+        $aliquotaDetalahdo = ['aliquota' => ['municipal' => 0,'estadual' => 0,'federal' => 0]];
+        
         $deducao = new Deducao();
         $deducao->setTipo(99);
         $deducao->setDescricao('Teste de deducao');
@@ -88,50 +95,60 @@ class NfseTest extends TestCase
         $evento->setDescricao('CONFERENCIA');
 
         $iss = new Iss();
-        $iss->setAliquota(0.03);
-        $iss->setExigibilidade(1);
-        $iss->setProcessoSuspensao('1234');
-        $iss->setRetido(true);
         $iss->setTipoTributacao(1);
+        $iss->setExigibilidade(1);
+        $iss->setRetido(true);
+        $iss->setAliquota(0.03);
         $iss->setValor(12.30);
         $iss->setValorRetido(1.23);
+        $iss->setProcessoSuspensao('1234');
 
         $obra = new Obra();
         $obra->setArt('6270201');
         $obra->setCodigo('21');
-
+        $obra->setCei('12345678910');
+    
         $retencao = new Retencao();
-        $retencao->setCofins(new ValorAliquota(100.10, 1.01));
+        $retencao->setPis(new PisCofinsValorAliquota(606.60, 6.06, 0.00));
+        $retencao->setCofins(new PisCofinsValorAliquota(100.10, 1.01,0.00));
         $retencao->setCsll(new ValorAliquota(202.20, 2.02));
         $retencao->setInss(new ValorAliquota(303.30, 3.03));
         $retencao->setIrrf(new ValorAliquota(404.40, 4.04));
-        $retencao->setOutrasRetencoes(new ValorAliquota(505.50, 5.05));
-        $retencao->setPis(new ValorAliquota(606.60, 6.06));
+        $retencao->setOutrasRetencoes(505.50);
+        $retencao->setCpp(new ValorAliquota(303.30, 3.03));
 
         $valor = new Valor();
+        $valor->setServico(0.06);
         $valor->setBaseCalculo(0.01);
         $valor->setDeducoes(0.02);
         $valor->setDescontoCondicionado(0.03);
         $valor->setDescontoIncondicionado(0.04);
         $valor->setLiquido(0.05);
-        $valor->setServico(0.06);
+        $valor->setUnitario(1);
+        $valor->setValorAproximadoTributos(0.07);
+
+        $ibpt = new Ibpt();
+        $ibpt->setSimplificado($aliquotaSimplificado);   
+        $ibpt->setDetalhado($aliquotaDetalahdo);
 
         $servico = new Servico();
-        $servico->setCnae('4751201');
         $servico->setCodigo('1.02');
-        $servico->setCodigoCidadeIncidencia('4115200');
-        $servico->setCodigoTributacao('4115200');
-        $servico->setDeducao($deducao);
-        $servico->setDescricaoCidadeIncidencia('MARINGA');
-        $servico->setDiscriminacao('Programação de software');
-        $servico->setEvento($evento);
         $servico->setIdIntegracao('A001XT');
-        $servico->setInformacoesLegais('Informações necessárias a serem adicionadas na NFSe');
+        $servico->setDiscriminacao('Programação de software');
+        $servico->setCodigoTributacao('4115200');
+        $servico->setCnae('4751201');
+        $servico->setCodigoCidadeIncidencia('4115200');
+        $servico->setDescricaoCidadeIncidencia('MARINGA');
+        $servico->setUnidade(1);
+        $servico->setQuantidade(1);
         $servico->setIss($iss);
         $servico->setObra($obra);
-        $servico->setRetencao($retencao);
         $servico->setValor($valor);
-
+        $servico->setDeducao($deducao);
+        $servico->setRetencao($retencao);
+        $servico->setTributavel(false);
+        $servico->setIbpt($ibpt);
+        $servico->setResponsavelRetencao(2);
         return $servico;
     }
 
@@ -144,6 +161,8 @@ class NfseTest extends TestCase
         $endereco->setComplemento('17 andar');
         $endereco->setTipoBairro('Zona');
         $endereco->setBairro('Zona 7');
+        $endereco->setCodigoPais(1058);
+        $endereco->getDescricaoPais('Brasil');
         $endereco->setCodigoCidade('4115200');
         $endereco->setDescricaoCidade('Maringá');
         $endereco->setEstado('PR');
@@ -151,14 +170,17 @@ class NfseTest extends TestCase
 
         $telefone = new Telefone('44', '1234-1234');
 
-        $tomador = new Tomador();
         $tomador->setCpfCnpj('00.000.000/0001-91');
-        $tomador->setEmail('teste@plugnotas.com.br');
-        $tomador->setEndereco($endereco);
+        $tomador->setInscricaoMunicipal('654646646343');
         $tomador->setInscricaoEstadual('8214100099');
-        $tomador->setNomeFantasia('Empresa Teste');
+        $tomador->setInscricaoSuframa("12112145454");
+        $tomador->setIndicadorInscricaoEstadual(9);
         $tomador->setRazaoSocial('Empresa Teste LTDA');
+        $tomador->setNomeFantasia('Empresa Teste');
+        $tomador->setEndereco($endereco);
         $tomador->setTelefone($telefone);
+        $tomador->setEmail('teste@plugnotas.com.br');
+        $tomador->setOrgaoPublico(true);
 
         return $tomador;
     }
@@ -282,22 +304,23 @@ class NfseTest extends TestCase
     public function testValidateWithValidData()
     {
         $nfse = (new NfseBuilder)
-            ->withPrestador([
-                'cpfCnpj' => '00.000.000/0001-91',
-                'inscricaoMunicipal' => '123456',
-                'razaoSocial' => 'Razao Social do Prestador',
-                'endereco' => [
-                    'logradouro' => 'Rua de Teste',
-                    'numero' => '1234',
-                    'codigoCidade' => '4115200',
-                    'cep' => '87.050-800'
-                ]
-            ])
-            ->withTomador([
-                'cpfCnpj' => '000.000.001-91',
-                'razaoSocial' => 'Razao Social do Tomador'
-            ])
-            ->withServico([
+        ->withPrestador([
+            'cpfCnpj' => '00.000.000/0001-91',
+            'inscricaoMunicipal' => '123456',
+            'razaoSocial' => 'Razao Social do Prestador',
+            'endereco' => [
+                'logradouro' => 'Rua de Teste',
+                'numero' => '1234',
+                'codigoCidade' => '4115200',
+                'cep' => '87.050-800'
+            ]
+        ])
+        ->withTomador([
+            'cpfCnpj' => '000.000.001-91',
+            'razaoSocial' => 'Razao Social do Tomador'
+        ])
+        ->withServicos([
+            0 => [
                 'codigo' => '1.02',
                 'discriminacao' => 'Exemplo',
                 'cnae' => '4751201',
@@ -305,9 +328,17 @@ class NfseTest extends TestCase
                     'aliquota' => '3'
                 ],
                 'valor' => [
-                    'servico' => 1500.03
-                ]
-            ])
+                    'servico' => 1500.9,
+                    'baseCalculo' => 0.01,
+                    'deducoes' => 0.02,
+                    'descontoCondicionado' => 0.03,
+                    'descontoIncondicionado' => 0.04,
+                    'liquido' => 0.05,
+                    'unitario' => 1,
+                    'valorAproximadoTributos' => 0.07
+                ],
+            ],
+        ])
             ->build([]);
         $this->assertTrue($nfse->validate());
     }

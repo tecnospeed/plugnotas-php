@@ -13,6 +13,8 @@ class Endereco extends BuilderAbstract
     private $complemento;
     private $tipoBairro;
     private $bairro;
+    private $codigoPais;
+    private $descricaoPais;
     private $codigoCidade;
     private $descricaoCidade;
     private $estado;
@@ -144,9 +146,29 @@ class Endereco extends BuilderAbstract
         $this->bairro = $bairro;
     }
 
+    public function getCodigoPais()
+    {
+        return $this->codigoPais;
+    }
+
+    public function setCodigoPais($codigoPais)
+    {
+        $this->codigoPais = $codigoPais;
+    }
+    
+    public function getDescricaoPais()
+    {
+        return $this->descricaoPais;
+    }
+
+    public function setDescricaoPais($descricaoPais)
+    {
+        $this->descricaoPais = $descricaoPais;
+    }
+
     public function getCodigoCidade()
     {
-        return $this->codigoCidade;
+        return $this->descricaoPais;
     }
 
     public function setCodigoCidade($codigoCidade)

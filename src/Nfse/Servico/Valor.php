@@ -8,12 +8,30 @@ use TecnoSpeed\Plugnotas\Error\ValidationError;
 
 class Valor extends BuilderAbstract
 {
+    private $servico;
     private $baseCalculo;
     private $deducoes;
     private $descontoCondicionado;
     private $descontoIncondicionado;
     private $liquido;
-    private $servico;
+    private $unitario;
+    private $valorAproximadoTributos;
+
+
+    public function setServico($servico)
+    {
+        if (!v::numeric()->validate($servico)) {
+            throw new ValidationError(
+                'O valor do serviço deve ser um valor numérico.'
+            );
+        }
+        $this->servico = (float)$servico;
+    }
+
+    public function getServico()
+    {
+        return $this->servico;
+    }
 
     public function setBaseCalculo($baseCalculo)
     {
@@ -90,19 +108,36 @@ class Valor extends BuilderAbstract
         return $this->liquido;
     }
 
-    public function setServico($servico)
+    public function setUnitario($unitario)
     {
-        if (!v::numeric()->validate($servico)) {
+        if (!v::numeric()->validate($unitario)) {
             throw new ValidationError(
-                'O valor do serviço deve ser um valor numérico.'
+                'Valor unitário do serviço, referente a unidade informada.'
             );
         }
-        $this->servico = (float)$servico;
+        $this->unitario = (float)$unitario;
     }
 
-    public function getServico()
+    public function getUnitario()
     {
-        return $this->servico;
+        return $this->unitario;
     }
+
+    public function setValorAproximadoTributos($valorAproximadoTributos)
+    {
+        if (!v::numeric()->validate($valorAproximadoTributos)) {
+            throw new ValidationError(
+                'Valor aproximado dos tributos. Campo utilizado somente para NFS-e de Brasília.'
+            );
+        }
+        $this->valorAproximadoTributos = (float)$valorAproximadoTributos;
+    }
+
+    public function getValorAproximadoTributos()
+    {
+        return $this->valorAproximadoTributos;
+    }
+
+    
 
 }

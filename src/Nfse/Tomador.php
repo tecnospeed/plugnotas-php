@@ -19,12 +19,16 @@ class Tomador extends BuilderAbstract
     use Communication;
 
     private $cpfCnpj;
+    private $inscricaoMunicipal;
     private $email;
     private $endereco;
     private $inscricaoEstadual;
+    private $inscricaoSuframa;
+    private $indicadorInscricaoEstadual;
     private $nomeFantasia;
     private $razaoSocial;
     private $telefone;
+    private $orgaoPublico;
 
     public function setCpfCnpj($cpfCnpj)
     {
@@ -62,6 +66,14 @@ class Tomador extends BuilderAbstract
         return $this->cpfCnpj;
     }
 
+    public function setInscricaoMunicipal($inscricaoMunicipal){
+        $this->inscricaoMunicipal = $inscricaoMunicipal;
+    }
+    public function getInscricaoMunicipal()
+    {
+        return $this->inscricaoMunicipal;
+    }
+
     public function setEmail($email)
     {
         if (!v::email()->validate($email)) {
@@ -97,6 +109,31 @@ class Tomador extends BuilderAbstract
         return $this->inscricaoEstadual;
     }
 
+    public function setInscricaoSuframa($inscricaoSuframa)
+    {
+        $this->inscricaoSuframa = $inscricaoSuframa;
+    }
+
+    public function getInscricaoSuframa()
+    {
+        return $this->inscricaoSuframa;
+    }
+    
+    public function setIndicadorInscricaoEstadual($indicadorInscricaoEstadual)
+    {
+        if (!v::in([1,2,9])->validate($indicadorInscricaoEstadual)) {
+            throw new ValidationError(
+                'Tipo indicador Inscricão Estadual inválido.'
+            );
+        }
+        $this->indicadorInscricaoEstadual = $indicadorInscricaoEstadual;
+    }
+
+    public function getIndicadorInscricaoEstadual()
+    {
+        return $this->indicadorInscricaoEstadual;
+    }
+
     public function setNomeFantasia($nomeFantasia)
     {
         $this->nomeFantasia = $nomeFantasia;
@@ -106,7 +143,15 @@ class Tomador extends BuilderAbstract
     {
         return $this->nomeFantasia;
     }
+    public function setOrgaoPublico($orgaoPublico)
+    {
+        $this->orgaoPublico = $orgaoPublico;
+    }
 
+    public function getOrgaoPublico()
+    {
+        return $this->orgaoPublico;
+    }
     public function setRazaoSocial($razaoSocial)
     {
         if (is_null($razaoSocial)) {

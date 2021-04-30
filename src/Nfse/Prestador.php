@@ -35,6 +35,7 @@ class Prestador extends BuilderAbstract
     private $telefone;
     private $nfse;
 
+
     public function setCertificado($certificado)
     {
         $certificadoId = preg_replace('/[^0-9a-f]/', '', strtolower((string)$certificado));

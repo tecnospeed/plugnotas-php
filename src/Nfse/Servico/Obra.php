@@ -10,6 +10,7 @@ class Obra extends BuilderAbstract
 {
     private $art;
     private $codigo;
+    private $cei;
 
     public function setArt($art)
     {
@@ -29,5 +30,15 @@ class Obra extends BuilderAbstract
     public function getCodigo()
     {
         return $this->codigo;
+    }
+
+    public function setCei($cei)
+    {
+        $this->cei = $cei;
+    }
+
+    public function getCei()
+    {
+        return $this->cei;
     }
 }

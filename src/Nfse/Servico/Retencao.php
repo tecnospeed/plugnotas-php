@@ -5,6 +5,7 @@ namespace TecnoSpeed\Plugnotas\Nfse\Servico;
 use Respect\Validation\Validator as v;
 use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 use TecnoSpeed\Plugnotas\Common\ValorAliquota;
+use TecnoSpeed\Plugnotas\Common\PisCofinsValorAliquota;
 use TecnoSpeed\Plugnotas\Error\ValidationError;
 
 class Retencao extends BuilderAbstract
@@ -15,8 +16,9 @@ class Retencao extends BuilderAbstract
     private $irrf;
     private $outrasRetencoes;
     private $pis;
+    private $cpp;
 
-    public function setCofins(ValorAliquota $cofins)
+    public function setCofins(PisCofinsValorAliquota $cofins)
     {
         $this->cofins = $cofins;
     }
@@ -66,7 +68,7 @@ class Retencao extends BuilderAbstract
         return $this->outrasRetencoes;
     }
 
-    public function setPis(ValorAliquota $pis)
+    public function setPis(PisCofinsValorAliquota $pis)
     {
         $this->pis = $pis;
     }
@@ -75,7 +77,15 @@ class Retencao extends BuilderAbstract
     {
         return $this->pis;
     }
+    public function setCpp(ValorAliquota $cpp)
+    {
+        $this->cpp = $cpp;
+    }
 
+    public function getCpp()
+    {
+        return $this->cpp;
+    }
     public static function fromArray($data)
     {
         $retencao = new Retencao();
