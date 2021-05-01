@@ -2,14 +2,32 @@
 
 namespace TecnoSpeed\Plugnotas\Common;
 
-use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
-use TecnoSpeed\Plugnotas\Error\ValidationError;
+use FerFabricio\Hydrator\Hydrate;
 use Respect\Validation\Validator as v;
+
+use TecnoSpeed\Plugnotas\Error\ValidationError;
+use TecnoSpeed\Plugnotas\Error\InvalidTypeError;
+use TecnoSpeed\Plugnotas\Common\ConfigNfse\Config;
+use TecnoSpeed\Plugnotas\Abstracts\BuilderAbstract;
 
 class Nfse extends BuilderAbstract
 {
     private $ativo;
     private $tipoContrato;
+    private $config;
+
+    public static function fromArray($data)
+    {
+        if (!is_array($data)) {
+            throw new InvalidTypeError('Deve ser informado um array.');
+        }
+
+        if (array_key_exists('config', $data)) {
+            $data['config'] = Config::fromArray($data['config']);
+        }
+
+        return Hydrate::toObject(self::class, $data);
+    }
 
     public function setAtivo($ativo)
     {
@@ -22,13 +40,13 @@ class Nfse extends BuilderAbstract
             );
         }
 
-        $this->ativo = $ativo;       
+        $this->ativo = $ativo;
     }
 
     public function getAtivo()
     {
         return $this->ativo;
-    }    
+    }
 
     public function setTipoContrato($tipoContrato)
     {
@@ -39,14 +57,24 @@ class Nfse extends BuilderAbstract
         ){
             throw new ValidationError(
                 'Valor inválido para o TipoContrato. Valores aceitos: null, 0, 1'
-            );            
+            );
         }
 
-        $this->tipoContrato = $tipoContrato;        
+        $this->tipoContrato = $tipoContrato;
     }
 
     public function getTipoContrato()
     {
         return $this->tipoContrato;
-    }  
+    }
+
+    public function setConfig(Config $config)
+    {
+        $this->config = $config;
+    }
+
+    public function getConfig()
+    {
+        return $this->config;
+    }
 }
