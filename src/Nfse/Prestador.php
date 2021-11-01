@@ -250,7 +250,7 @@ class Prestador extends BuilderAbstract
 
         if (array_key_exists('nfse', $data)) {
             $data['nfse'] = Nfse::fromArray($data['nfse']);
-        }    
+        }
 
         return Hydrate::toObject(self::class, $data);
     }
@@ -283,5 +283,18 @@ class Prestador extends BuilderAbstract
 
         $communication = $this->getCallApiInstance($configuration);
         return $communication->send('POST', '/empresa', $this->toArray(true));
+    }
+
+    public function sendUpdate(Configuration $configuration)
+    {
+        $communication = $this->getCallApiInstance($configuration);
+        return $communication->send('PATCH', "/empresa/".$this->getCpfCnpj(), $this->toArray(true));
+    }
+
+    public function searchPrestador(Configuration $configuration)
+    {
+        $communication = $this->getCallApiInstance($configuration);
+
+        return $communication->send('GET', "/empresa/".$this->getCpfCnpj(), []);
     }
 }

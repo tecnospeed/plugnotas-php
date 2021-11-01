@@ -33,7 +33,7 @@ try {
 
 
     $aliquotaSimplificado = ["aliquota" => 0];
-    $aliquotaDetalahdo = ['aliquota' => ['municipal' => 0,'estadual' => 0,'federal' => 0]];
+    $aliquotaDetalhado = ['aliquota' => ['municipal' => 0,'estadual' => 0,'federal' => 0]];
 
 
     // Criando os objetos auxiliares necessários e o objeto Prestador
@@ -148,7 +148,7 @@ try {
 
      $ibpt = new Ibpt();
      $ibpt->setSimplificado($aliquotaSimplificado);   
-     $ibpt->setDetalhado($aliquotaDetalahdo);
+     $ibpt->setDetalhado($aliquotaDetalhado);
     
     $services = [];
     $servico = new Servico();
