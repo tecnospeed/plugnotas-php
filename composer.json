@@ -23,7 +23,7 @@
     "test": "vendor/bin/phpunit --version"
   },
   "require": {
-    "php": "^7.0",
+    "php": "^7.0|^8.0",
     "respect/validation": "^1.1",
     "ferfabricio/hydrator": "^2.0",
     "guzzlehttp/guzzle": "^7.3",
